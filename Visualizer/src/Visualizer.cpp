@@ -50,7 +50,7 @@ void Visualizer::setupUi()
 
     loadFile->setStyleSheet(buttonStyle);
     this->setStyleSheet(widgetStyle);
-    containerWidget->setStyleSheet("background-color: lightblue; border: 2px solid black;");
+    containerWidget->setStyleSheet("background-color: lightyellow; border: 2px solid black;");
 
     QGridLayout* layout = new QGridLayout();
     QWidget* centralWidget = new QWidget(this);
@@ -58,13 +58,12 @@ void Visualizer::setupUi()
     layout->addWidget(loadFile, 0, 0, 1, 3);
     layout->addWidget(openglWidgetInput, 1, 0, 1, 3);
     layout->addWidget(progressBar, 2, 0, 1, 6);
-    layout->addWidget(containerWidget, 0, 3, 1, 3); 
+    layout->addWidget(containerWidget, 0, 3, 2, 3); 
 
     layout->setContentsMargins(20, 20, 20, 20);
     centralWidget->setLayout(layout);
     setCentralWidget(centralWidget);
 }
-
 
 void Visualizer::onLoadFileClick()
 {

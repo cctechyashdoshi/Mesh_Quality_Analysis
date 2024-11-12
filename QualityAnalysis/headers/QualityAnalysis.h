@@ -6,10 +6,13 @@ namespace QualityAnalysis {
 
 	class QualityAnalysis
 	{
+		Geometry::Point negativePoint(const Geometry::Point& point);
+		double clamp(double value, double min, double max);
 		double calculateDistanceBetweenPoints(const Geometry::Point& firstPoint, const Geometry::Point& secondPoint);
-		double calculateSingleTriangleArea(Geometry::Triangle& triangle);
-		double calculateSingleTriangleAspectRatio(Geometry::Triangle& triangle);
-		double calculateSingleTriangleInteriorAngle(Geometry::Triangle& triangle);
+		double calculateSingleTriangleArea(Geometry::Triangle& triangle, Geometry::Triangulation triangulation);
+		double calculateSingleTriangleAspectRatio(Geometry::Triangle& triangle, Geometry::Triangulation triangulation);
+		double calculateSingleTriangleInteriorAngle(Geometry::Triangle& triangle, Geometry::Triangulation triangulation);
+		double calculateAngleBetweenVectors(const Geometry::Point& v1, const Geometry::Point& v2);
 	public:
 		QualityAnalysis();
 		~QualityAnalysis();

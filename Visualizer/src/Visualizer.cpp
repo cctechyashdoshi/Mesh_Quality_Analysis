@@ -7,7 +7,7 @@
 #include "STLWriter.h"
 #include "DataWriter.h"
 //#include "Transformation.h"
-#include "Matrix4x4.h"
+//#include "Matrix4x4.h"
 
 int Vcount = 0;
 
@@ -35,6 +35,7 @@ void Visualizer::setupUi()
         "    padding: 10px 20px;"
         "    font-size: 16px;"
         "    border-radius: 5px;"
+        "    border: 2px solid black;"
         "}"
         "QPushButton:hover {"
         "    background-color: #45a049;"
@@ -46,6 +47,7 @@ void Visualizer::setupUi()
     QString widgetStyle = "QWidget {"
         "    background-color: #333;"
         "    color: #f5f5f5;"
+        "    border: 2px solid black;"
         "}";
 
     loadFile->setStyleSheet(buttonStyle);

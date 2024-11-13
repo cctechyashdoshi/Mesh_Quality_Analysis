@@ -6,26 +6,26 @@ namespace QualityAnalysis {
 
 	class QualityAnalysis
 	{
-		Geometry::Point negativePoint(const Geometry::Point& point);
+		std::vector<double> negativePoint(std::vector<double> point);
 		double clamp(double value, double min, double max);
-		double calculateDistanceBetweenPoints(const Geometry::Point& firstPoint, const Geometry::Point& secondPoint);
+		double calculateDistanceBetweenPoints(std::vector<double> firstPoint, std::vector<double> secondPoint);
 		double calculateSingleTriangleArea(Geometry::Triangle& triangle, Geometry::Triangulation triangulation);
+		double calculateAngleBetweenVectors(std::vector<double> v1, std::vector<double> v2);
 		double calculateSingleTriangleAspectRatio(Geometry::Triangle& triangle, Geometry::Triangulation triangulation);
 		double calculateSingleTriangleInteriorAngle(Geometry::Triangle& triangle, Geometry::Triangulation triangulation);
-		double calculateAngleBetweenVectors(const Geometry::Point& v1, const Geometry::Point& v2);
 	public:
 		QualityAnalysis();
 		~QualityAnalysis();
-		double surfaceArea(Geometry::Triangulation);
-		int numberOfTriangles(Geometry::Triangulation);
-		int numberOfVertices(Geometry::Triangulation);
-		double aspectRatio(Geometry::Triangulation);
-		double orthogonality(Geometry::Triangulation);
-		double objectLength(Geometry::Triangulation);
-		double objectBreadth(Geometry::Triangulation);
-		double objectHeight(Geometry::Triangulation);
-		double timeToLoad(Geometry::Triangulation);
-		Geometry::Triangulation drawGoodAndBadTriangles(Geometry::Triangulation);
-		Geometry::Triangulation drawBoundingBox(Geometry::Triangulation);
+		double surfaceArea(Geometry::Triangulation triangulation);
+		int numberOfTriangles(Geometry::Triangulation triangulation);
+		int numberOfVertices(Geometry::Triangulation triangulation);
+		double aspectRatio(Geometry::Triangulation triangulation);
+		double orthogonality(Geometry::Triangulation triangulation);
+		double objectLength(Geometry::Triangulation triangulation);
+		double objectBreadth(Geometry::Triangulation triangulation);
+		double objectHeight(Geometry::Triangulation triangulation);
+		double timeToLoad(Geometry::Triangulation triangulation);
+		Geometry::Triangulation drawGoodAndBadTriangles(Geometry::Triangulation triangulation);
+		Geometry::Triangulation drawBoundingBox(Geometry::Triangulation triangulation);
 	};
 }

@@ -11,16 +11,20 @@ namespace QualityAnalysis {
 		double calculateDistanceBetweenPoints(std::vector<double> firstPoint, std::vector<double> secondPoint);
 		double calculateSingleTriangleArea(Geometry::Triangle& triangle, Geometry::Triangulation triangulation);
 		double calculateAngleBetweenVectors(std::vector<double> v1, std::vector<double> v2);
+		std::vector<double> convertPointToVector(Geometry::Point point, Geometry::Triangulation triangulation);
 		double calculateSingleTriangleAspectRatio(Geometry::Triangle& triangle, Geometry::Triangulation triangulation);
 		double calculateSingleTriangleInteriorAngle(Geometry::Triangle& triangle, Geometry::Triangulation triangulation);
+		std::vector<double> convertPointToVector(Geometry::Point point, Geometry::Triangulation triangulation);
 	public:
 		QualityAnalysis();
 		~QualityAnalysis();
 		size_t numberOfTriangles(Geometry::Triangulation triangulation);
 		size_t numberOfVertices(Geometry::Triangulation triangulation);
 		double surfaceArea(Geometry::Triangulation triangulation);
+		double triangleDensity(Geometry::Triangulation triangulation);
 		double aspectRatio(Geometry::Triangulation triangulation);
 		double orthogonality(Geometry::Triangulation triangulation);
+		//double skewness(Geometry::Triangulation triangulation);
 		double objectLength(Geometry::Triangulation triangulation);
 		double objectBreadth(Geometry::Triangulation triangulation);
 		double objectHeight(Geometry::Triangulation triangulation);

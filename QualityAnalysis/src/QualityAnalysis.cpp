@@ -16,6 +16,14 @@ QualityAnalysis::QualityAnalysis::~QualityAnalysis()
 {
 }
 
+std::vector<double> QualityAnalysis::QualityAnalysis::convertPointToVector(Geometry::Point point, Geometry::Triangulation triangulation)
+{
+    double v1 = triangulation.UniqueNumbers[point.X()];
+    double v2 = triangulation.UniqueNumbers[point.Y()];
+    double v3 = triangulation.UniqueNumbers[point.Z()];
+    return std::vector<double>{ v1, v2, v3 };
+}
+
 std::vector<double> QualityAnalysis::QualityAnalysis::negativePoint(std::vector<double> point)
 {
     return std::vector<double>{ -point[0], -point[1], -point[2]};
@@ -51,21 +59,9 @@ double QualityAnalysis::QualityAnalysis::calculateSingleTriangleArea(Geometry::T
     Geometry::Point vertex2 = triangle.P2();
     Geometry::Point vertex3 = triangle.P3();
 
-    double vertex11 = triangulation.UniqueNumbers[vertex1.X()];
-    double vertex12 = triangulation.UniqueNumbers[vertex1.Y()];
-    double vertex13 = triangulation.UniqueNumbers[vertex1.Z()];
-
-    double vertex21 = triangulation.UniqueNumbers[vertex2.X()];
-    double vertex22 = triangulation.UniqueNumbers[vertex2.Y()];
-    double vertex23 = triangulation.UniqueNumbers[vertex2.Z()];
-
-    double vertex31 = triangulation.UniqueNumbers[vertex3.X()];
-    double vertex32 = triangulation.UniqueNumbers[vertex3.Y()];
-    double vertex33 = triangulation.UniqueNumbers[vertex3.Z()];
-
-    std::vector<double> vertex1Double{ vertex11, vertex12, vertex13 };
-    std::vector<double> vertex2Double{ vertex21, vertex22, vertex23 };
-    std::vector<double> vertex3Double{ vertex31, vertex32, vertex33 };
+    std::vector<double> vertex1Double = convertPointToVector(vertex1, triangulation);
+    std::vector<double> vertex2Double = convertPointToVector(vertex2, triangulation);
+    std::vector<double> vertex3Double = convertPointToVector(vertex3, triangulation);
 
     double side1 = QualityAnalysis::QualityAnalysis::calculateDistanceBetweenPoints(vertex1Double, vertex2Double);
     double side2 = QualityAnalysis::QualityAnalysis::calculateDistanceBetweenPoints(vertex2Double, vertex3Double);
@@ -83,21 +79,9 @@ double QualityAnalysis::QualityAnalysis::calculateSingleTriangleAspectRatio(Geom
     Geometry::Point vertex2 = triangle.P2();
     Geometry::Point vertex3 = triangle.P3();
 
-    double vertex11 = triangulation.UniqueNumbers[vertex1.X()];
-    double vertex12 = triangulation.UniqueNumbers[vertex1.Y()];
-    double vertex13 = triangulation.UniqueNumbers[vertex1.Z()];
-
-    double vertex21 = triangulation.UniqueNumbers[vertex2.X()];
-    double vertex22 = triangulation.UniqueNumbers[vertex2.Y()];
-    double vertex23 = triangulation.UniqueNumbers[vertex2.Z()];
-
-    double vertex31 = triangulation.UniqueNumbers[vertex3.X()];
-    double vertex32 = triangulation.UniqueNumbers[vertex3.Y()];
-    double vertex33 = triangulation.UniqueNumbers[vertex3.Z()];
-
-    std::vector<double> vertex1Double{ vertex11, vertex12, vertex13 };
-    std::vector<double> vertex2Double{ vertex21, vertex22, vertex23 };
-    std::vector<double> vertex3Double{ vertex31, vertex32, vertex33 };
+    std::vector<double> vertex1Double = convertPointToVector(vertex1, triangulation);
+    std::vector<double> vertex2Double = convertPointToVector(vertex2, triangulation);
+    std::vector<double> vertex3Double = convertPointToVector(vertex3, triangulation);
 
     double side1 = QualityAnalysis::QualityAnalysis::calculateDistanceBetweenPoints(vertex1Double, vertex2Double);
     double side2 = QualityAnalysis::QualityAnalysis::calculateDistanceBetweenPoints(vertex2Double, vertex3Double);
@@ -110,30 +94,19 @@ double QualityAnalysis::QualityAnalysis::calculateSingleTriangleAspectRatio(Geom
     return aspectRatio;
 }
 
-double QualityAnalysis::QualityAnalysis::calculateSingleTriangleInteriorAngle(Geometry::Triangle& triangle, Geometry::Triangulation triangulation) {
+double QualityAnalysis::QualityAnalysis::calculateSingleTriangleInteriorAngle(Geometry::Triangle& triangle, Geometry::Triangulation triangulation) 
+{
     Geometry::Point vertex1 = triangle.P1();
     Geometry::Point vertex2 = triangle.P2();
     Geometry::Point vertex3 = triangle.P3();
 
-    double vertex11 = triangulation.UniqueNumbers[vertex1.X()];
-    double vertex12 = triangulation.UniqueNumbers[vertex1.Y()];
-    double vertex13 = triangulation.UniqueNumbers[vertex1.Z()];
+    std::vector<double> vertex1Double = convertPointToVector(vertex1, triangulation);
+    std::vector<double> vertex2Double = convertPointToVector(vertex2, triangulation);
+    std::vector<double> vertex3Double = convertPointToVector(vertex3, triangulation);
 
-    double vertex21 = triangulation.UniqueNumbers[vertex2.X()];
-    double vertex22 = triangulation.UniqueNumbers[vertex2.Y()];
-    double vertex23 = triangulation.UniqueNumbers[vertex2.Z()];
-
-    double vertex31 = triangulation.UniqueNumbers[vertex3.X()];
-    double vertex32 = triangulation.UniqueNumbers[vertex3.Y()];
-    double vertex33 = triangulation.UniqueNumbers[vertex3.Z()];
-
-    std::vector<double> vertex1New{ vertex11, vertex12, vertex13 };
-    std::vector<double> vertex2New{ vertex21, vertex22, vertex23 };
-    std::vector<double> vertex3New{ vertex31, vertex32, vertex33 };
-
-    std::vector<double> AB{ vertex2New[0] - vertex1New[0], vertex2New[1] - vertex1New[1], vertex2New[2] - vertex1New[2] };
-    std::vector<double> BC{ vertex3New[0] - vertex2New[0], vertex3New[1] - vertex2New[1], vertex3New[2] - vertex2New[2] };
-    std::vector<double> CA{ vertex1New[0] - vertex3New[0], vertex1New[1] - vertex3New[1], vertex1New[2] - vertex3New[2] };
+    std::vector<double> AB{ vertex2Double[0] - vertex1Double[0], vertex2Double[1] - vertex1Double[1], vertex2Double[2] - vertex1Double[2] };
+    std::vector<double> BC{ vertex3Double[0] - vertex2Double[0], vertex3Double[1] - vertex2Double[1], vertex3Double[2] - vertex2Double[2] };
+    std::vector<double> CA{ vertex1Double[0] - vertex3Double[0], vertex1Double[1] - vertex3Double[1], vertex1Double[2] - vertex3Double[2] };
 
     double angleA = calculateAngleBetweenVectors(AB, negativePoint(CA));
     double angleB = calculateAngleBetweenVectors(AB, BC);
@@ -152,6 +125,19 @@ double QualityAnalysis::QualityAnalysis::surfaceArea(Geometry::Triangulation tri
         totalSurfaceArea += QualityAnalysis::QualityAnalysis::calculateSingleTriangleArea(triangle, triangulation);
 	}
 	return totalSurfaceArea;
+}
+
+double QualityAnalysis::QualityAnalysis::triangleDensity(Geometry::Triangulation triangulation)
+{
+    double meshDensity = 0.0;
+
+    double _surfaceArea = QualityAnalysis::QualityAnalysis::surfaceArea(triangulation);
+
+    if (_surfaceArea != 0.0)
+    {
+        meshDensity = triangulation.Triangles.size() / _surfaceArea;
+    }
+    return meshDensity;
 }
 
 size_t QualityAnalysis::QualityAnalysis::numberOfTriangles(Geometry::Triangulation triangulation)
@@ -235,9 +221,4 @@ double QualityAnalysis::QualityAnalysis::objectHeight(Geometry::Triangulation tr
 		}
 	}
 	return maxZ - minZ;
-}
-
-Geometry::Triangulation QualityAnalysis::QualityAnalysis::drawGoodAndBadTriangles(Geometry::Triangulation triangulation)
-{
-    
 }

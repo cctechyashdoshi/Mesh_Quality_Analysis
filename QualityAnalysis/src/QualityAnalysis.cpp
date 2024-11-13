@@ -5,6 +5,7 @@
 #include <vector>
 #include <set>
 #include "Point.h"
+#include "Triangle.h"
 
 #define PI 3.14159265358979323846
 
@@ -117,6 +118,108 @@ double QualityAnalysis::QualityAnalysis::calculateSingleTriangleInteriorAngle(Ge
     return averageAngle;
 }
 
+double QualityAnalysis::QualityAnalysis::minX(Geometry::Triangulation triangulation)
+{
+    double minX = 1000000;
+    for (auto vertex : triangulation.Triangles) {
+        if (vertex.P1().X() < minX) {
+            minX = vertex.P1().X();
+        }
+		if (vertex.P2().X() < minX) {
+			minX = vertex.P2().X();
+		}
+        if (vertex.P3().X() < minX) {
+            minX = vertex.P3().X();
+        }
+    }
+    return minX;
+}
+
+double QualityAnalysis::QualityAnalysis::minY(Geometry::Triangulation triangulation)
+{
+    double minY = 1000000;
+    for (auto vertex : triangulation.Triangles) {
+        if (vertex.P1().Y() < minY) {
+            minY = vertex.P1().Y();
+        }
+        if (vertex.P2().Y() < minY) {
+            minY = vertex.P2().Y();
+        }
+        if (vertex.P3().Y() < minY) {
+            minY = vertex.P3().Y();
+        }
+    }
+    return minY;
+}
+
+double QualityAnalysis::QualityAnalysis::minZ(Geometry::Triangulation triangulation)
+{
+    double minZ = 1000000;
+    for (auto vertex : triangulation.Triangles) {
+        if (vertex.P1().Z() < minZ) {
+            minZ = vertex.P1().Z();
+        }
+        if (vertex.P2().Z() < minZ) {
+            minZ = vertex.P2().Z();
+        }
+        if (vertex.P3().Z() < minZ) {
+            minZ = vertex.P3().Z();
+        }
+    }
+    return minZ;
+}
+
+double QualityAnalysis::QualityAnalysis::maxX(Geometry::Triangulation triangulation)
+{
+    double maxX = -1000000;
+    for (auto vertex : triangulation.Triangles) {
+        if (vertex.P1().X() > maxX) {
+            maxX = vertex.P1().X();
+        }
+        if (vertex.P2().X() > maxX) {
+            maxX = vertex.P2().X();
+        }
+        if (vertex.P3().X() > maxX) {
+            maxX = vertex.P3().X();
+        }
+    }
+    return maxX;
+}
+
+double QualityAnalysis::QualityAnalysis::maxY(Geometry::Triangulation triangulation)
+{
+    double maxY = -1000000;
+    for (auto vertex : triangulation.Triangles) {
+        if (vertex.P1().Y() > maxY) {
+            maxY = vertex.P1().Y();
+        }
+        if (vertex.P2().Y() > maxY) {
+            maxY = vertex.P2().Y();
+        }
+        if (vertex.P3().Y() > maxY) {
+            maxY = vertex.P3().Y();
+        }
+    }
+    return maxY;
+}
+
+double QualityAnalysis::QualityAnalysis::maxZ(Geometry::Triangulation triangulation)
+{
+    double maxZ = -1000000;
+    for (auto vertex : triangulation.Triangles) {
+        if (vertex.P1().Z() > maxZ) {
+            maxZ = vertex.P1().Z();
+        }
+        if (vertex.P2().Z() > maxZ) {
+            maxZ = vertex.P2().Z();
+        }
+        if (vertex.P3().Z() > maxZ) {
+            maxZ = vertex.P3().Z();
+        }
+    }
+    return maxZ;
+}
+
 double QualityAnalysis::QualityAnalysis::surfaceArea(Geometry::Triangulation triangulation)
 {
 	double totalSurfaceArea = 0;
@@ -180,45 +283,51 @@ double QualityAnalysis::QualityAnalysis::orthogonality(Geometry::Triangulation t
 
 double QualityAnalysis::QualityAnalysis::objectLength(Geometry::Triangulation triangulation) 
 {
-    double maxX = -1000000;
-    double minX = 1000000;
-    for (auto vertex : triangulation.UniqueNumbers) {
-        if (vertex > maxX) {
-            maxX = vertex;
-        }
-        if (vertex < minX) {
-            minX = vertex;
-        }
-    }
-    return maxX - minX;
+    return maxX(triangulation) - minX(triangulation);
 }
 
 double QualityAnalysis::QualityAnalysis::objectBreadth(Geometry::Triangulation triangulation)
 {
-	double maxY = -1000000;
-	double minY = 1000000;
-	for (auto vertex : triangulation.UniqueNumbers) {
-		if (vertex > maxY) {
-			maxY = vertex;
-		}
-		if (vertex < minY) {
-			minY = vertex;
-		}
-	}
-	return maxY - minY;
+	return maxY(triangulation) - minY(triangulation);
 }
 
 double QualityAnalysis::QualityAnalysis::objectHeight(Geometry::Triangulation triangulation)
 {
-	double maxZ = -1000000;
-	double minZ = 1000000;
-	for (auto vertex : triangulation.UniqueNumbers) {
-		if (vertex > maxZ) {
-			maxZ = vertex;
-		}
-		if (vertex < minZ) {
-			minZ = vertex;
-		}
-	}
-	return maxZ - minZ;
+	return maxZ(triangulation) - minZ(triangulation);
+}
+
+std::vector<std::vector<std::vector<double>>> QualityAnalysis::QualityAnalysis::drawBoundingBox(Geometry::Triangulation triangulation, double xMin, double yMin, double xMax, double yMax)
+{
+    std::vector<std::vector<std::vector<double>>> boundingBox;
+
+    double _xMin = QualityAnalysis::QualityAnalysis::minX(triangulation);
+    double _yMin = QualityAnalysis::QualityAnalysis::minY(triangulation);
+    double _zMin = QualityAnalysis::QualityAnalysis::minZ(triangulation);
+    double _xMax = QualityAnalysis::QualityAnalysis::maxX(triangulation);
+    double _yMax = QualityAnalysis::QualityAnalysis::maxY(triangulation);
+    double _zMax = QualityAnalysis::QualityAnalysis::maxZ(triangulation);
+
+    std::vector<double> p1 = { _xMin, _yMin, _zMin };
+    std::vector<double> p2 = { _xMax, _yMin, _zMin };
+    std::vector<double> p3 = { _xMax, _yMax, _zMin };
+    std::vector<double> p4 = { _xMin, _yMax, _zMin };
+    std::vector<double> p5 = { _xMin, _yMin, _zMax };
+    std::vector<double> p6 = { _xMax, _yMin, _zMax };
+    std::vector<double> p7 = { _xMax, _yMax, _zMax };
+    std::vector<double> p8 = { _xMin, _yMax, _zMax };
+
+    boundingBox.push_back({ p1, p2, p3 });
+	boundingBox.push_back({ p1, p4, p3 });
+	boundingBox.push_back({ p1, p4, p8 });
+	boundingBox.push_back({ p1, p5, p8 });
+	boundingBox.push_back({ p1, p2, p6 });
+	boundingBox.push_back({ p1, p5, p6 });
+	boundingBox.push_back({ p2, p7, p6 });
+	boundingBox.push_back({ p2, p7, p3 });
+	boundingBox.push_back({ p5, p6, p7 });
+	boundingBox.push_back({ p5, p8, p7 });
+	boundingBox.push_back({ p3, p4, p8 });
+	boundingBox.push_back({ p3, p7, p8 });
+
+    return boundingBox;
 }

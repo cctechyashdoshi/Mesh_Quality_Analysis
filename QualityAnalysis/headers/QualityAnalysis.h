@@ -7,6 +7,7 @@ namespace QualityAnalysis {
 	class QualityAnalysis
 	{
 		std::vector<double> negativePoint(std::vector<double> point);
+		std::vector<double> convertPointToVector(Geometry::Point point, Geometry::Triangulation triangulation);
 		double clamp(double value, double min, double max);
 		double calculateDistanceBetweenPoints(std::vector<double> firstPoint, std::vector<double> secondPoint);
 		double calculateSingleTriangleArea(Geometry::Triangle& triangle, Geometry::Triangulation triangulation);
@@ -14,7 +15,12 @@ namespace QualityAnalysis {
 		std::vector<double> convertPointToVector(Geometry::Point point, Geometry::Triangulation triangulation);
 		double calculateSingleTriangleAspectRatio(Geometry::Triangle& triangle, Geometry::Triangulation triangulation);
 		double calculateSingleTriangleInteriorAngle(Geometry::Triangle& triangle, Geometry::Triangulation triangulation);
-		std::vector<double> convertPointToVector(Geometry::Point point, Geometry::Triangulation triangulation);
+		double minX(Geometry::Triangulation triangulation);
+		double minY(Geometry::Triangulation triangulation);
+		double minZ(Geometry::Triangulation triangulation);
+		double maxX(Geometry::Triangulation triangulation);
+		double maxY(Geometry::Triangulation triangulation);
+		double maxZ(Geometry::Triangulation triangulation);
 	public:
 		QualityAnalysis();
 		~QualityAnalysis();
@@ -24,12 +30,11 @@ namespace QualityAnalysis {
 		double triangleDensity(Geometry::Triangulation triangulation);
 		double aspectRatio(Geometry::Triangulation triangulation);
 		double orthogonality(Geometry::Triangulation triangulation);
-		//double skewness(Geometry::Triangulation triangulation);
 		double objectLength(Geometry::Triangulation triangulation);
 		double objectBreadth(Geometry::Triangulation triangulation);
 		double objectHeight(Geometry::Triangulation triangulation);
 		double timeToLoad(Geometry::Triangulation triangulation);
 		Geometry::Triangulation drawGoodAndBadTriangles(Geometry::Triangulation triangulation);
-		Geometry::Triangulation drawBoundingBox(Geometry::Triangulation triangulation);
+		std::vector<std::vector<std::vector<double>>> drawBoundingBox(Geometry::Triangulation triangulation, double xMin, double yMin, double xMax, double yMax);
 	};
 }

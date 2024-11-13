@@ -1,10 +1,11 @@
 #pragma once
 
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QTextEdit>
+#include <QMainWindow>
+#include <QPushButton>
+#include <QTextEdit>
 #include <QProgressBar>
 #include <QWidget>
+#include <QCheckBox>
 
 #include "Triangulation.h"
 #include "OpenGlWidget.h"
@@ -39,6 +40,9 @@ private:
     OpenGlWidget* openglWidgetInput;
 
     QProgressBar* progressBar;
+
+    QCheckBox* firstCheckBox;
+	QCheckBox* secondCheckBox;
 
     QVector<GLfloat> vertices;
 

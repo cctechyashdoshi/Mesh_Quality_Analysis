@@ -41,5 +41,3 @@ Point Triangle::Normal() const
 {
     return normal;
 }
-
-

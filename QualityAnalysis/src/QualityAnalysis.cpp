@@ -3,8 +3,10 @@
 #include <cmath>
 #include <algorithm>
 #include <vector>
+#include <set>
+#include "Point.h"
 
-#define M_PI 3.14159265358979323846
+#define PI 3.14159265358979323846
 
 QualityAnalysis::QualityAnalysis::QualityAnalysis()
 {
@@ -39,8 +41,8 @@ double QualityAnalysis::QualityAnalysis::calculateAngleBetweenVectors(std::vecto
     double magnitudeV1 = std::sqrt(v1[0] * v1[0] + v1[1] * v1[1] + v1[2] * v1[2]);
     double magnitudeV2 = std::sqrt(v2[0] * v2[0] + v2[1] * v2[1] + v2[2] * v2[2]);
     double cosTheta = dotProduct / (magnitudeV1 * magnitudeV2);
-    cosTheta = clamp(cosTheta, -1.0, 1.0); // Ensure the value is within the valid range for acos
-    return std::acos(cosTheta) * (180.0 / M_PI); // Convert to degrees
+    cosTheta = clamp(cosTheta, -1.0, 1.0);
+    return std::acos(cosTheta) * (180.0 / PI);
 }
 
 double QualityAnalysis::QualityAnalysis::calculateSingleTriangleArea(Geometry::Triangle& triangle, Geometry::Triangulation triangulation)
@@ -159,7 +161,15 @@ size_t QualityAnalysis::QualityAnalysis::numberOfTriangles(Geometry::Triangulati
 
 size_t QualityAnalysis::QualityAnalysis::numberOfVertices(Geometry::Triangulation triangulation)
 {
-	return triangulation.UniqueNumbers.size();
+	std::vector<Geometry::Point> verticesList;
+	for (auto triangle : triangulation.Triangles)
+	{
+		verticesList.push_back(triangle.P1());
+		verticesList.push_back(triangle.P2());
+		verticesList.push_back(triangle.P3());
+	}
+	std::set<Geometry::Point> verticesSet(verticesList.begin(), verticesList.end());
+	return verticesSet.size();
 }
 
 double QualityAnalysis::QualityAnalysis::aspectRatio(Geometry::Triangulation triangulation)

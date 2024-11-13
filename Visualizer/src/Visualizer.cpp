@@ -1,15 +1,13 @@
 #include <QFileDialog>
 #include <QGridLayout>
+#include <QDebug>
 #include "Visualizer.h"
 #include "STLReader.h"
 #include "OBJReader.h"
 #include "OBJWriter.h"
 #include "STLWriter.h"
 #include "DataWriter.h"
-//#include "Transformation.h"
-//#include "Matrix4x4.h"
-
-int Vcount = 0;
+#include "QualityAnalysis.h"
 
 Visualizer::Visualizer(QWidget* parent) : QMainWindow(parent)
 {
@@ -27,6 +25,8 @@ void Visualizer::setupUi()
     openglWidgetInput = new OpenGlWidget(this);
     progressBar = new QProgressBar(this);
     containerWidget = new QWidget(this);
+    firstCheckBox = new QCheckBox("Heat Map", containerWidget);
+	secondCheckBox = new QCheckBox("Good And Bad Triangles", containerWidget);
 
     QString buttonStyle = "QPushButton {"
         "    background-color: #4CAF50;"
@@ -47,12 +47,17 @@ void Visualizer::setupUi()
     QString widgetStyle = "QWidget {"
         "    background-color: #333;"
         "    color: #f5f5f5;"
-        "    border: 2px solid black;"
         "}";
+
+    QString containerStyle = "background-color: lightyellow; color: black;";
 
     loadFile->setStyleSheet(buttonStyle);
     this->setStyleSheet(widgetStyle);
-    containerWidget->setStyleSheet("background-color: lightyellow; border: 2px solid black;");
+    containerWidget->setStyleSheet(containerStyle);
+
+    QVBoxLayout* containerLayout = new QVBoxLayout(containerWidget);
+    containerLayout->addWidget(firstCheckBox);
+    containerLayout->addWidget(secondCheckBox);
 
     QGridLayout* layout = new QGridLayout();
     QWidget* centralWidget = new QWidget(this);
@@ -60,7 +65,7 @@ void Visualizer::setupUi()
     layout->addWidget(loadFile, 0, 0, 1, 3);
     layout->addWidget(openglWidgetInput, 1, 0, 1, 3);
     layout->addWidget(progressBar, 2, 0, 1, 6);
-    layout->addWidget(containerWidget, 0, 3, 2, 3); 
+    layout->addWidget(containerWidget, 0, 3, 2, 3);
 
     layout->setContentsMargins(20, 20, 20, 20);
     centralWidget->setLayout(layout);
@@ -76,6 +81,10 @@ void Visualizer::onLoadFileClick()
         triangulation = readFile(inputFilePath);
         OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(triangulation);
         openglWidgetInput->setData(data);
+
+		QualityAnalysis::QualityAnalysis qualityAnalysis;
+        qDebug() << "-----------------------------------------" << qualityAnalysis.objectLength(triangulation);
+
     }
 }
 
@@ -109,6 +118,8 @@ void Visualizer::writeFile(const QString& filePath, const Triangulation& tri)
     }
 }
 
+int Vcount = 0;
+
 OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Triangulation& inTriangulation)
 {
     OpenGlWidget::Data data;
@@ -129,7 +140,7 @@ OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Trian
             data.normals.push_back(inTriangulation.UniqueNumbers[normal.Z()]);
         }
         progressBar->setValue(Vcount);
-        progressBar->setRange(0, inTriangulation.Triangles.size()-1);
+        progressBar->setRange(0, inTriangulation.Triangles.size() - 1);
         Vcount++;
     }
     return data;

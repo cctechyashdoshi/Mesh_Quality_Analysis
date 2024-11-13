@@ -16,9 +16,9 @@ namespace QualityAnalysis {
 	public:
 		QualityAnalysis();
 		~QualityAnalysis();
+		size_t numberOfTriangles(Geometry::Triangulation triangulation);
+		size_t numberOfVertices(Geometry::Triangulation triangulation);
 		double surfaceArea(Geometry::Triangulation triangulation);
-		int numberOfTriangles(Geometry::Triangulation triangulation);
-		int numberOfVertices(Geometry::Triangulation triangulation);
 		double aspectRatio(Geometry::Triangulation triangulation);
 		double orthogonality(Geometry::Triangulation triangulation);
 		double objectLength(Geometry::Triangulation triangulation);

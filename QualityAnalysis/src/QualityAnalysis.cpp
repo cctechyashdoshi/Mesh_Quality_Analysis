@@ -152,12 +152,12 @@ double QualityAnalysis::QualityAnalysis::surfaceArea(Geometry::Triangulation tri
 	return totalSurfaceArea;
 }
 
-int QualityAnalysis::QualityAnalysis::numberOfTriangles(Geometry::Triangulation triangulation)
+size_t QualityAnalysis::QualityAnalysis::numberOfTriangles(Geometry::Triangulation triangulation)
 {
 	return triangulation.Triangles.size();
 }
 
-int QualityAnalysis::QualityAnalysis::numberOfVertices(Geometry::Triangulation triangulation)
+size_t QualityAnalysis::QualityAnalysis::numberOfVertices(Geometry::Triangulation triangulation)
 {
 	return triangulation.UniqueNumbers.size();
 }
@@ -182,14 +182,47 @@ double QualityAnalysis::QualityAnalysis::orthogonality(Geometry::Triangulation t
 	return totalOrthogonality / triangulation.Triangles.size();
 }
 
-//double QualityAnalysis::QualityAnalysis::objectLength(Geometry::Triangulation triangulation)
-//{
-//	double minX = 0;
-//	double maxX = 0;
-//	for (auto vertex : triangulation.UniqueNumbers)
-//	{
-//		minX = std::min(minX, vertex.X());
-//		maxX = std::max(maxX, vertex.X());
-//	}
-//	return maxX - minX;
-//}
+double QualityAnalysis::QualityAnalysis::objectLength(Geometry::Triangulation triangulation) 
+{
+    double maxX = -1000000;
+    double minX = 1000000;
+    for (auto vertex : triangulation.UniqueNumbers) {
+        if (vertex > maxX) {
+            maxX = vertex;
+        }
+        if (vertex < minX) {
+            minX = vertex;
+        }
+    }
+    return maxX - minX;
+}
+
+double QualityAnalysis::QualityAnalysis::objectBreadth(Geometry::Triangulation triangulation)
+{
+	double maxY = -1000000;
+	double minY = 1000000;
+	for (auto vertex : triangulation.UniqueNumbers) {
+		if (vertex > maxY) {
+			maxY = vertex;
+		}
+		if (vertex < minY) {
+			minY = vertex;
+		}
+	}
+	return maxY - minY;
+}
+
+double QualityAnalysis::QualityAnalysis::objectHeight(Geometry::Triangulation triangulation)
+{
+	double maxZ = -1000000;
+	double minZ = 1000000;
+	for (auto vertex : triangulation.UniqueNumbers) {
+		if (vertex > maxZ) {
+			maxZ = vertex;
+		}
+		if (vertex < minZ) {
+			minZ = vertex;
+		}
+	}
+	return maxZ - minZ;
+}

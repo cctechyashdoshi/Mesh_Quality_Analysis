@@ -83,7 +83,7 @@ void Visualizer::onLoadFileClick()
         openglWidgetInput->setData(data);
 
 		QualityAnalysis::QualityAnalysis qualityAnalysis;
-        qDebug() << "-----------------------------------------" << qualityAnalysis.objectLength(triangulation);
+        qDebug() << "-----------------------------------------" << qualityAnalysis.surfaceArea(triangulation);
 
     }
 }

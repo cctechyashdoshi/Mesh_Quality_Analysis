@@ -236,3 +236,8 @@ double QualityAnalysis::QualityAnalysis::objectHeight(Geometry::Triangulation tr
 	}
 	return maxZ - minZ;
 }
+
+Geometry::Triangulation QualityAnalysis::QualityAnalysis::drawGoodAndBadTriangles(Geometry::Triangulation triangulation)
+{
+    
+}

@@ -118,6 +118,21 @@ double QualityAnalysis::QualityAnalysis::calculateSingleTriangleInteriorAngle(Ge
     return averageAngle;
 }
 
+std::vector<double> QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNormal(std::vector<double> v1, std::vector<double> v2, std::vector<double> v3)
+{
+    std::vector<double> edge1 = { v2[0] - v1[0], v2[1] - v1[1], v2[2] - v1[2] };
+    std::vector<double> edge2 = { v3[0] - v1[0], v3[1] - v1[1], v3[2] - v1[2] };
+
+    std::vector<double> normal = { edge1[1] * edge2[2] - edge1[2] * edge2[1], edge1[2] * edge2[0] - edge1[0] * edge2[2], edge1[0] * edge2[1] - edge1[1] * edge2[0] };
+
+    double length = std::sqrt(normal[0] * normal[0] + normal[1] * normal[1] + normal[2] * normal[2]);
+    normal[0] /= length;
+    normal[1] /= length;
+    normal[2] /= length;
+
+    return normal;
+}
+
 double QualityAnalysis::QualityAnalysis::minX(Geometry::Triangulation triangulation)
 {
     double minX = 1000000;
@@ -296,7 +311,7 @@ double QualityAnalysis::QualityAnalysis::objectHeight(Geometry::Triangulation tr
 	return maxZ(triangulation) - minZ(triangulation);
 }
 
-std::vector<std::vector<std::vector<double>>> QualityAnalysis::QualityAnalysis::drawBoundingBox(Geometry::Triangulation triangulation, double xMin, double yMin, double xMax, double yMax)
+std::vector<std::vector<std::vector<double>>> QualityAnalysis::QualityAnalysis::drawBoundingBox(Geometry::Triangulation triangulation)
 {
     std::vector<std::vector<std::vector<double>>> boundingBox;
 
@@ -316,18 +331,31 @@ std::vector<std::vector<std::vector<double>>> QualityAnalysis::QualityAnalysis::
     std::vector<double> p7 = { _xMax, _yMax, _zMax };
     std::vector<double> p8 = { _xMin, _yMax, _zMax };
 
-    boundingBox.push_back({ p1, p2, p3 });
-	boundingBox.push_back({ p1, p4, p3 });
-	boundingBox.push_back({ p1, p4, p8 });
-	boundingBox.push_back({ p1, p5, p8 });
-	boundingBox.push_back({ p1, p2, p6 });
-	boundingBox.push_back({ p1, p5, p6 });
-	boundingBox.push_back({ p2, p7, p6 });
-	boundingBox.push_back({ p2, p7, p3 });
-	boundingBox.push_back({ p5, p6, p7 });
-	boundingBox.push_back({ p5, p8, p7 });
-	boundingBox.push_back({ p3, p4, p8 });
-	boundingBox.push_back({ p3, p7, p8 });
+    std::vector<double> n1 = QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNormal(p1, p2, p3);
+    std::vector<double> n2 = QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNormal(p1, p4, p3);
+    std::vector<double> n3 = QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNormal(p1, p4, p8);
+    std::vector<double> n4 = QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNormal(p1, p5, p8);
+	std::vector<double> n5 = QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNormal(p1, p2, p6);
+	std::vector<double> n6 = QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNormal(p1, p5, p6);
+	std::vector<double> n7 = QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNormal(p2, p7, p6);
+	std::vector<double> n8 = QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNormal(p2, p7, p3);
+	std::vector<double> n9 = QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNormal(p5, p6, p7);
+	std::vector<double> n10 = QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNormal(p5, p8, p7);
+	std::vector<double> n11 = QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNormal(p3, p4, p8);
+	std::vector<double> n12 = QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNormal(p3, p7, p8);
+
+    boundingBox.push_back({ p1, p2, p3, n1 });
+	boundingBox.push_back({ p1, p4, p3, n2 });
+	boundingBox.push_back({ p1, p4, p8, n3 });
+	boundingBox.push_back({ p1, p5, p8, n4 });
+	boundingBox.push_back({ p1, p2, p6, n5 });
+	boundingBox.push_back({ p1, p5, p6, n6 });
+	boundingBox.push_back({ p2, p7, p6, n7 });
+	boundingBox.push_back({ p2, p7, p3, n8 });
+	boundingBox.push_back({ p5, p6, p7, n9 });
+	boundingBox.push_back({ p5, p8, p7, n10 });
+	boundingBox.push_back({ p3, p4, p8, n11 });
+	boundingBox.push_back({ p3, p7, p8, n12 });
 
     return boundingBox;
 }

@@ -12,9 +12,9 @@ namespace QualityAnalysis {
 		double calculateDistanceBetweenPoints(std::vector<double> firstPoint, std::vector<double> secondPoint);
 		double calculateSingleTriangleArea(Geometry::Triangle& triangle, Geometry::Triangulation triangulation);
 		double calculateAngleBetweenVectors(std::vector<double> v1, std::vector<double> v2);
-		std::vector<double> convertPointToVector(Geometry::Point point, Geometry::Triangulation triangulation);
 		double calculateSingleTriangleAspectRatio(Geometry::Triangle& triangle, Geometry::Triangulation triangulation);
 		double calculateSingleTriangleInteriorAngle(Geometry::Triangle& triangle, Geometry::Triangulation triangulation);
+		std::vector<double> calcuateSingleTriangleNormal(std::vector<double> v1, std::vector<double> v2, std::vector<double> v3);
 		double minX(Geometry::Triangulation triangulation);
 		double minY(Geometry::Triangulation triangulation);
 		double minZ(Geometry::Triangulation triangulation);
@@ -33,8 +33,7 @@ namespace QualityAnalysis {
 		double objectLength(Geometry::Triangulation triangulation);
 		double objectBreadth(Geometry::Triangulation triangulation);
 		double objectHeight(Geometry::Triangulation triangulation);
-		double timeToLoad(Geometry::Triangulation triangulation);
 		Geometry::Triangulation drawGoodAndBadTriangles(Geometry::Triangulation triangulation);
-		std::vector<std::vector<std::vector<double>>> drawBoundingBox(Geometry::Triangulation triangulation, double xMin, double yMin, double xMax, double yMax);
+		std::vector<std::vector<std::vector<double>>> drawBoundingBox(Geometry::Triangulation triangulation);
 	};
 }

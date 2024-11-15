@@ -78,8 +78,8 @@ void OBJReader::read(const std::string& fileName, ModifiedTriangulation& triangu
                 int firstVertexId = splitList.value(0).toInt() - 1;
                 int secondVertexId = splitList.value(3).toInt() - 1;
                 int thirdVertexId = splitList.value(6).toInt() - 1;
-
-                triangulation.mTriangles.push_back(ModifiedTriangle(normals[normalId], vertices[firstVertexId], vertices[secondVertexId], vertices[thirdVertexId]));
+                double color[3] = { 0, 0, 0 };
+                triangulation.mTriangles.push_back(ModifiedTriangle(normals[normalId], vertices[firstVertexId], vertices[secondVertexId], vertices[thirdVertexId], color));
             }
         }
     }

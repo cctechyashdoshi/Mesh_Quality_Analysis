@@ -7,7 +7,7 @@ namespace Geometry {
     class Triangle
     {
         // Three points representing the vertices of the triangle
-    private:
+    public:
         Point normal;
         Point p1;
         Point p2;

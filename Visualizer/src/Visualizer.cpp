@@ -208,7 +208,8 @@ void Visualizer::createOrthgonilityTriangulation(ModifiedTriangulation& inTriang
 		Point p1 = triangle.P1();
 		Point p2 = triangle.P2();
 		Point p3 = triangle.P3();
-		ModifiedTriangle t(normal, p1, p2, p3);
+        double color[3] = { 0, 0, 0 };
+        ModifiedTriangle t(normal, p1, p2, p3, color);
 		orthogonalityTriangulation.mTriangles.push_back(t);
 
         progressBar->setValue(Vcount);
@@ -226,7 +227,8 @@ void Visualizer::createAspectRatioTriangulation(ModifiedTriangulation& inTriangu
 		Point p1 = triangle.P1();
 		Point p2 = triangle.P2();
 		Point p3 = triangle.P3();
-        ModifiedTriangle t(normal, p1, p2, p3);
+        double color[3] = { 0, 0, 0 };
+        ModifiedTriangle t(normal, p1, p2, p3, color);
 		aspectRatioTriangulation.mTriangles.push_back(t);
 
 		progressBar->setValue(Vcount);

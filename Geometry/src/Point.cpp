@@ -2,7 +2,7 @@
 
 using namespace Geometry;
 
-Geometry::Point::Point()
+Point::Point() : mX(0), mY(0), mZ(0)
 {
 }
 

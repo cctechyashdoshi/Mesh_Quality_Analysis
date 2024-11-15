@@ -67,7 +67,8 @@ void STLReader::read(const std::string& fileName, ModifiedTriangulation& triangu
                     Point p1 = Point(pointIndices[3], pointIndices[4], pointIndices[5]);
                     Point p2 = Point(pointIndices[6], pointIndices[7], pointIndices[8]);
                     Point p3 = Point(pointIndices[9], pointIndices[10], pointIndices[11]);
-                    ModifiedTriangle t(normal, p1, p2, p3);
+                    double color[3] = { 0, 0, 0 };
+                    ModifiedTriangle t(normal, p1, p2, p3, color);
                     triangulation.mTriangles.push_back(t);
                     pointIndices.clear();
                 }

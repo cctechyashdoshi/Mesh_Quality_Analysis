@@ -40,7 +40,7 @@ std::vector<Point> Triangle::Points() const
     points.push_back(p3);
     return points;
 }
-
+    
 Point Triangle::Normal() const
 {
     return normal;

@@ -144,7 +144,7 @@ double QualityAnalysis::QualityAnalysis::minX(ModifiedTriangulation triangulatio
 {
     double minX = std::numeric_limits<double>::infinity();
 
-    for (auto triangle : triangulation.mTriangles) {
+    for (ModifiedTriangle triangle : triangulation.mTriangles) {
         if (triangle.P1().X() < minX) {
             minX = triangulation.UniqueNumbers[triangle.P1().X()];
         }

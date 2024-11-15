@@ -96,8 +96,6 @@ void Visualizer::setupUi()
     setCentralWidget(centralWidget);
 }
 
-QualityAnalysis::QualityAnalysis qualityAnalysis;
-
 void Visualizer::onLoadFileClick()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), "", tr("files (*.stl *.obj)"));
@@ -111,6 +109,8 @@ void Visualizer::onLoadFileClick()
         OpenGlWidget::Data data = convertBoundingBoxTriangulatonToGraphcsObject(boundingBoxTriangulation);
         //qDebug() << "---------------------------------" << data.normals[0];
         openglWidgetInput->setData(data);
+
+        QualityAnalysis::QualityAnalysis qualityAnalysis;
 
         param1Value = triangulation.Triangles.size();  // Example: No. of Triangles
         param2Value = qualityAnalysis.surfaceArea(triangulation);  // Surface Area calculation method
@@ -143,6 +143,7 @@ Triangulation Visualizer::readFile(const QString& filePath)
     }
     
 	ModifiedTriangulation modifiedTriangulation;
+    QualityAnalysis::QualityAnalysis qualityAnalysis;
 
     modifiedTriangulation._minX = qualityAnalysis.minX(tri);
 	modifiedTriangulation._minY = qualityAnalysis.minY(tri);
@@ -151,34 +152,7 @@ Triangulation Visualizer::readFile(const QString& filePath)
 	modifiedTriangulation._maxY = qualityAnalysis.maxY(tri);
 	modifiedTriangulation._maxZ = qualityAnalysis.maxZ(tri);
 
-    std::vector<double> p1 = { modifiedTriangulation._minX, modifiedTriangulation._minY, modifiedTriangulation._minZ };
-    std::vector<double> p2 = { modifiedTriangulation._maxX, modifiedTriangulation._minY, modifiedTriangulation._minZ };
-    std::vector<double> p3 = { modifiedTriangulation._maxX, modifiedTriangulation._maxY, modifiedTriangulation._minZ };
-    std::vector<double> p4 = { modifiedTriangulation._minX, modifiedTriangulation._maxY, modifiedTriangulation._minZ };
-    std::vector<double> p5 = { modifiedTriangulation._minX, modifiedTriangulation._minY, modifiedTriangulation._maxZ };
-    std::vector<double> p6 = { modifiedTriangulation._maxX, modifiedTriangulation._minY, modifiedTriangulation._maxZ };
-    std::vector<double> p7 = { modifiedTriangulation._maxX, modifiedTriangulation._maxY, modifiedTriangulation._maxZ };
-    std::vector<double> p8 = { modifiedTriangulation._minX, modifiedTriangulation._maxY, modifiedTriangulation._maxZ };
-
-    boundingBoxTriangulation.push_back({ p1, p2, p3 });
-    boundingBoxTriangulation.push_back({ p1, p4, p3 });
-    boundingBoxTriangulation.push_back({ p1, p4, p8 });
-    boundingBoxTriangulation.push_back({ p1, p5, p8 });
-    boundingBoxTriangulation.push_back({ p1, p2, p6 });
-    boundingBoxTriangulation.push_back({ p1, p5, p6 });
-    boundingBoxTriangulation.push_back({ p2, p7, p6 });
-    boundingBoxTriangulation.push_back({ p2, p7, p3 });
-    boundingBoxTriangulation.push_back({ p5, p6, p7 });
-    boundingBoxTriangulation.push_back({ p5, p8, p7 });
-    boundingBoxTriangulation.push_back({ p3, p4, p8 });
-    boundingBoxTriangulation.push_back({ p3, p7, p8 });
-
-	qDebug() << "---------------------------------" << modifiedTriangulation._minX;
-	qDebug() << "---------------------------------" << modifiedTriangulation._minY;
-	qDebug() << "---------------------------------" << modifiedTriangulation._minZ;
-	qDebug() << "---------------------------------" << modifiedTriangulation._maxX;
-	qDebug() << "---------------------------------" << modifiedTriangulation._maxY;
-	qDebug() << "---------------------------------" << modifiedTriangulation._maxZ;
+    Visualizer::createBoundingBoxTriangulation(modifiedTriangulation._minX, modifiedTriangulation._minY, modifiedTriangulation._minZ, modifiedTriangulation._maxX, modifiedTriangulation._maxY, modifiedTriangulation._maxZ);
 
     return tri;
 }
@@ -197,7 +171,116 @@ void Visualizer::writeFile(const QString& filePath, const Triangulation& tri)
     }
 }
 
-int Vcount = 0;
+void Visualizer::createBoundingBoxTriangulation(double _minX, double _minY, double _minZ, double _maxX, double _maxY, double _maxZ)
+{
+    std::vector<double> p1 = { _minX, _minY, _minZ };
+    std::vector<double> p2 = { _maxX, _minY, _minZ };
+    std::vector<double> p3 = { _maxX, _maxY, _minZ };
+    std::vector<double> p4 = { _minX, _maxY, _minZ };
+    std::vector<double> p5 = { _minX, _minY, _maxZ };
+    std::vector<double> p6 = { _maxX, _minY, _maxZ };
+    std::vector<double> p7 = { _maxX, _maxY, _maxZ };
+    std::vector<double> p8 = { _minX, _maxY, _maxZ };
+
+    boundingBoxTriangulation.push_back({ p1, p2, p3 });
+    boundingBoxTriangulation.push_back({ p1, p4, p3 });
+    boundingBoxTriangulation.push_back({ p1, p4, p8 });
+    boundingBoxTriangulation.push_back({ p1, p5, p8 });
+    boundingBoxTriangulation.push_back({ p1, p2, p6 });
+    boundingBoxTriangulation.push_back({ p1, p5, p6 });
+    boundingBoxTriangulation.push_back({ p2, p7, p6 });
+    boundingBoxTriangulation.push_back({ p2, p7, p3 });
+    boundingBoxTriangulation.push_back({ p5, p6, p7 });
+    boundingBoxTriangulation.push_back({ p5, p8, p7 });
+    boundingBoxTriangulation.push_back({ p3, p4, p8 });
+    boundingBoxTriangulation.push_back({ p3, p7, p8 });
+}
+
+void Visualizer::createOrthgonilityTriangulation(ModifiedTriangulation& inTriangulation)
+{
+	for each (Triangle triangle in inTriangulation.Triangles)
+	{
+		Point normal = triangle.Normal();
+		Point p1 = triangle.P1();
+		Point p2 = triangle.P2();
+		Point p3 = triangle.P3();
+		Triangle t(normal, p1, p2, p3);
+		orthogonalityTriangulation.Triangles.push_back(t);
+
+        progressBar->setValue(Vcount);
+        progressBar->setRange(0, inTriangulation.Triangles.size() - 1);
+        Vcount++;
+	}
+}
+
+void Visualizer::createAspectRatioTriangulation(ModifiedTriangulation& inTriangulation)
+{
+	for each (Triangle triangle in inTriangulation.Triangles)
+	{
+		Point normal = triangle.Normal();
+		Point p1 = triangle.P1();
+		Point p2 = triangle.P2();
+		Point p3 = triangle.P3();
+		Triangle t(normal, p1, p2, p3);
+		aspectRatioTriangulation.Triangles.push_back(t);
+
+		progressBar->setValue(Vcount);
+		progressBar->setRange(0, inTriangulation.Triangles.size() - 1);
+		Vcount++;
+	}
+}
+
+OpenGlWidget::Data Visualizer::convertOrthogonalityTriangulationToGraphcsObject(ModifiedTriangulation orthogonalityTriangulation)
+{
+    OpenGlWidget::Data data;
+    for each (Triangle triangle in orthogonalityTriangulation.Triangles)
+    {
+        for each (Point point in triangle.Points())
+        {
+            data.vertices.push_back(orthogonalityTriangulation.UniqueNumbers[point.X()]);
+            data.vertices.push_back(orthogonalityTriangulation.UniqueNumbers[point.Y()]);
+            data.vertices.push_back(orthogonalityTriangulation.UniqueNumbers[point.Z()]);
+        }
+
+        Point normal = triangle.Normal();
+        for (size_t i = 0; i < 3; i++)
+        {
+            data.normals.push_back(orthogonalityTriangulation.UniqueNumbers[normal.X()]);
+            data.normals.push_back(orthogonalityTriangulation.UniqueNumbers[normal.Y()]);
+            data.normals.push_back(orthogonalityTriangulation.UniqueNumbers[normal.Z()]);
+        }
+        progressBar->setValue(Vcount);
+        progressBar->setRange(0, orthogonalityTriangulation.Triangles.size() - 1);
+        Vcount++;
+    }
+    return data;
+}
+
+OpenGlWidget::Data Visualizer::convertAspectRatioTriangulationToGraphcsObject(ModifiedTriangulation aspectRatioTriangulation)
+{
+    OpenGlWidget::Data data;
+    for each (Triangle triangle in aspectRatioTriangulation.Triangles)
+    {
+        for each (Point point in triangle.Points())
+        {
+            data.vertices.push_back(aspectRatioTriangulation.UniqueNumbers[point.X()]);
+            data.vertices.push_back(aspectRatioTriangulation.UniqueNumbers[point.Y()]);
+            data.vertices.push_back(aspectRatioTriangulation.UniqueNumbers[point.Z()]);
+        }
+
+        Point normal = triangle.Normal();
+        for (size_t i = 0; i < 3; i++)
+        {
+            data.normals.push_back(aspectRatioTriangulation.UniqueNumbers[normal.X()]);
+            data.normals.push_back(aspectRatioTriangulation.UniqueNumbers[normal.Y()]);
+            data.normals.push_back(aspectRatioTriangulation.UniqueNumbers[normal.Z()]);
+        }
+        progressBar->setValue(Vcount);
+        progressBar->setRange(0, aspectRatioTriangulation.Triangles.size() - 1);
+        Vcount++;
+    }
+    return data;
+}
 
 OpenGlWidget::Data Visualizer::convertBoundingBoxTriangulatonToGraphcsObject(std::vector<std::vector<std::vector<double>>> boundingBoxTriangulation)
 {

@@ -6,9 +6,9 @@
 #include <QProgressBar>
 #include <QWidget>
 #include <QCheckBox>
-
 #include "Triangulation.h"
 #include "OpenGlWidget.h"
+#include "ModifiedTriangulation.h"
 
 using namespace Geometry;
 
@@ -25,6 +25,11 @@ private slots:
 
 private:
     void setupUi();
+	void createBoundingBoxTriangulation(double _minX, double _minY, double _minZ, double _maxX, double _maxY, double _maxZ);
+	void createOrthgonilityTriangulation(ModifiedTriangulation& inTriangulation);
+    void createAspectRatioTriangulation(ModifiedTriangulation& inTriangulation);
+	OpenGlWidget::Data convertOrthogonalityTriangulationToGraphcsObject(ModifiedTriangulation orthogonalityTriangulation);
+	OpenGlWidget::Data convertAspectRatioTriangulationToGraphcsObject(ModifiedTriangulation aspectRatioTriangulation);
     OpenGlWidget::Data convertBoundingBoxTriangulatonToGraphcsObject(std::vector<std::vector<std::vector<double>>> boundingBoxTriangulation);
     OpenGlWidget::Data convertTrianglulationToGraphicsObject(const Triangulation& inTriangulation);
     Triangulation readFile(const QString& filePath);
@@ -33,6 +38,8 @@ private:
 private:
     Triangulation triangulation;
     std::vector<std::vector<std::vector<double>>> boundingBoxTriangulation;
+    ModifiedTriangulation orthogonalityTriangulation;
+	ModifiedTriangulation aspectRatioTriangulation;
 
     QPushButton* loadFile;
     QPushButton* translate;
@@ -73,4 +80,6 @@ private:
     // translation data
     QString inputFilePath;
     QString exportFileName;
+
+    int Vcount = 0;
 };

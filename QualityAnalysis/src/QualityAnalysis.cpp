@@ -289,26 +289,6 @@ size_t QualityAnalysis::QualityAnalysis::numberOfVertices(Geometry::Triangulatio
 	return verticesSet.size();
 }
 
-double QualityAnalysis::QualityAnalysis::aspectRatio(Geometry::Triangulation triangulation)
-{
-	double totalAspectRatio = 0;
-	for (auto triangle : triangulation.Triangles)
-	{
-		totalAspectRatio += QualityAnalysis::QualityAnalysis::calculateSingleTriangleAspectRatio(triangle, triangulation);
-	}
-	return totalAspectRatio / triangulation.Triangles.size();
-}
-
-double QualityAnalysis::QualityAnalysis::orthogonality(Geometry::Triangulation triangulation)
-{
-	double totalOrthogonality = 0;
-	for (auto triangle : triangulation.Triangles)
-	{
-		totalOrthogonality += QualityAnalysis::QualityAnalysis::calculateSingleTriangleInteriorAngle(triangle, triangulation);
-	}
-	return totalOrthogonality / triangulation.Triangles.size();
-}
-
 double QualityAnalysis::QualityAnalysis::objectLength(Geometry::Triangulation triangulation) 
 {
     return maxX(triangulation) - minX(triangulation);

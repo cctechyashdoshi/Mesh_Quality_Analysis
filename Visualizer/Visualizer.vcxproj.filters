@@ -43,22 +43,10 @@
     <ClCompile Include="src\STLReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Writer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\DataWriter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\OpenglWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\OBJReader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\OBJWriter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\STLWriter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ModifiedTriangle.cpp">
@@ -83,19 +71,7 @@
     <ClInclude Include="headers\STLReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="headers\Writer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="headers\DataWriter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="headers\OBJReader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="headers\OBJWriter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="headers\STLWriter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="headers\ModifiedTriangle.h">

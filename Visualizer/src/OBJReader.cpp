@@ -27,7 +27,7 @@ bool OBJReader::operator()(double a, double b) const
 {
     return fabs(a - b) > TOLERANCE ? a < b : false;
 }
-void OBJReader::read(const std::string& fileName, Triangulation& triangulation)
+void OBJReader::read(const std::string& fileName, ModifiedTriangulation& triangulation)
 {
     std::map<double, int, OBJReader> uniqueMap;
     double xyz[3];
@@ -85,7 +85,7 @@ void OBJReader::read(const std::string& fileName, Triangulation& triangulation)
     }
 }
 
-void OBJReader::helper(double xyz[3], std::vector<Point>& vertices, std::map<double, int, OBJReader>& uniqueMap, Triangulation& triangulation)
+void OBJReader::helper(double xyz[3], std::vector<Point>& vertices, std::map<double, int, OBJReader>& uniqueMap, ModifiedTriangulation& triangulation)
 {
     int pt[3];
     for (int i = 0; i < 3; i++)

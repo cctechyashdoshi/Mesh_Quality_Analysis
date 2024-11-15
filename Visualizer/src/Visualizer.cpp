@@ -4,9 +4,6 @@
 #include "Visualizer.h"
 #include "STLReader.h"
 #include "OBJReader.h"
-#include "OBJWriter.h"
-#include "STLWriter.h"
-#include "DataWriter.h"
 #include "QualityAnalysis.h"
 #include "ModifiedTriangulation.h"
 #include "ModifiedTriangle.h"
@@ -123,22 +120,20 @@ void Visualizer::onLoadFileClick()
         triangulation = readFile(inputFilePath);
         //OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(triangulation);
         //openglWidgetInput->setData(data);
-        //qDebug() << "---------------------------------" << data.normals[0];
-        OpenGlWidget::Data data = convertBoundingBoxTriangulatonToGraphcsObject(boundingBoxTriangulation);
-        //qDebug() << "---------------------------------" << data.normals[0];
+        OpenGlWidget::Data data = convertOrthogonalityTriangulationToGraphcsObject(triangulation);
+
         openglWidgetInput->setData(data);
 
         QualityAnalysis::QualityAnalysis qualityAnalysis;
 
-        param1Value = triangulation.Triangles.size();  // Example: No. of Triangles
+        param1Value = triangulation.Triangles.size();  // No. of Triangles
         param2Value = qualityAnalysis.surfaceArea(triangulation);  // Surface Area calculation method
         param3Value = qualityAnalysis.triangleDensity(triangulation);  // Triangle Density calculation method
         param4Value = qualityAnalysis.objectLength(triangulation);  // Object Length 
-        param5Value = qualityAnalysis.numberOfVertices(triangulation);  // Example: No. of Vertices
+        param5Value = qualityAnalysis.numberOfVertices(triangulation);  // No. of Vertices
         param6Value = qualityAnalysis.objectHeight(triangulation);  // Object Height 
         param7Value = qualityAnalysis.objectBreadth(triangulation);  // Object Breadth
 
-        // Update the textboxes with the new values
         param1textbox->setText(QString::number(param1Value));
         param2textbox->setText(QString::number(param2Value));
         param3textbox->setText(QString::number(param3Value));
@@ -149,9 +144,9 @@ void Visualizer::onLoadFileClick()
     }
 }
 
-Triangulation Visualizer::readFile(const QString& filePath)
+ModifiedTriangulation Visualizer::readFile(const QString& filePath)
 {
-    Triangulation tri;
+    ModifiedTriangulation tri;
 
     if (filePath.endsWith(".stl", Qt::CaseInsensitive))
     {
@@ -177,20 +172,6 @@ Triangulation Visualizer::readFile(const QString& filePath)
     Visualizer::createBoundingBoxTriangulation(modifiedTriangulation._minX, modifiedTriangulation._minY, modifiedTriangulation._minZ, modifiedTriangulation._maxX, modifiedTriangulation._maxY, modifiedTriangulation._maxZ);
 
     return tri;
-}
-
-void Visualizer::writeFile(const QString& filePath, const Triangulation& tri)
-{
-    if (filePath.endsWith(".stl", Qt::CaseInsensitive))
-    {
-        STLWriter writer;
-        writer.Write(filePath.toStdString(), tri, progressBar);
-    }
-    else if (filePath.endsWith(".obj", Qt::CaseInsensitive))
-    {
-        ObjWriter writer;
-        writer.Write(filePath.toStdString(), tri, progressBar);
-    }
 }
 
 void Visualizer::createBoundingBoxTriangulation(double _minX, double _minY, double _minZ, double _maxX, double _maxY, double _maxZ)
@@ -220,6 +201,7 @@ void Visualizer::createBoundingBoxTriangulation(double _minX, double _minY, doub
 
 void Visualizer::createOrthgonilityTriangulation(ModifiedTriangulation& inTriangulation)
 {
+    int Vcount = 0;
 	for each (Triangle triangle in inTriangulation.Triangles)
 	{
 		Point normal = triangle.Normal();
@@ -237,6 +219,7 @@ void Visualizer::createOrthgonilityTriangulation(ModifiedTriangulation& inTriang
 
 void Visualizer::createAspectRatioTriangulation(ModifiedTriangulation& inTriangulation)
 {
+    int Vcount = 0;
 	for each (Triangle triangle in inTriangulation.Triangles)
 	{
 		Point normal = triangle.Normal();
@@ -254,6 +237,7 @@ void Visualizer::createAspectRatioTriangulation(ModifiedTriangulation& inTriangu
 
 OpenGlWidget::Data Visualizer::convertOrthogonalityTriangulationToGraphcsObject(ModifiedTriangulation orthogonalityTriangulation)
 {
+    int Vcount = 0;
     OpenGlWidget::Data data;
     for each (Triangle triangle in orthogonalityTriangulation.Triangles)
     {
@@ -280,6 +264,7 @@ OpenGlWidget::Data Visualizer::convertOrthogonalityTriangulationToGraphcsObject(
 
 OpenGlWidget::Data Visualizer::convertAspectRatioTriangulationToGraphcsObject(ModifiedTriangulation aspectRatioTriangulation)
 {
+    int Vcount = 0;
     OpenGlWidget::Data data;
     for each (Triangle triangle in aspectRatioTriangulation.Triangles)
     {
@@ -324,8 +309,9 @@ OpenGlWidget::Data Visualizer::convertBoundingBoxTriangulatonToGraphcsObject(std
     return data;
 }
 
-OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Triangulation& inTriangulation)
+OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const ModifiedTriangulation& inTriangulation)
 {
+    int Vcount = 0;
     OpenGlWidget::Data data;
     for each (Triangle triangle in inTriangulation.Triangles)
     {

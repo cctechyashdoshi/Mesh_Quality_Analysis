@@ -8,10 +8,10 @@ namespace Geometry {
     {
         // Three points representing the vertices of the triangle
     private:
+        Point normal;
         Point p1;
         Point p2;
         Point p3;
-        Point normal;
 
     public:
         Triangle(Point normal, Point p1, Point p2, Point p3);

@@ -5,6 +5,7 @@
 #include<sstream>
 #include<vector>
 #include<map>
+#include "ModifiedTriangle.h"
 
 #define TOLERANCE 0.0000001
 
@@ -23,7 +24,7 @@ bool STLReader::operator()(double a, double b) const
     return fabs(a - b) > TOLERANCE ? a < b : false;
 }
 
-void STLReader::read(const std::string& fileName, Triangulation& triangulation)
+void STLReader::read(const std::string& fileName, ModifiedTriangulation& triangulation)
 {
     std::map<double, int, STLReader> uniqueValueMap;
     double xyz[3];
@@ -66,7 +67,7 @@ void STLReader::read(const std::string& fileName, Triangulation& triangulation)
                     Point p1 = Point(pointIndices[3], pointIndices[4], pointIndices[5]);
                     Point p2 = Point(pointIndices[6], pointIndices[7], pointIndices[8]);
                     Point p3 = Point(pointIndices[9], pointIndices[10], pointIndices[11]);
-                    Triangle t(normal, p1, p2, p3);
+                    ModifiedTriangle t(normal, p1, p2, p3);
                     triangulation.Triangles.push_back(t);
                     pointIndices.clear();
                 }

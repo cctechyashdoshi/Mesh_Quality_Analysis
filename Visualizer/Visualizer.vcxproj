@@ -92,14 +92,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\DataWriter.cpp" />
     <ClCompile Include="src\ModifiedTriangle.cpp" />
     <ClCompile Include="src\ModifyTriangulation.cpp" />
     <ClCompile Include="src\OBJReader.cpp" />
-    <ClCompile Include="src\OBJWriter.cpp" />
     <ClCompile Include="src\OpenglWidget.cpp" />
-    <ClCompile Include="src\STLWriter.cpp" />
-    <ClCompile Include="src\Writer.cpp" />
     <ClCompile Include="src\Reader.cpp" />
     <ClCompile Include="src\STLReader.cpp" />
     <ClCompile Include="src\Visualizer.cpp" />
@@ -110,14 +106,10 @@
     <QtMoc Include="headers\Visualizer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="headers\DataWriter.h" />
     <ClInclude Include="headers\ModifiedTriangle.h" />
     <ClInclude Include="headers\ModifiedTriangulation.h" />
     <ClInclude Include="headers\OBJReader.h" />
-    <ClInclude Include="headers\OBJWriter.h" />
-    <ClInclude Include="headers\STLWriter.h" />
     <QtMoc Include="headers\OpenglWidget.h" />
-    <ClInclude Include="headers\Writer.h" />
     <ClInclude Include="headers\Reader.h" />
     <ClInclude Include="headers\STLReader.h" />
   </ItemGroup>

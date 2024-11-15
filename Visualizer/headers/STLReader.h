@@ -1,6 +1,6 @@
 #pragma once
 #include <string> 
-#include "Triangulation.h"
+#include "ModifiedTriangulation.h"
 #include "Reader.h"
 
 using namespace Geometry;
@@ -13,7 +13,7 @@ public:
     ~STLReader();
 
     // Reads the STL file specified by fileName and stores the triangulation data
-    void read(const std::string& fileName, Triangulation& triangulation);
+    void read(const std::string& fileName, ModifiedTriangulation& triangulation);
 
     bool operator()(double a, double b) const;
 };

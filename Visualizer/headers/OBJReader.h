@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string> 
-#include "Triangulation.h"
+#include "ModifiedTriangulation.h"
 #include <vector>
 #include "Reader.h"
 
@@ -13,7 +13,7 @@ public:
 	OBJReader();
 	~OBJReader();
 
-	void read(const std::string& fileName, Triangulation& tri);
-	void helper(double xyz[3],std::vector<Point>&, std::map<double, int, OBJReader>&, Triangulation& triangulation);
+	void read(const std::string& fileName, ModifiedTriangulation& tri);
+	void helper(double xyz[3],std::vector<Point>&, std::map<double, int, OBJReader>&, ModifiedTriangulation& triangulation);
 	bool operator()(double a, double b) const;
 };

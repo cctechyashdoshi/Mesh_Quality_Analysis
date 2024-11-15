@@ -32,13 +32,13 @@ private:
 	OpenGlWidget::Data convertOrthogonalityTriangulationToGraphcsObject(ModifiedTriangulation orthogonalityTriangulation);
 	OpenGlWidget::Data convertAspectRatioTriangulationToGraphcsObject(ModifiedTriangulation aspectRatioTriangulation);
     OpenGlWidget::Data convertBoundingBoxTriangulatonToGraphcsObject(std::vector<std::vector<std::vector<double>>> boundingBoxTriangulation);
-    OpenGlWidget::Data convertTrianglulationToGraphicsObject(const Triangulation& inTriangulation);
-    Triangulation readFile(const QString& filePath);
-    void writeFile(const QString& filePath, const Triangulation& tri);
+    OpenGlWidget::Data convertTrianglulationToGraphicsObject(const ModifiedTriangulation& inTriangulation);
+    ModifiedTriangulation readFile(const QString& filePath);
+    void writeFile(const QString& filePath, const ModifiedTriangulation& tri);
 
 private:
-    Triangulation triangulation;
     std::vector<std::vector<std::vector<double>>> boundingBoxTriangulation;
+	ModifiedTriangulation triangulation;
     ModifiedTriangulation orthogonalityTriangulation;
 	ModifiedTriangulation aspectRatioTriangulation;
 
@@ -88,5 +88,4 @@ private:
     QString inputFilePath;
     QString exportFileName;
 
-    int Vcount = 0;
 };

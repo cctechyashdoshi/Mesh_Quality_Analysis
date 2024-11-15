@@ -126,7 +126,7 @@ void Visualizer::onLoadFileClick()
 
         QualityAnalysis::QualityAnalysis qualityAnalysis;
 
-        param1Value = triangulation.Triangles.size();  // No. of Triangles
+        param1Value = triangulation.mTriangles.size();  // No. of Triangles
         param2Value = qualityAnalysis.surfaceArea(triangulation);  // Surface Area calculation method
         param3Value = qualityAnalysis.triangleDensity(triangulation);  // Triangle Density calculation method
         param4Value = qualityAnalysis.objectLength(triangulation);  // Object Length 
@@ -202,17 +202,17 @@ void Visualizer::createBoundingBoxTriangulation(double _minX, double _minY, doub
 void Visualizer::createOrthgonilityTriangulation(ModifiedTriangulation& inTriangulation)
 {
     int Vcount = 0;
-	for each (Triangle triangle in inTriangulation.Triangles)
+	for each (ModifiedTriangle triangle in inTriangulation.mTriangles)
 	{
 		Point normal = triangle.Normal();
 		Point p1 = triangle.P1();
 		Point p2 = triangle.P2();
 		Point p3 = triangle.P3();
-		Triangle t(normal, p1, p2, p3);
-		orthogonalityTriangulation.Triangles.push_back(t);
+		ModifiedTriangle t(normal, p1, p2, p3);
+		orthogonalityTriangulation.mTriangles.push_back(t);
 
         progressBar->setValue(Vcount);
-        progressBar->setRange(0, inTriangulation.Triangles.size() - 1);
+        progressBar->setRange(0, inTriangulation.mTriangles.size() - 1);
         Vcount++;
 	}
 }
@@ -220,17 +220,17 @@ void Visualizer::createOrthgonilityTriangulation(ModifiedTriangulation& inTriang
 void Visualizer::createAspectRatioTriangulation(ModifiedTriangulation& inTriangulation)
 {
     int Vcount = 0;
-	for each (Triangle triangle in inTriangulation.Triangles)
+	for each (ModifiedTriangle triangle in inTriangulation.mTriangles)
 	{
 		Point normal = triangle.Normal();
 		Point p1 = triangle.P1();
 		Point p2 = triangle.P2();
 		Point p3 = triangle.P3();
-		Triangle t(normal, p1, p2, p3);
-		aspectRatioTriangulation.Triangles.push_back(t);
+        ModifiedTriangle t(normal, p1, p2, p3);
+		aspectRatioTriangulation.mTriangles.push_back(t);
 
 		progressBar->setValue(Vcount);
-		progressBar->setRange(0, inTriangulation.Triangles.size() - 1);
+		progressBar->setRange(0, inTriangulation.mTriangles.size() - 1);
 		Vcount++;
 	}
 }
@@ -239,7 +239,7 @@ OpenGlWidget::Data Visualizer::convertOrthogonalityTriangulationToGraphcsObject(
 {
     int Vcount = 0;
     OpenGlWidget::Data data;
-    for each (Triangle triangle in orthogonalityTriangulation.Triangles)
+    for each (ModifiedTriangle triangle in orthogonalityTriangulation.mTriangles)
     {
         for each (Point point in triangle.Points())
         {
@@ -256,7 +256,7 @@ OpenGlWidget::Data Visualizer::convertOrthogonalityTriangulationToGraphcsObject(
             data.normals.push_back(orthogonalityTriangulation.UniqueNumbers[normal.Z()]);
         }
         progressBar->setValue(Vcount);
-        progressBar->setRange(0, orthogonalityTriangulation.Triangles.size() - 1);
+        progressBar->setRange(0, orthogonalityTriangulation.mTriangles.size() - 1);
         Vcount++;
     }
     return data;
@@ -266,7 +266,7 @@ OpenGlWidget::Data Visualizer::convertAspectRatioTriangulationToGraphcsObject(Mo
 {
     int Vcount = 0;
     OpenGlWidget::Data data;
-    for each (Triangle triangle in aspectRatioTriangulation.Triangles)
+    for each (Triangle triangle in aspectRatioTriangulation.mTriangles)
     {
         for each (Point point in triangle.Points())
         {
@@ -283,7 +283,7 @@ OpenGlWidget::Data Visualizer::convertAspectRatioTriangulationToGraphcsObject(Mo
             data.normals.push_back(aspectRatioTriangulation.UniqueNumbers[normal.Z()]);
         }
         progressBar->setValue(Vcount);
-        progressBar->setRange(0, aspectRatioTriangulation.Triangles.size() - 1);
+        progressBar->setRange(0, aspectRatioTriangulation.mTriangles.size() - 1);
         Vcount++;
     }
     return data;
@@ -313,7 +313,7 @@ OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Modif
 {
     int Vcount = 0;
     OpenGlWidget::Data data;
-    for each (Triangle triangle in inTriangulation.Triangles)
+    for each (ModifiedTriangle triangle in inTriangulation.mTriangles)
     {
         for each (Point point in triangle.Points())
         {
@@ -330,7 +330,7 @@ OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Modif
             data.normals.push_back(inTriangulation.UniqueNumbers[normal.Z()]);
         }
         progressBar->setValue(Vcount);
-        progressBar->setRange(0, inTriangulation.Triangles.size() - 1);
+        progressBar->setRange(0, inTriangulation.mTriangles.size() - 1);
         Vcount++;
     }
     return data;

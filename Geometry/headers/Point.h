@@ -10,6 +10,7 @@ namespace Geometry
 		int mZ;
 
 	public:
+		Point();
 		Point(int x, int y, int z);
 		~Point();
 

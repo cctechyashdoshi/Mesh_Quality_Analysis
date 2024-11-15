@@ -141,9 +141,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\ModifiedTriangle.cpp" />
+    <ClCompile Include="src\ModifiedTriangulation.cpp" />
     <ClCompile Include="src\QualityAnalysis.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="headers\ModifiedTriangle.h" />
+    <ClInclude Include="headers\ModifiedTriangulation.h" />
     <ClInclude Include="headers\QualityAnalysis.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -14,6 +14,7 @@ namespace Geometry {
         Point p3;
 
     public:
+		Triangle();
         Triangle(Point normal, Point p1, Point p2, Point p3);
         ~Triangle();
 

@@ -2,6 +2,10 @@
 
 using namespace Geometry;
 
+Geometry::Point::Point()
+{
+}
+
 Point::Point(int x, int y, int z)
 	: mX(x), mY(y), mZ(z)
 {

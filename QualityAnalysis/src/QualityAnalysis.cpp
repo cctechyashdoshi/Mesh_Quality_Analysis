@@ -19,7 +19,7 @@ QualityAnalysis::QualityAnalysis::~QualityAnalysis()
 {
 }
 
-std::vector<double> QualityAnalysis::QualityAnalysis::convertPointToVector(Geometry::Point point, Geometry::Triangulation triangulation)
+std::vector<double> QualityAnalysis::QualityAnalysis::convertPointToVector(Geometry::Point point, ModifiedTriangulation triangulation)
 {
     double v1 = triangulation.UniqueNumbers[point.X()];
     double v2 = triangulation.UniqueNumbers[point.Y()];
@@ -56,7 +56,7 @@ double QualityAnalysis::QualityAnalysis::calculateAngleBetweenVectors(std::vecto
     return std::acos(cosTheta) * (180.0 / PI);
 }
 
-double QualityAnalysis::QualityAnalysis::calculateSingleTriangleArea(Geometry::Triangle& triangle, Geometry::Triangulation triangulation)
+double QualityAnalysis::QualityAnalysis::calculateSingleTriangleArea(ModifiedTriangle& triangle, ModifiedTriangulation triangulation)
 {
     Geometry::Point vertex1 = triangle.P1();
     Geometry::Point vertex2 = triangle.P2();
@@ -76,7 +76,7 @@ double QualityAnalysis::QualityAnalysis::calculateSingleTriangleArea(Geometry::T
     return area;
 }
 
-double QualityAnalysis::QualityAnalysis::calculateSingleTriangleAspectRatio(Geometry::Triangle& triangle, Geometry::Triangulation triangulation)
+double QualityAnalysis::QualityAnalysis::calculateSingleTriangleAspectRatio(ModifiedTriangle& triangle, ModifiedTriangulation triangulation)
 {
     Geometry::Point vertex1 = triangle.P1();
     Geometry::Point vertex2 = triangle.P2();
@@ -97,7 +97,7 @@ double QualityAnalysis::QualityAnalysis::calculateSingleTriangleAspectRatio(Geom
     return aspectRatio;
 }
 
-double QualityAnalysis::QualityAnalysis::calculateSingleTriangleInteriorAngle(Geometry::Triangle& triangle, Geometry::Triangulation triangulation) 
+double QualityAnalysis::QualityAnalysis::calculateSingleTriangleInteriorAngle(ModifiedTriangle& triangle, ModifiedTriangulation triangulation)
 {
     Geometry::Point vertex1 = triangle.P1();
     Geometry::Point vertex2 = triangle.P2();
@@ -120,7 +120,7 @@ double QualityAnalysis::QualityAnalysis::calculateSingleTriangleInteriorAngle(Ge
     return averageAngle;
 }
 
-std::vector<double> QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNormal( std::vector<double> v1, std::vector<double> v2, std::vector<double> v3)
+std::vector<double> QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNormal(std::vector<double> v1, std::vector<double> v2, std::vector<double> v3)
 {
     std::vector<double> edge1 = { v2[0] - v1[0], v2[1] - v1[1], v2[2] - v1[2] };
     std::vector<double> edge2 = { v3[0] - v1[0], v3[1] - v1[1], v3[2] - v1[2] };
@@ -140,29 +140,29 @@ std::vector<double> QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNorm
     return normal;
 }
 
-double QualityAnalysis::QualityAnalysis::minX(Geometry::Triangulation triangulation)
+double QualityAnalysis::QualityAnalysis::minX(ModifiedTriangulation triangulation)
 {
     double minX = std::numeric_limits<double>::infinity();
 
-    for (auto vertex : triangulation.Triangles) {
-        if (vertex.P1().X() < minX) {
-            minX = triangulation.UniqueNumbers[vertex.P1().X()];
+    for (auto triangle : triangulation.mTriangles) {
+        if (triangle.P1().X() < minX) {
+            minX = triangulation.UniqueNumbers[triangle.P1().X()];
         }
-		if (vertex.P2().X() < minX) {
-			minX = triangulation.UniqueNumbers[vertex.P2().X()];
-		}
-        if (vertex.P3().X() < minX) {
-            minX = triangulation.UniqueNumbers[vertex.P3().X()];
+        if (triangle.P2().X() < minX) {
+            minX = triangulation.UniqueNumbers[triangle.P2().X()];
+        }
+        if (triangle.P3().X() < minX) {
+            minX = triangulation.UniqueNumbers[triangle.P3().X()];
         }
     }
     return minX;
 }
 
-double QualityAnalysis::QualityAnalysis::minY(Geometry::Triangulation triangulation)
+double QualityAnalysis::QualityAnalysis::minY(ModifiedTriangulation triangulation)
 {
     double minY = std::numeric_limits<double>::infinity();
 
-    for (auto vertex : triangulation.Triangles) {
+    for (auto vertex : triangulation.mTriangles) {
         if (vertex.P1().Y() < minY) {
             minY = triangulation.UniqueNumbers[vertex.P1().Y()];
         }
@@ -176,11 +176,11 @@ double QualityAnalysis::QualityAnalysis::minY(Geometry::Triangulation triangulat
     return minY;
 }
 
-double QualityAnalysis::QualityAnalysis::minZ(Geometry::Triangulation triangulation)
+double QualityAnalysis::QualityAnalysis::minZ(ModifiedTriangulation triangulation)
 {
     double minZ = std::numeric_limits<double>::infinity();
 
-    for (auto vertex : triangulation.Triangles) {
+    for (auto vertex : triangulation.mTriangles) {
         if (vertex.P1().Z() < minZ) {
             minZ = triangulation.UniqueNumbers[vertex.P1().Z()];
         }
@@ -194,11 +194,11 @@ double QualityAnalysis::QualityAnalysis::minZ(Geometry::Triangulation triangulat
     return minZ;
 }
 
-double QualityAnalysis::QualityAnalysis::maxX(Geometry::Triangulation triangulation)
+double QualityAnalysis::QualityAnalysis::maxX(ModifiedTriangulation triangulation)
 {
     double maxX = -std::numeric_limits<double>::infinity();
 
-    for (auto vertex : triangulation.Triangles) {
+    for (auto vertex : triangulation.mTriangles) {
         if (vertex.P1().X() > maxX) {
             maxX = triangulation.UniqueNumbers[vertex.P1().X()];
         }
@@ -212,11 +212,11 @@ double QualityAnalysis::QualityAnalysis::maxX(Geometry::Triangulation triangulat
     return maxX;
 }
 
-double QualityAnalysis::QualityAnalysis::maxY(Geometry::Triangulation triangulation)
+double QualityAnalysis::QualityAnalysis::maxY(ModifiedTriangulation triangulation)
 {
     double maxY = -std::numeric_limits<double>::infinity();
 
-    for (auto vertex : triangulation.Triangles) {
+    for (auto vertex : triangulation.mTriangles) {
         if (vertex.P1().Y() > maxY) {
             maxY = triangulation.UniqueNumbers[vertex.P1().Y()];
         }
@@ -230,11 +230,11 @@ double QualityAnalysis::QualityAnalysis::maxY(Geometry::Triangulation triangulat
     return maxY;
 }
 
-double QualityAnalysis::QualityAnalysis::maxZ(Geometry::Triangulation triangulation)
+double QualityAnalysis::QualityAnalysis::maxZ(ModifiedTriangulation triangulation)
 {
     double maxZ = -std::numeric_limits<double>::infinity();
 
-    for (auto vertex : triangulation.Triangles) {
+    for (auto vertex : triangulation.mTriangles) {
         if (vertex.P1().Z() > maxZ) {
             maxZ = triangulation.UniqueNumbers[vertex.P1().Z()];
         }
@@ -248,17 +248,17 @@ double QualityAnalysis::QualityAnalysis::maxZ(Geometry::Triangulation triangulat
     return maxZ;
 }
 
-double QualityAnalysis::QualityAnalysis::surfaceArea(Geometry::Triangulation triangulation)
+double QualityAnalysis::QualityAnalysis::surfaceArea(ModifiedTriangulation triangulation)
 {
-	double totalSurfaceArea = 0;
-	for (auto triangle : triangulation.Triangles)
-	{
+    double totalSurfaceArea = 0;
+    for (ModifiedTriangle triangle : triangulation.mTriangles)
+    {
         totalSurfaceArea += QualityAnalysis::QualityAnalysis::calculateSingleTriangleArea(triangle, triangulation);
-	}
-	return totalSurfaceArea;
+    }
+    return totalSurfaceArea;
 }
 
-double QualityAnalysis::QualityAnalysis::triangleDensity(Geometry::Triangulation triangulation)
+double QualityAnalysis::QualityAnalysis::triangleDensity(ModifiedTriangulation triangulation)
 {
     double meshDensity = 0.0;
 
@@ -266,40 +266,40 @@ double QualityAnalysis::QualityAnalysis::triangleDensity(Geometry::Triangulation
 
     if (_surfaceArea != 0.0)
     {
-        meshDensity = triangulation.Triangles.size() / _surfaceArea;
+        meshDensity = triangulation.mTriangles.size() / _surfaceArea;
     }
     return meshDensity;
 }
 
-size_t QualityAnalysis::QualityAnalysis::numberOfTriangles(Geometry::Triangulation triangulation)
+size_t QualityAnalysis::QualityAnalysis::numberOfTriangles(ModifiedTriangulation triangulation)
 {
-	return triangulation.Triangles.size();
+    return triangulation.mTriangles.size();
 }
 
-size_t QualityAnalysis::QualityAnalysis::numberOfVertices(Geometry::Triangulation triangulation)
+size_t QualityAnalysis::QualityAnalysis::numberOfVertices(ModifiedTriangulation triangulation)
 {
-	std::vector<Geometry::Point> verticesList;
-	for (auto triangle : triangulation.Triangles)
-	{
-		verticesList.push_back(triangle.P1());
-		verticesList.push_back(triangle.P2());
-		verticesList.push_back(triangle.P3());
-	}
-	std::set<Geometry::Point> verticesSet(verticesList.begin(), verticesList.end());
-	return verticesSet.size();
+    std::vector<Geometry::Point> verticesList;
+    for (auto triangle : triangulation.mTriangles)
+    {
+        verticesList.push_back(triangle.P1());
+        verticesList.push_back(triangle.P2());
+        verticesList.push_back(triangle.P3());
+    }
+    std::set<Geometry::Point> verticesSet(verticesList.begin(), verticesList.end());
+    return verticesSet.size();
 }
 
-double QualityAnalysis::QualityAnalysis::objectLength(Geometry::Triangulation triangulation) 
+double QualityAnalysis::QualityAnalysis::objectLength(ModifiedTriangulation triangulation)
 {
     return maxX(triangulation) - minX(triangulation);
 }
 
-double QualityAnalysis::QualityAnalysis::objectBreadth(Geometry::Triangulation triangulation)
+double QualityAnalysis::QualityAnalysis::objectBreadth(ModifiedTriangulation triangulation)
 {
-	return maxY(triangulation) - minY(triangulation);
+    return maxY(triangulation) - minY(triangulation);
 }
 
-double QualityAnalysis::QualityAnalysis::objectHeight(Geometry::Triangulation triangulation)
+double QualityAnalysis::QualityAnalysis::objectHeight(ModifiedTriangulation triangulation)
 {
-	return maxZ(triangulation) - minZ(triangulation);
+    return maxZ(triangulation) - minZ(triangulation);
 }

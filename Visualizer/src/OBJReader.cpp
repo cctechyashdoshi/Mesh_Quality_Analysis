@@ -79,7 +79,7 @@ void OBJReader::read(const std::string& fileName, ModifiedTriangulation& triangu
                 int secondVertexId = splitList.value(3).toInt() - 1;
                 int thirdVertexId = splitList.value(6).toInt() - 1;
 
-                triangulation.Triangles.push_back(Triangle(normals[normalId], vertices[firstVertexId], vertices[secondVertexId], vertices[thirdVertexId]));
+                triangulation.mTriangles.push_back(ModifiedTriangle(normals[normalId], vertices[firstVertexId], vertices[secondVertexId], vertices[thirdVertexId]));
             }
         }
     }

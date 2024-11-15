@@ -92,8 +92,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\ModifiedTriangle.cpp" />
-    <ClCompile Include="src\ModifyTriangulation.cpp" />
     <ClCompile Include="src\OBJReader.cpp" />
     <ClCompile Include="src\OpenglWidget.cpp" />
     <ClCompile Include="src\Reader.cpp" />
@@ -106,8 +104,6 @@
     <QtMoc Include="headers\Visualizer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="headers\ModifiedTriangle.h" />
-    <ClInclude Include="headers\ModifiedTriangulation.h" />
     <ClInclude Include="headers\OBJReader.h" />
     <QtMoc Include="headers\OpenglWidget.h" />
     <ClInclude Include="headers\Reader.h" />

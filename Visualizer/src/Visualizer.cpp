@@ -30,16 +30,30 @@ void Visualizer::setupUi()
     firstCheckBox = new QCheckBox("Bounding Box", containerWidget);
     secondCheckBox = new QCheckBox("Aspect Ratio", containerWidget);
     thirdCheckBox = new QCheckBox("Orthogonality", containerWidget);
+
     param1textbox = new QTextEdit("", containerWidget);
     param2textbox = new QTextEdit("", containerWidget);
     param3textbox = new QTextEdit("", containerWidget);
     param4textbox = new QTextEdit("", containerWidget);
     param5textbox = new QTextEdit("", containerWidget);
+    param6textbox = new QTextEdit("", containerWidget);
+    param7textbox = new QTextEdit("", containerWidget);
+
+    param1textbox->setReadOnly(true);
+    param2textbox->setReadOnly(true);
+    param3textbox->setReadOnly(true);
+    param4textbox->setReadOnly(true);
+    param5textbox->setReadOnly(true);
+    param6textbox->setReadOnly(true);
+    param7textbox->setReadOnly(true);
+
     Parameter1 = createReadOnlyTextEdit("No. of Triangles", containerWidget);
-    Parameter2 = createReadOnlyTextEdit("Surface Area", containerWidget);
+    Parameter2 = createReadOnlyTextEdit("Surface Area (sq.unit)", containerWidget);
     Parameter3 = createReadOnlyTextEdit("Triangle Density", containerWidget);
-    Parameter4 = createReadOnlyTextEdit("ObjectLength", containerWidget);
+    Parameter4 = createReadOnlyTextEdit("Object Length (unit)", containerWidget);
     Parameter5 = createReadOnlyTextEdit("No. of Vertices", containerWidget);
+    Parameter6 = createReadOnlyTextEdit("Object Height (unit)", containerWidget);
+    Parameter7 = createReadOnlyTextEdit("Object Breadth (unit)", containerWidget);
 
     QString buttonStyle = "QPushButton {"
         "    background-color: #4CAF50;"
@@ -82,6 +96,10 @@ void Visualizer::setupUi()
     containerLayout->addWidget(param4textbox);
     containerLayout->addWidget(Parameter5);
     containerLayout->addWidget(param5textbox);
+    containerLayout->addWidget(Parameter6);
+    containerLayout->addWidget(param6textbox);
+    containerLayout->addWidget(Parameter7);
+    containerLayout->addWidget(param7textbox);
 
     QGridLayout* layout = new QGridLayout();
     QWidget* centralWidget = new QWidget(this);
@@ -115,8 +133,10 @@ void Visualizer::onLoadFileClick()
         param1Value = triangulation.Triangles.size();  // Example: No. of Triangles
         param2Value = qualityAnalysis.surfaceArea(triangulation);  // Surface Area calculation method
         param3Value = qualityAnalysis.triangleDensity(triangulation);  // Triangle Density calculation method
-        param4Value = qualityAnalysis.objectLength(triangulation);  // Volume calculation method
+        param4Value = qualityAnalysis.objectLength(triangulation);  // Object Length 
         param5Value = qualityAnalysis.numberOfVertices(triangulation);  // Example: No. of Vertices
+        param6Value = qualityAnalysis.objectHeight(triangulation);  // Object Height 
+        param7Value = qualityAnalysis.objectBreadth(triangulation);  // Object Breadth
 
         // Update the textboxes with the new values
         param1textbox->setText(QString::number(param1Value));
@@ -124,6 +144,8 @@ void Visualizer::onLoadFileClick()
         param3textbox->setText(QString::number(param3Value));
         param4textbox->setText(QString::number(param4Value));
         param5textbox->setText(QString::number(param5Value));
+        param6textbox->setText(QString::number(param6Value));
+        param7textbox->setText(QString::number(param7Value));
     }
 }
 
@@ -328,6 +350,22 @@ OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Trian
     return data;
 }
 
+void Visualizer::onBoundingBoxCheckboxToggled(bool checked)
+{
+    if (checked)
+    {
+        // Convert the bounding box triangulation to OpenGL data and display it
+        OpenGlWidget::Data boundingBoxData = convertBoundingBoxTriangulatonToGraphcsObject(boundingBoxTriangulation);
+        openglWidgetInput->setData(boundingBoxData);
+    }
+    else
+    {
+        // Clear bounding box data from OpenGL widget when unchecked
+        //openglWidgetInput->clearData(); // You may need to define clearData() to handle clearing
+    }
+    openglWidgetInput->update();  // Refresh the OpenGL window
+}
+
 QTextEdit* Visualizer::createReadOnlyTextEdit(const QString& text, QWidget* parent)
 {
     QTextEdit* textEdit = new QTextEdit(text, parent);
@@ -341,8 +379,14 @@ QTextEdit* Visualizer::createReadOnlyTextEdit(const QString& text, QWidget* pare
     cursor.mergeBlockFormat(format);
     textEdit->setTextCursor(cursor);
 
+    // Apply a light background color to both the widget and text area
+    QPalette palette = textEdit->palette();
+    palette.setColor(QPalette::Base, QColor("#f8f9fa"));  // Light grey background for the text area
+    palette.setColor(QPalette::Text, QColor("#333333"));  // Darker text color for readability
+    textEdit->setPalette(palette);
+
     // Apply a basic style
-    textEdit->setStyleSheet("QTextEdit { color: black; background-color: #f0f0f0; font-size: 14px; }");
+    textEdit->setStyleSheet("QTextEdit {size: 5px; color: #333333; background-color: #f0f0f0; font-size: 14px;}");
 
     return textEdit;
 }

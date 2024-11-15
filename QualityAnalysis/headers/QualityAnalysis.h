@@ -14,14 +14,14 @@ namespace QualityAnalysis {
 		double calculateAngleBetweenVectors(std::vector<double> v1, std::vector<double> v2);
 		double calculateSingleTriangleAspectRatio(Geometry::Triangle& triangle, Geometry::Triangulation triangulation);
 		double calculateSingleTriangleInteriorAngle(Geometry::Triangle& triangle, Geometry::Triangulation triangulation);
-		std::vector<double> calcuateSingleTriangleNormal(std::vector<double> v1, std::vector<double> v2, std::vector<double> v3);
+	public:
 		double minX(Geometry::Triangulation triangulation);
 		double minY(Geometry::Triangulation triangulation);
 		double minZ(Geometry::Triangulation triangulation);
 		double maxX(Geometry::Triangulation triangulation);
 		double maxY(Geometry::Triangulation triangulation);
 		double maxZ(Geometry::Triangulation triangulation);
-	public:
+		std::vector<double> calcuateSingleTriangleNormal(std::vector<double> v1, std::vector<double> v2, std::vector<double> v3);
 		QualityAnalysis();
 		~QualityAnalysis();
 		size_t numberOfTriangles(Geometry::Triangulation triangulation);
@@ -34,6 +34,5 @@ namespace QualityAnalysis {
 		double objectBreadth(Geometry::Triangulation triangulation);
 		double objectHeight(Geometry::Triangulation triangulation);
 		Geometry::Triangulation drawGoodAndBadTriangles(Geometry::Triangulation triangulation);
-		std::vector<std::vector<std::vector<double>>> drawBoundingBox(Geometry::Triangulation triangulation);
 	};
 }

@@ -6,6 +6,8 @@
 #include <set>
 #include "Point.h"
 #include "Triangle.h"
+#include <iostream>
+#include <limits>
 
 #define PI 3.14159265358979323846
 
@@ -118,33 +120,39 @@ double QualityAnalysis::QualityAnalysis::calculateSingleTriangleInteriorAngle(Ge
     return averageAngle;
 }
 
-std::vector<double> QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNormal(std::vector<double> v1, std::vector<double> v2, std::vector<double> v3)
+std::vector<double> QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNormal( std::vector<double> v1, std::vector<double> v2, std::vector<double> v3)
 {
     std::vector<double> edge1 = { v2[0] - v1[0], v2[1] - v1[1], v2[2] - v1[2] };
     std::vector<double> edge2 = { v3[0] - v1[0], v3[1] - v1[1], v3[2] - v1[2] };
 
-    std::vector<double> normal = { edge1[1] * edge2[2] - edge1[2] * edge2[1], edge1[2] * edge2[0] - edge1[0] * edge2[2], edge1[0] * edge2[1] - edge1[1] * edge2[0] };
+    std::vector<double> normal = { edge1[1] * edge2[2] - edge1[2] * edge2[1],
+                                   edge1[2] * edge2[0] - edge1[0] * edge2[2],
+                                   edge1[0] * edge2[1] - edge1[1] * edge2[0] };
 
     double length = std::sqrt(normal[0] * normal[0] + normal[1] * normal[1] + normal[2] * normal[2]);
-    normal[0] /= length;
-    normal[1] /= length;
-    normal[2] /= length;
+
+    if (length > 0.0) {
+        normal[0] /= length;
+        normal[1] /= length;
+        normal[2] /= length;
+    }
 
     return normal;
 }
 
 double QualityAnalysis::QualityAnalysis::minX(Geometry::Triangulation triangulation)
 {
-    double minX = 1000000;
+    double minX = std::numeric_limits<double>::infinity();
+
     for (auto vertex : triangulation.Triangles) {
         if (vertex.P1().X() < minX) {
-            minX = vertex.P1().X();
+            minX = triangulation.UniqueNumbers[vertex.P1().X()];
         }
 		if (vertex.P2().X() < minX) {
-			minX = vertex.P2().X();
+			minX = triangulation.UniqueNumbers[vertex.P2().X()];
 		}
         if (vertex.P3().X() < minX) {
-            minX = vertex.P3().X();
+            minX = triangulation.UniqueNumbers[vertex.P3().X()];
         }
     }
     return minX;
@@ -152,16 +160,17 @@ double QualityAnalysis::QualityAnalysis::minX(Geometry::Triangulation triangulat
 
 double QualityAnalysis::QualityAnalysis::minY(Geometry::Triangulation triangulation)
 {
-    double minY = 1000000;
+    double minY = std::numeric_limits<double>::infinity();
+
     for (auto vertex : triangulation.Triangles) {
         if (vertex.P1().Y() < minY) {
-            minY = vertex.P1().Y();
+            minY = triangulation.UniqueNumbers[vertex.P1().Y()];
         }
         if (vertex.P2().Y() < minY) {
-            minY = vertex.P2().Y();
+            minY = triangulation.UniqueNumbers[vertex.P2().Y()];
         }
         if (vertex.P3().Y() < minY) {
-            minY = vertex.P3().Y();
+            minY = triangulation.UniqueNumbers[vertex.P3().Y()];
         }
     }
     return minY;
@@ -169,16 +178,17 @@ double QualityAnalysis::QualityAnalysis::minY(Geometry::Triangulation triangulat
 
 double QualityAnalysis::QualityAnalysis::minZ(Geometry::Triangulation triangulation)
 {
-    double minZ = 1000000;
+    double minZ = std::numeric_limits<double>::infinity();
+
     for (auto vertex : triangulation.Triangles) {
         if (vertex.P1().Z() < minZ) {
-            minZ = vertex.P1().Z();
+            minZ = triangulation.UniqueNumbers[vertex.P1().Z()];
         }
         if (vertex.P2().Z() < minZ) {
-            minZ = vertex.P2().Z();
+            minZ = triangulation.UniqueNumbers[vertex.P2().Z()];
         }
         if (vertex.P3().Z() < minZ) {
-            minZ = vertex.P3().Z();
+            minZ = triangulation.UniqueNumbers[vertex.P3().Z()];
         }
     }
     return minZ;
@@ -186,16 +196,17 @@ double QualityAnalysis::QualityAnalysis::minZ(Geometry::Triangulation triangulat
 
 double QualityAnalysis::QualityAnalysis::maxX(Geometry::Triangulation triangulation)
 {
-    double maxX = -1000000;
+    double maxX = -std::numeric_limits<double>::infinity();
+
     for (auto vertex : triangulation.Triangles) {
         if (vertex.P1().X() > maxX) {
-            maxX = vertex.P1().X();
+            maxX = triangulation.UniqueNumbers[vertex.P1().X()];
         }
         if (vertex.P2().X() > maxX) {
-            maxX = vertex.P2().X();
+            maxX = triangulation.UniqueNumbers[vertex.P1().X()];
         }
         if (vertex.P3().X() > maxX) {
-            maxX = vertex.P3().X();
+            maxX = triangulation.UniqueNumbers[vertex.P1().X()];
         }
     }
     return maxX;
@@ -203,16 +214,17 @@ double QualityAnalysis::QualityAnalysis::maxX(Geometry::Triangulation triangulat
 
 double QualityAnalysis::QualityAnalysis::maxY(Geometry::Triangulation triangulation)
 {
-    double maxY = -1000000;
+    double maxY = -std::numeric_limits<double>::infinity();
+
     for (auto vertex : triangulation.Triangles) {
         if (vertex.P1().Y() > maxY) {
-            maxY = vertex.P1().Y();
+            maxY = triangulation.UniqueNumbers[vertex.P1().Y()];
         }
         if (vertex.P2().Y() > maxY) {
-            maxY = vertex.P2().Y();
+            maxY = triangulation.UniqueNumbers[vertex.P1().Y()];
         }
         if (vertex.P3().Y() > maxY) {
-            maxY = vertex.P3().Y();
+            maxY = triangulation.UniqueNumbers[vertex.P1().Y()];
         }
     }
     return maxY;
@@ -220,16 +232,17 @@ double QualityAnalysis::QualityAnalysis::maxY(Geometry::Triangulation triangulat
 
 double QualityAnalysis::QualityAnalysis::maxZ(Geometry::Triangulation triangulation)
 {
-    double maxZ = -1000000;
+    double maxZ = -std::numeric_limits<double>::infinity();
+
     for (auto vertex : triangulation.Triangles) {
         if (vertex.P1().Z() > maxZ) {
-            maxZ = vertex.P1().Z();
+            maxZ = triangulation.UniqueNumbers[vertex.P1().Z()];
         }
         if (vertex.P2().Z() > maxZ) {
-            maxZ = vertex.P2().Z();
+            maxZ = triangulation.UniqueNumbers[vertex.P1().Z()];
         }
         if (vertex.P3().Z() > maxZ) {
-            maxZ = vertex.P3().Z();
+            maxZ = triangulation.UniqueNumbers[vertex.P1().Z()];
         }
     }
     return maxZ;
@@ -309,53 +322,4 @@ double QualityAnalysis::QualityAnalysis::objectBreadth(Geometry::Triangulation t
 double QualityAnalysis::QualityAnalysis::objectHeight(Geometry::Triangulation triangulation)
 {
 	return maxZ(triangulation) - minZ(triangulation);
-}
-
-std::vector<std::vector<std::vector<double>>> QualityAnalysis::QualityAnalysis::drawBoundingBox(Geometry::Triangulation triangulation)
-{
-    std::vector<std::vector<std::vector<double>>> boundingBox;
-
-    double _xMin = QualityAnalysis::QualityAnalysis::minX(triangulation);
-    double _yMin = QualityAnalysis::QualityAnalysis::minY(triangulation);
-    double _zMin = QualityAnalysis::QualityAnalysis::minZ(triangulation);
-    double _xMax = QualityAnalysis::QualityAnalysis::maxX(triangulation);
-    double _yMax = QualityAnalysis::QualityAnalysis::maxY(triangulation);
-    double _zMax = QualityAnalysis::QualityAnalysis::maxZ(triangulation);
-
-    std::vector<double> p1 = { _xMin, _yMin, _zMin };
-    std::vector<double> p2 = { _xMax, _yMin, _zMin };
-    std::vector<double> p3 = { _xMax, _yMax, _zMin };
-    std::vector<double> p4 = { _xMin, _yMax, _zMin };
-    std::vector<double> p5 = { _xMin, _yMin, _zMax };
-    std::vector<double> p6 = { _xMax, _yMin, _zMax };
-    std::vector<double> p7 = { _xMax, _yMax, _zMax };
-    std::vector<double> p8 = { _xMin, _yMax, _zMax };
-
-    std::vector<double> n1 = QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNormal(p1, p2, p3);
-    std::vector<double> n2 = QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNormal(p1, p4, p3);
-    std::vector<double> n3 = QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNormal(p1, p4, p8);
-    std::vector<double> n4 = QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNormal(p1, p5, p8);
-	std::vector<double> n5 = QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNormal(p1, p2, p6);
-	std::vector<double> n6 = QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNormal(p1, p5, p6);
-	std::vector<double> n7 = QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNormal(p2, p7, p6);
-	std::vector<double> n8 = QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNormal(p2, p7, p3);
-	std::vector<double> n9 = QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNormal(p5, p6, p7);
-	std::vector<double> n10 = QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNormal(p5, p8, p7);
-	std::vector<double> n11 = QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNormal(p3, p4, p8);
-	std::vector<double> n12 = QualityAnalysis::QualityAnalysis::calcuateSingleTriangleNormal(p3, p7, p8);
-
-    boundingBox.push_back({ p1, p2, p3, n1 });
-	boundingBox.push_back({ p1, p4, p3, n2 });
-	boundingBox.push_back({ p1, p4, p8, n3 });
-	boundingBox.push_back({ p1, p5, p8, n4 });
-	boundingBox.push_back({ p1, p2, p6, n5 });
-	boundingBox.push_back({ p1, p5, p6, n6 });
-	boundingBox.push_back({ p2, p7, p6, n7 });
-	boundingBox.push_back({ p2, p7, p3, n8 });
-	boundingBox.push_back({ p5, p6, p7, n9 });
-	boundingBox.push_back({ p5, p8, p7, n10 });
-	boundingBox.push_back({ p3, p4, p8, n11 });
-	boundingBox.push_back({ p3, p7, p8, n12 });
-
-    return boundingBox;
 }

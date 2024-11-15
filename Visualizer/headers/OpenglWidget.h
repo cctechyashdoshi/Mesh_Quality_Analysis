@@ -9,7 +9,6 @@
 #include <QMouseEvent>
 #include <vector>
 
-
 class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     Q_OBJECT
 

@@ -95,7 +95,6 @@ void OpenGlWidget::paintGL()
 {
     if (isInitialized == true)
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         updateModelViewMatrix();
 
         shaderProgram.bind();
@@ -107,7 +106,7 @@ void OpenGlWidget::paintGL()
         shaderProgram.setUniformValue("viewPos", QVector3D(0.0f, 0.0f, 5.0f));
 
         vbo.bind();
-        glDrawArrays(GL_TRIANGLES, 0, data.vertices.size());
+        glDrawArrays(GL_LINES, 0, data.vertices.size());
         vbo.release();
 
         shaderProgram.release();

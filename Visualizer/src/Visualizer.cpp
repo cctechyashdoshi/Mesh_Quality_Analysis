@@ -12,6 +12,9 @@ Visualizer::Visualizer(QWidget* parent) : QMainWindow(parent)
 {
     setupUi();
     connect(loadFile, &QPushButton::clicked, this, &Visualizer::onLoadFileClick);
+    connect(firstCheckBox, &QCheckBox::toggled, this, &Visualizer::onBoundingBoxCheckboxToggled);
+    connect(secondCheckBox, &QCheckBox::toggled, this, &Visualizer::onAspectRatioCheckboxToggled);
+    connect(thirdCheckBox, &QCheckBox::toggled, this, &Visualizer::onOrthogonalityCheckboxToggled);
 }
 
 Visualizer::~Visualizer()
@@ -118,10 +121,7 @@ void Visualizer::onLoadFileClick()
     {
         inputFilePath = fileName;
         triangulation = readFile(inputFilePath);
-        //OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(triangulation);
-        //openglWidgetInput->setData(data);
-        OpenGlWidget::Data data = convertOrthogonalityTriangulationToGraphcsObject(triangulation);
-
+        OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(triangulation);
         openglWidgetInput->setData(data);
 
         QualityAnalysis::QualityAnalysis qualityAnalysis;
@@ -340,18 +340,29 @@ OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Modif
 
 void Visualizer::onBoundingBoxCheckboxToggled(bool checked)
 {
-    if (checked)
-    {
-        // Convert the bounding box triangulation to OpenGL data and display it
+    if (checked) {
+        createBoundingBoxTriangulation(-5, -5, -5, 5, 5, 5);  // Adjust values as necessary
         OpenGlWidget::Data boundingBoxData = convertBoundingBoxTriangulatonToGraphcsObject(boundingBoxTriangulation);
         openglWidgetInput->setData(boundingBoxData);
     }
-    else
-    {
-        // Clear bounding box data from OpenGL widget when unchecked
-        //openglWidgetInput->clearData(); // You may need to define clearData() to handle clearing
+}
+
+void Visualizer::onAspectRatioCheckboxToggled(bool checked)
+{
+    if (checked) {
+        createAspectRatioTriangulation(triangulation);
+        OpenGlWidget::Data aspectRatioData = convertAspectRatioTriangulationToGraphcsObject(aspectRatioTriangulation);
+        openglWidgetInput->setData(aspectRatioData);
     }
-    openglWidgetInput->update();  // Refresh the OpenGL window
+}
+
+void Visualizer::onOrthogonalityCheckboxToggled(bool checked)
+{
+    if (checked) {
+        createOrthgonilityTriangulation(triangulation);
+        OpenGlWidget::Data orthogonalityData = convertOrthogonalityTriangulationToGraphcsObject(orthogonalityTriangulation);
+        openglWidgetInput->setData(orthogonalityData);
+    }
 }
 
 QTextEdit* Visualizer::createReadOnlyTextEdit(const QString& text, QWidget* parent)

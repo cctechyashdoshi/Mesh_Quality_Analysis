@@ -8,11 +8,11 @@ class ModifiedTriangulation : public Geometry::Triangulation
 public:
 	ModifiedTriangulation();
 	~ModifiedTriangulation();
-	double _minX;
-	double _maxX;
-	double _minY;
-	double _maxY;
-	double _minZ;
-	double _maxZ;
+	double _minX = 0;
+	double _maxX = 0;
+	double _minY = 0;
+	double _maxY = 0;
+	double _minZ = 0;
+	double _maxZ = 0;
 	std::vector<ModifiedTriangle> mTriangles;
 };

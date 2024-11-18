@@ -1,14 +1,11 @@
 #include "QualityAnalysis.h"
-#include "Triangulation.h"
 #include <cmath>
 #include <algorithm>
 #include <vector>
 #include <set>
-#include "Point.h"
-#include "Triangle.h"
 #include <iostream>
 #include <limits>
-
+#include "ModifiedTriangle.h"
 #define PI 3.14159265358979323846
 
 QualityAnalysis::QualityAnalysis::QualityAnalysis()
@@ -97,15 +94,11 @@ double QualityAnalysis::QualityAnalysis::calculateSingleTriangleAspectRatio(Modi
     return aspectRatio;
 }
 
-double QualityAnalysis::QualityAnalysis::calculateSingleTriangleInteriorAngle(ModifiedTriangle& triangle, ModifiedTriangulation triangulation)
+double QualityAnalysis::QualityAnalysis::calculateSingleTriangleInteriorAngle(Geometry::Point p1, Geometry::Point p2, Geometry::Point p3, ModifiedTriangulation triangulation)
 {
-    Geometry::Point vertex1 = triangle.P1();
-    Geometry::Point vertex2 = triangle.P2();
-    Geometry::Point vertex3 = triangle.P3();
-
-    std::vector<double> vertex1Double = convertPointToVector(vertex1, triangulation);
-    std::vector<double> vertex2Double = convertPointToVector(vertex2, triangulation);
-    std::vector<double> vertex3Double = convertPointToVector(vertex3, triangulation);
+    std::vector<double> vertex1Double = convertPointToVector(p1, triangulation);
+    std::vector<double> vertex2Double = convertPointToVector(p2, triangulation);
+    std::vector<double> vertex3Double = convertPointToVector(p3, triangulation);
 
     std::vector<double> AB{ vertex2Double[0] - vertex1Double[0], vertex2Double[1] - vertex1Double[1], vertex2Double[2] - vertex1Double[2] };
     std::vector<double> BC{ vertex3Double[0] - vertex2Double[0], vertex3Double[1] - vertex2Double[1], vertex3Double[2] - vertex2Double[2] };
@@ -302,4 +295,44 @@ double QualityAnalysis::QualityAnalysis::objectBreadth(ModifiedTriangulation tri
 double QualityAnalysis::QualityAnalysis::objectHeight(ModifiedTriangulation triangulation)
 {
     return maxZ(triangulation) - minZ(triangulation);
+}
+
+ModifiedTriangulation QualityAnalysis::QualityAnalysis::createOrthogonalityTriangulation(ModifiedTriangulation triangulation)
+{
+    ModifiedTriangulation orthogonalityTriangulation;
+	for (auto triangle : triangulation.mTriangles)
+	{
+        if (calculateSingleTriangleInteriorAngle(triangle.P1(), triangle.P2(), triangle.P3(), triangulation) >= 60)
+        {
+            double color[3] = { 0, 1, 0 };
+            orthogonalityTriangulation.mTriangles.push_back(ModifiedTriangle(triangle.Normal(), triangle.P1(), triangle.P2(), triangle.P3(), color));
+        }
+        else
+        {
+            double color[3] = { 1, 0, 0 };
+            orthogonalityTriangulation.mTriangles.push_back(ModifiedTriangle(triangle.Normal(), triangle.P1(), triangle.P2(), triangle.P3(), color));
+
+        }
+	}
+	return orthogonalityTriangulation;
+}
+
+ModifiedTriangulation QualityAnalysis::QualityAnalysis::createAspectRatioTriangulation(ModifiedTriangulation triangulation)
+{
+    ModifiedTriangulation aspectRatioTriangulation;
+    for (auto triangle : triangulation.mTriangles)
+    {
+        if (calculateSingleTriangleInteriorAngle(triangle.P1(), triangle.P2(), triangle.P3(), triangulation) >= 60)
+        {
+            double color[3] = { 0, 1, 0 };
+            aspectRatioTriangulation.mTriangles.push_back(ModifiedTriangle(triangle.Normal(), triangle.P1(), triangle.P2(), triangle.P3(), color));
+        }
+        else
+        {
+            double color[3] = { 1, 0, 0 };
+            aspectRatioTriangulation.mTriangles.push_back(ModifiedTriangle(triangle.Normal(), triangle.P1(), triangle.P2(), triangle.P3(), color));
+
+        }
+    }
+    return aspectRatioTriangulation;
 }

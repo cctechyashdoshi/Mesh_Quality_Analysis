@@ -6,7 +6,6 @@ namespace Geometry {
 
     class Triangle
     {
-        // Three points representing the vertices of the triangle
     public:
         Point normal;
         Point p1;
@@ -18,7 +17,6 @@ namespace Geometry {
         Triangle(Point normal, Point p1, Point p2, Point p3);
         ~Triangle();
 
-        // Getter functions to access the private members 
         Point P1() const;
         Point P2() const;
         Point P3() const;

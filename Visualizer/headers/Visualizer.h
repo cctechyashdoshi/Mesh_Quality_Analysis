@@ -6,7 +6,6 @@
 #include <QProgressBar>
 #include <QWidget>
 #include <QCheckBox>
-#include "Triangulation.h"
 #include "OpenGlWidget.h"
 #include "ModifiedTriangulation.h"
 
@@ -23,18 +22,19 @@ public:
 private slots:
     void onLoadFileClick();
     void onBoundingBoxCheckboxToggled(bool checked);
+    void onAspectRatioCheckboxToggled(bool checked);
+    void onOrthogonalityCheckboxToggled(bool checked);
 
 private:
     void setupUi();
-	void createBoundingBoxTriangulation(double _minX, double _minY, double _minZ, double _maxX, double _maxY, double _maxZ);
-	void createOrthgonilityTriangulation(ModifiedTriangulation& inTriangulation);
+    void createBoundingBoxTriangulation(double _minX, double _minY, double _minZ, double _maxX, double _maxY, double _maxZ);
+    void createOrthgonilityTriangulation(ModifiedTriangulation& inTriangulation);
     void createAspectRatioTriangulation(ModifiedTriangulation& inTriangulation);
-	OpenGlWidget::Data convertOrthogonalityTriangulationToGraphcsObject(ModifiedTriangulation orthogonalityTriangulation);
-	OpenGlWidget::Data convertAspectRatioTriangulationToGraphcsObject(ModifiedTriangulation aspectRatioTriangulation);
+    OpenGlWidget::Data convertOrthogonalityTriangulationToGraphcsObject(ModifiedTriangulation orthogonalityTriangulation);
+    OpenGlWidget::Data convertAspectRatioTriangulationToGraphcsObject(ModifiedTriangulation aspectRatioTriangulation);
     OpenGlWidget::Data convertBoundingBoxTriangulatonToGraphcsObject(std::vector<std::vector<std::vector<double>>> boundingBoxTriangulation);
     OpenGlWidget::Data convertTrianglulationToGraphicsObject(const ModifiedTriangulation& inTriangulation);
     ModifiedTriangulation readFile(const QString& filePath);
-    void writeFile(const QString& filePath, const ModifiedTriangulation& tri);
 
 private:
     std::vector<std::vector<std::vector<double>>> boundingBoxTriangulation;

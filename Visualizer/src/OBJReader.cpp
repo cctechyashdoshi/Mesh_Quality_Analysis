@@ -2,15 +2,14 @@
 #include <QList>
 #include <fstream>
 #include <iostream>
-#include "OBJReader.h"
-#include "Triangulation.h"
-#include "Point.h"
-#include "Triangle.h"
 #include <vector>
 #include <sstream>
 #include <cassert>
 #include <string>
 #include <map>
+#include "OBJReader.h"
+#include "Point.h"
+#include "QualityAnalysis.h"
 
 #define TOLERANCE 0.0000001
 
@@ -78,8 +77,7 @@ void OBJReader::read(const std::string& fileName, ModifiedTriangulation& triangu
                 int firstVertexId = splitList.value(0).toInt() - 1;
                 int secondVertexId = splitList.value(3).toInt() - 1;
                 int thirdVertexId = splitList.value(6).toInt() - 1;
-                double color[3] = { 0, 0, 0 };
-                triangulation.mTriangles.push_back(ModifiedTriangle(normals[normalId], vertices[firstVertexId], vertices[secondVertexId], vertices[thirdVertexId], color));
+                triangulation.mTriangles.push_back(ModifiedTriangle(normals[normalId], vertices[firstVertexId], vertices[secondVertexId], vertices[thirdVertexId]));
             }
         }
     }

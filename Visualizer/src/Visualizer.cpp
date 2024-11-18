@@ -114,35 +114,29 @@ void Visualizer::setupUi()
     setCentralWidget(centralWidget);
 }
 
-void Visualizer::onFirstCheckBoxChanged(int state) 
-{
-    if (state == Qt::Checked) {
-        secondCheckBox->setChecked(false);
-        thirdCheckBox->setChecked(false);
-        fireFunction(1);
-    }
-}
-
-void Visualizer::onSecondCheckBoxChanged(int state) 
-{
-    if (state == Qt::Checked) {
-        firstCheckBox->setChecked(false);
-        thirdCheckBox->setChecked(false);
-        Visualizer::fireFunction(2);
-    }
-}
-
-void Visualizer::onThirdCheckBoxChanged(int state) 
-{
-    if (state == Qt::Checked) {
-        firstCheckBox->setChecked(false);
-        secondCheckBox->setChecked(false);
-        Visualizer::fireFunction(3);
-    }
-}
-
 void Visualizer::fireFunction(int option)
 {
+    if (option == 1) 
+    {
+		OpenGlWidget::Data data = Visualizer::convertBoundingBoxTriangulatonToGraphcsObject(boundingBoxTriangulation);
+        openglWidgetInput->setData(data);
+    }
+    else if (option == 2)
+    {
+		ModifiedTriangulation orthogonalityTriangulation;
+		QualityAnalysis::QualityAnalysis qualityAnalysis;
+        qualityAnalysis.createOrthogonalityTriangulation(triangulation);
+        OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(orthogonalityTriangulation);
+        openglWidgetInput->setData(data);
+    }
+	else if (option == 3)
+	{
+        ModifiedTriangulation orthogonalityTriangulation;
+        QualityAnalysis::QualityAnalysis qualityAnalysis;
+        qualityAnalysis.createOrthogonalityTriangulation(triangulation);
+        OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(orthogonalityTriangulation);
+        openglWidgetInput->setData(data);
+	}
 }
 
 void Visualizer::onLoadFileClick()
@@ -172,6 +166,16 @@ void Visualizer::onLoadFileClick()
         param5textbox->setText(QString::number(param5Value));
         param6textbox->setText(QString::number(param6Value));
         param7textbox->setText(QString::number(param7Value));
+        
+        ModifiedTriangulation mtriangulation;
+        mtriangulation._minX = qualityAnalysis.minX(triangulation);
+        mtriangulation._minY = qualityAnalysis.minY(triangulation);
+        mtriangulation._minZ = qualityAnalysis.minZ(triangulation);
+        mtriangulation._maxX = qualityAnalysis.maxX(triangulation);
+        mtriangulation._maxY = qualityAnalysis.maxY(triangulation);
+        mtriangulation._maxZ = qualityAnalysis.maxZ(triangulation);
+
+        Visualizer::createBoundingBoxTriangulation(mtriangulation._minX, mtriangulation._minY, mtriangulation._minZ, mtriangulation._maxX, mtriangulation._maxY, mtriangulation._maxZ);
     }
 }
 
@@ -268,60 +272,6 @@ void Visualizer::createAspectRatioTriangulation(ModifiedTriangulation& inTriangu
 	}
 }
 
-OpenGlWidget::Data Visualizer::convertOrthogonalityTriangulationToGraphcsObject(ModifiedTriangulation orthogonalityTriangulation)
-{
-    int Vcount = 0;
-    OpenGlWidget::Data data;
-    for each (ModifiedTriangle triangle in orthogonalityTriangulation.mTriangles)
-    {
-        for each (Point point in triangle.Points())
-        {
-            data.vertices.push_back(orthogonalityTriangulation.UniqueNumbers[point.X()]);
-            data.vertices.push_back(orthogonalityTriangulation.UniqueNumbers[point.Y()]);
-            data.vertices.push_back(orthogonalityTriangulation.UniqueNumbers[point.Z()]);
-        }
-
-        Point normal = triangle.Normal();
-        for (size_t i = 0; i < 3; i++)
-        {
-            data.normals.push_back(orthogonalityTriangulation.UniqueNumbers[normal.X()]);
-            data.normals.push_back(orthogonalityTriangulation.UniqueNumbers[normal.Y()]);
-            data.normals.push_back(orthogonalityTriangulation.UniqueNumbers[normal.Z()]);
-        }
-        progressBar->setValue(Vcount);
-        progressBar->setRange(0, orthogonalityTriangulation.mTriangles.size() - 1);
-        Vcount++;
-    }
-    return data;
-}
-
-OpenGlWidget::Data Visualizer::convertAspectRatioTriangulationToGraphcsObject(ModifiedTriangulation aspectRatioTriangulation)
-{
-    int Vcount = 0;
-    OpenGlWidget::Data data;
-    for each (Triangle triangle in aspectRatioTriangulation.mTriangles)
-    {
-        for each (Point point in triangle.Points())
-        {
-            data.vertices.push_back(aspectRatioTriangulation.UniqueNumbers[point.X()]);
-            data.vertices.push_back(aspectRatioTriangulation.UniqueNumbers[point.Y()]);
-            data.vertices.push_back(aspectRatioTriangulation.UniqueNumbers[point.Z()]);
-        }
-
-        Point normal = triangle.Normal();
-        for (size_t i = 0; i < 3; i++)
-        {
-            data.normals.push_back(aspectRatioTriangulation.UniqueNumbers[normal.X()]);
-            data.normals.push_back(aspectRatioTriangulation.UniqueNumbers[normal.Y()]);
-            data.normals.push_back(aspectRatioTriangulation.UniqueNumbers[normal.Z()]);
-        }
-        progressBar->setValue(Vcount);
-        progressBar->setRange(0, aspectRatioTriangulation.mTriangles.size() - 1);
-        Vcount++;
-    }
-    return data;
-}
-
 OpenGlWidget::Data Visualizer::convertBoundingBoxTriangulatonToGraphcsObject(std::vector<std::vector<std::vector<double>>> boundingBoxTriangulation)
 {
     OpenGlWidget::Data data;
@@ -330,7 +280,7 @@ OpenGlWidget::Data Visualizer::convertBoundingBoxTriangulatonToGraphcsObject(std
 
     for (const auto& triangle : boundingBoxTriangulation)
     {
-        for (size_t i = 0; i < 3; ++i)
+        for (int i = 0; i < 3; ++i)
         {
             data.vertices.push_back(triangle[i][0]);
             data.vertices.push_back(triangle[i][1]);
@@ -339,6 +289,12 @@ OpenGlWidget::Data Visualizer::convertBoundingBoxTriangulatonToGraphcsObject(std
         Vcount++;
         progressBar->setValue(Vcount);
     }
+    qDebug() << "Vertices:";
+    for (int i = 0; i < data.vertices.size(); i += 3)
+    {
+        qDebug() << data.vertices[i] << data.vertices[i + 1] << data.vertices[i + 2];
+    }
+
     return data;
 }
 
@@ -367,6 +323,33 @@ OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Modif
         Vcount++;
     }
     return data;
+}
+
+void Visualizer::onFirstCheckBoxChanged(int state)
+{
+    if (state == Qt::Checked) {
+        secondCheckBox->setChecked(false);
+        thirdCheckBox->setChecked(false);
+        fireFunction(1);
+    }
+}
+
+void Visualizer::onSecondCheckBoxChanged(int state)
+{
+    if (state == Qt::Checked) {
+        firstCheckBox->setChecked(false);
+        thirdCheckBox->setChecked(false);
+        Visualizer::fireFunction(2);
+    }
+}
+
+void Visualizer::onThirdCheckBoxChanged(int state)
+{
+    if (state == Qt::Checked) {
+        firstCheckBox->setChecked(false);
+        secondCheckBox->setChecked(false);
+        Visualizer::fireFunction(3);
+    }
 }
 
 QTextEdit* Visualizer::createReadOnlyTextEdit(const QString& text, QWidget* parent)

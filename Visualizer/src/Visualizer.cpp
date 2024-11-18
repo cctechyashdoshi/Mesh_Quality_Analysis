@@ -12,9 +12,9 @@ Visualizer::Visualizer(QWidget* parent) : QMainWindow(parent)
 {
     setupUi();
     connect(loadFile, &QPushButton::clicked, this, &Visualizer::onLoadFileClick);
-    connect(firstCheckBox, &QCheckBox::toggled, this, &Visualizer::onBoundingBoxCheckboxToggled);
-    connect(secondCheckBox, &QCheckBox::toggled, this, &Visualizer::onAspectRatioCheckboxToggled);
-    connect(thirdCheckBox, &QCheckBox::toggled, this, &Visualizer::onOrthogonalityCheckboxToggled);
+    connect(firstCheckBox, &QCheckBox::stateChanged, this, &Visualizer::onFirstCheckBoxChanged);
+    connect(secondCheckBox, &QCheckBox::stateChanged, this, &Visualizer::onSecondCheckBoxChanged);
+    connect(thirdCheckBox, &QCheckBox::stateChanged, this, &Visualizer::onThirdCheckBoxChanged);
 }
 
 Visualizer::~Visualizer()
@@ -112,6 +112,37 @@ void Visualizer::setupUi()
     layout->setContentsMargins(20, 20, 20, 20);
     centralWidget->setLayout(layout);
     setCentralWidget(centralWidget);
+}
+
+void Visualizer::onFirstCheckBoxChanged(int state) 
+{
+    if (state == Qt::Checked) {
+        secondCheckBox->setChecked(false);
+        thirdCheckBox->setChecked(false);
+        fireFunction(1);
+    }
+}
+
+void Visualizer::onSecondCheckBoxChanged(int state) 
+{
+    if (state == Qt::Checked) {
+        firstCheckBox->setChecked(false);
+        thirdCheckBox->setChecked(false);
+        Visualizer::fireFunction(2);
+    }
+}
+
+void Visualizer::onThirdCheckBoxChanged(int state) 
+{
+    if (state == Qt::Checked) {
+        firstCheckBox->setChecked(false);
+        secondCheckBox->setChecked(false);
+        Visualizer::fireFunction(3);
+    }
+}
+
+void Visualizer::fireFunction(int option)
+{
 }
 
 void Visualizer::onLoadFileClick()
@@ -336,33 +367,6 @@ OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Modif
         Vcount++;
     }
     return data;
-}
-
-void Visualizer::onBoundingBoxCheckboxToggled(bool checked)
-{
-    if (checked) {
-        createBoundingBoxTriangulation(-5, -5, -5, 5, 5, 5);  // Adjust values as necessary
-        OpenGlWidget::Data boundingBoxData = convertBoundingBoxTriangulatonToGraphcsObject(boundingBoxTriangulation);
-        openglWidgetInput->setData(boundingBoxData);
-    }
-}
-
-void Visualizer::onAspectRatioCheckboxToggled(bool checked)
-{
-    if (checked) {
-        createAspectRatioTriangulation(triangulation);
-        OpenGlWidget::Data aspectRatioData = convertAspectRatioTriangulationToGraphcsObject(aspectRatioTriangulation);
-        openglWidgetInput->setData(aspectRatioData);
-    }
-}
-
-void Visualizer::onOrthogonalityCheckboxToggled(bool checked)
-{
-    if (checked) {
-        createOrthgonilityTriangulation(triangulation);
-        OpenGlWidget::Data orthogonalityData = convertOrthogonalityTriangulationToGraphcsObject(orthogonalityTriangulation);
-        openglWidgetInput->setData(orthogonalityData);
-    }
 }
 
 QTextEdit* Visualizer::createReadOnlyTextEdit(const QString& text, QWidget* parent)

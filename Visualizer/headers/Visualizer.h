@@ -21,9 +21,9 @@ public:
 
 private slots:
     void onLoadFileClick();
-    void onBoundingBoxCheckboxToggled(bool checked);
-    void onAspectRatioCheckboxToggled(bool checked);
-    void onOrthogonalityCheckboxToggled(bool checked);
+    void onFirstCheckBoxChanged(int state);
+    void onSecondCheckBoxChanged(int state);
+	void onThirdCheckBoxChanged(int state);
 
 private:
     void setupUi();
@@ -35,6 +35,7 @@ private:
     OpenGlWidget::Data convertBoundingBoxTriangulatonToGraphcsObject(std::vector<std::vector<std::vector<double>>> boundingBoxTriangulation);
     OpenGlWidget::Data convertTrianglulationToGraphicsObject(const ModifiedTriangulation& inTriangulation);
     ModifiedTriangulation readFile(const QString& filePath);
+	void Visualizer::fireFunction(int option);
 
 private:
     std::vector<std::vector<std::vector<double>>> boundingBoxTriangulation;

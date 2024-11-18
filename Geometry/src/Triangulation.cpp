@@ -1,13 +1,9 @@
 #include "Triangulation.h"
 
-using namespace Geometry;
-
-Triangulation::Triangulation()
+Geometry::Triangulation::Triangulation()
 {
-
 }
 
-Triangulation::~Triangulation()
+Geometry::Triangulation::~Triangulation()
 {
-
 }

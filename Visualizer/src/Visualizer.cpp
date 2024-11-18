@@ -6,7 +6,6 @@
 #include "OBJReader.h"
 #include "QualityAnalysis.h"
 #include "ModifiedTriangulation.h"
-#include "ModifiedTriangle.h"
 
 Visualizer::Visualizer(QWidget* parent) : QMainWindow(parent)
 {

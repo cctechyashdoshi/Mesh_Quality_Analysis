@@ -1,10 +1,9 @@
 #pragma once
 
 #include "ModifiedTriangulation.h"
-#include "ModifiedTriangle.h"
 
-namespace QualityAnalysis {
-
+namespace QualityAnalysis 
+{
 	class QualityAnalysis
 	{
 		std::vector<double> negativePoint(std::vector<double> point);
@@ -24,7 +23,7 @@ namespace QualityAnalysis {
 		double maxX(ModifiedTriangulation triangulation);
 		double maxY(ModifiedTriangulation triangulation);
 		double maxZ(ModifiedTriangulation triangulation);
-		double surfaceArea(ModifiedTriangulation triangulation);
+		double caculateTotalsurfaceArea(ModifiedTriangulation triangulation);
 		double triangleDensity(ModifiedTriangulation triangulation);
 		double objectLength(ModifiedTriangulation triangulation);
 		double objectBreadth(ModifiedTriangulation triangulation);
@@ -33,7 +32,6 @@ namespace QualityAnalysis {
 		size_t numberOfVertices(ModifiedTriangulation triangulation);
 		std::vector<double> calcuateSingleTriangleNormal(std::vector<double> v1, std::vector<double> v2, std::vector<double> v3);
 		ModifiedTriangulation createOrthogonalityTriangulation(ModifiedTriangulation triangulation);
-		ModifiedTriangulation createBoundingBoxTriangulation(ModifiedTriangulation triangulation);
 		ModifiedTriangulation createAspectRatioTriangulation(ModifiedTriangulation triangulation);
 	};
 }

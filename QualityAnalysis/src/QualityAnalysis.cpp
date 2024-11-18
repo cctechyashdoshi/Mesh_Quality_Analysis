@@ -5,7 +5,7 @@
 #include <set>
 #include <iostream>
 #include <limits>
-#include "ModifiedTriangle.h"
+
 #define PI 3.14159265358979323846
 
 QualityAnalysis::QualityAnalysis::QualityAnalysis()
@@ -241,7 +241,7 @@ double QualityAnalysis::QualityAnalysis::maxZ(ModifiedTriangulation triangulatio
     return maxZ;
 }
 
-double QualityAnalysis::QualityAnalysis::surfaceArea(ModifiedTriangulation triangulation)
+double QualityAnalysis::QualityAnalysis::caculateTotalsurfaceArea(ModifiedTriangulation triangulation)
 {
     double totalSurfaceArea = 0;
     for (ModifiedTriangle triangle : triangulation.mTriangles)
@@ -255,7 +255,7 @@ double QualityAnalysis::QualityAnalysis::triangleDensity(ModifiedTriangulation t
 {
     double meshDensity = 0.0;
 
-    double _surfaceArea = QualityAnalysis::QualityAnalysis::surfaceArea(triangulation);
+    double _surfaceArea = QualityAnalysis::QualityAnalysis::caculateTotalsurfaceArea(triangulation);
 
     if (_surfaceArea != 0.0)
     {

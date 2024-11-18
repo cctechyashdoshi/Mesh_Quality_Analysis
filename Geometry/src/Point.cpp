@@ -1,36 +1,34 @@
 #include "Point.h"
 
-using namespace Geometry;
-
-Point::Point() : mX(0), mY(0), mZ(0)
+Geometry::Point::Point() : mX(0), mY(0), mZ(0)
 {
 }
 
-Point::Point(int x, int y, int z)
+Geometry::Point::Point(int x, int y, int z)
 	: mX(x), mY(y), mZ(z)
 {
 }
 
-Point::~Point()
+Geometry::Point::~Point()
 {
 }
 
-int Point::X() const
+int Geometry::Point::X() const
 {
 	return mX;
 }
 
-int Point::Y() const
+int Geometry::Point::Y() const
 {
 	return mY;
 }
 
-int Point::Z() const
+int Geometry::Point::Z() const
 {
 	return mZ;
 }
 
-bool Point::operator<(const Point& other) const
+bool Geometry::Point::operator<(const Geometry::Point& other) const
 {
 	if (mX != other.mX) 
 	{

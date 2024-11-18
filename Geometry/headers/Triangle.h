@@ -6,7 +6,7 @@ namespace Geometry {
 
     class Triangle
     {
-    public:
+    private:
         Point normal;
         Point p1;
         Point p2;
@@ -14,8 +14,8 @@ namespace Geometry {
 
     public:
 		Triangle();
-        Triangle(Point normal, Point p1, Point p2, Point p3);
         ~Triangle();
+        Triangle(Point normal, Point p1, Point p2, Point p3);
 
         Point P1() const;
         Point P2() const;

@@ -6,6 +6,7 @@
 #include "OBJReader.h"
 #include "QualityAnalysis.h"
 #include "ModifiedTriangulation.h"
+#include "BoundingBox.h"
 
 Visualizer::Visualizer(QWidget* parent) : QMainWindow(parent)
 {
@@ -117,7 +118,9 @@ void Visualizer::fireFunction(int option)
 {
     if (option == 1) 
     {
-		OpenGlWidget::Data data = Visualizer::convertBoundingBoxTriangulatonToGraphcsObject(boundingBoxTriangulation);
+        BoundingBox boundingBox;
+        boundingBox.createBoundingBoxTriangulation(triangulation);
+		OpenGlWidget::Data data = Visualizer::convertBoundingBoxTriangulatonToGraphcsObject(boundingBox.boundingBoxTriangulation);
         openglWidgetInput->setData(data);
     }
     else if (option == 2)
@@ -151,7 +154,7 @@ void Visualizer::onLoadFileClick()
         QualityAnalysis::QualityAnalysis qualityAnalysis;
 
         param1Value = triangulation.mTriangles.size();  // No. of Triangles
-        param2Value = qualityAnalysis.surfaceArea(triangulation);  // Surface Area calculation method
+        param2Value = qualityAnalysis.caculateTotalsurfaceArea(triangulation);  // Surface Area calculation method
         param3Value = qualityAnalysis.triangleDensity(triangulation);  // Triangle Density calculation method
         param4Value = qualityAnalysis.objectLength(triangulation);  // Object Length 
         param5Value = qualityAnalysis.numberOfVertices(triangulation);  // No. of Vertices
@@ -165,16 +168,6 @@ void Visualizer::onLoadFileClick()
         param5textbox->setText(QString::number(param5Value));
         param6textbox->setText(QString::number(param6Value));
         param7textbox->setText(QString::number(param7Value));
-        
-        ModifiedTriangulation mtriangulation;
-        mtriangulation._minX = qualityAnalysis.minX(triangulation);
-        mtriangulation._minY = qualityAnalysis.minY(triangulation);
-        mtriangulation._minZ = qualityAnalysis.minZ(triangulation);
-        mtriangulation._maxX = qualityAnalysis.maxX(triangulation);
-        mtriangulation._maxY = qualityAnalysis.maxY(triangulation);
-        mtriangulation._maxZ = qualityAnalysis.maxZ(triangulation);
-
-        Visualizer::createBoundingBoxTriangulation(mtriangulation._minX, mtriangulation._minY, mtriangulation._minZ, mtriangulation._maxX, mtriangulation._maxY, mtriangulation._maxZ);
     }
 }
 
@@ -192,45 +185,8 @@ ModifiedTriangulation Visualizer::readFile(const QString& filePath)
         OBJReader reader;
         reader.read(filePath.toStdString(), tri);
     }
-    
-	ModifiedTriangulation modifiedTriangulation;
-    QualityAnalysis::QualityAnalysis qualityAnalysis;
-
-    modifiedTriangulation._minX = qualityAnalysis.minX(tri);
-	modifiedTriangulation._minY = qualityAnalysis.minY(tri);
-	modifiedTriangulation._minZ = qualityAnalysis.minZ(tri);
-	modifiedTriangulation._maxX = qualityAnalysis.maxX(tri);
-	modifiedTriangulation._maxY = qualityAnalysis.maxY(tri);
-	modifiedTriangulation._maxZ = qualityAnalysis.maxZ(tri);
-
-    Visualizer::createBoundingBoxTriangulation(modifiedTriangulation._minX, modifiedTriangulation._minY, modifiedTriangulation._minZ, modifiedTriangulation._maxX, modifiedTriangulation._maxY, modifiedTriangulation._maxZ);
 
     return tri;
-}
-
-void Visualizer::createBoundingBoxTriangulation(double _minX, double _minY, double _minZ, double _maxX, double _maxY, double _maxZ)
-{
-    std::vector<double> p1 = { _minX, _minY, _minZ };
-    std::vector<double> p2 = { _maxX, _minY, _minZ };
-    std::vector<double> p3 = { _maxX, _maxY, _minZ };
-    std::vector<double> p4 = { _minX, _maxY, _minZ };
-    std::vector<double> p5 = { _minX, _minY, _maxZ };
-    std::vector<double> p6 = { _maxX, _minY, _maxZ };
-    std::vector<double> p7 = { _maxX, _maxY, _maxZ };
-    std::vector<double> p8 = { _minX, _maxY, _maxZ };
-
-    boundingBoxTriangulation.push_back({ p1, p2, p3 });
-    boundingBoxTriangulation.push_back({ p1, p4, p3 });
-    boundingBoxTriangulation.push_back({ p1, p4, p8 });
-    boundingBoxTriangulation.push_back({ p1, p5, p8 });
-    boundingBoxTriangulation.push_back({ p1, p2, p6 });
-    boundingBoxTriangulation.push_back({ p1, p5, p6 });
-    boundingBoxTriangulation.push_back({ p2, p7, p6 });
-    boundingBoxTriangulation.push_back({ p2, p7, p3 });
-    boundingBoxTriangulation.push_back({ p5, p6, p7 });
-    boundingBoxTriangulation.push_back({ p5, p8, p7 });
-    boundingBoxTriangulation.push_back({ p3, p4, p8 });
-    boundingBoxTriangulation.push_back({ p3, p7, p8 });
 }
 
 void Visualizer::createOrthgonilityTriangulation(ModifiedTriangulation& inTriangulation)

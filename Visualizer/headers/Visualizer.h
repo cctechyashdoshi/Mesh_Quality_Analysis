@@ -27,18 +27,14 @@ private slots:
 
 private:
     void setupUi();
-    void createBoundingBoxTriangulation(double _minX, double _minY, double _minZ, double _maxX, double _maxY, double _maxZ);
     void createOrthgonilityTriangulation(ModifiedTriangulation& inTriangulation);
     void createAspectRatioTriangulation(ModifiedTriangulation& inTriangulation);
-    OpenGlWidget::Data convertOrthogonalityTriangulationToGraphcsObject(ModifiedTriangulation orthogonalityTriangulation);
-    OpenGlWidget::Data convertAspectRatioTriangulationToGraphcsObject(ModifiedTriangulation aspectRatioTriangulation);
     OpenGlWidget::Data convertBoundingBoxTriangulatonToGraphcsObject(std::vector<std::vector<std::vector<double>>> boundingBoxTriangulation);
     OpenGlWidget::Data convertTrianglulationToGraphicsObject(const ModifiedTriangulation& inTriangulation);
     ModifiedTriangulation readFile(const QString& filePath);
 	void Visualizer::fireFunction(int option);
 
 private:
-    std::vector<std::vector<std::vector<double>>> boundingBoxTriangulation;
 	ModifiedTriangulation triangulation;
     ModifiedTriangulation orthogonalityTriangulation;
 	ModifiedTriangulation aspectRatioTriangulation;
@@ -87,6 +83,4 @@ private:
 
     // translation data
     QString inputFilePath;
-    QString exportFileName;
-
 };

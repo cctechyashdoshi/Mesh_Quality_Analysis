@@ -11,7 +11,6 @@ Geometry::Triangle::Triangle(Geometry::Point normal, Geometry::Point p1, Geometr
 
 Geometry::Triangle::~Triangle()
 {
-
 }
 
 Geometry::Point Geometry::Triangle::P1() const

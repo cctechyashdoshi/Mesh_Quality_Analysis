@@ -6,7 +6,6 @@ namespace Geometry {
 
     class Triangle
     {
-    private:
         Point normal;
         Point p1;
         Point p2;

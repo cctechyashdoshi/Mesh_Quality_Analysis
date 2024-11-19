@@ -7,7 +7,6 @@ using namespace Geometry;
 
 class STLReader : public Reader
 {
-
     bool operator()(double a, double b) const;
 public:
     STLReader();

@@ -14,5 +14,5 @@ public:
 	BoundingBox();
 	~BoundingBox();
 	void createBoundingBoxTriangulation(ModifiedTriangulation triangulation);
-	std::vector<std::vector<std::vector<double>>> boundingBoxTriangulation;
+	double boundingBoxArray[24];
 };

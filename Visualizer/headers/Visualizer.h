@@ -27,7 +27,7 @@ private slots:
 
 private:
     void setupUi();
-    OpenGlWidget::Data convertBoundingBoxTriangulatonToGraphcsObject(std::vector<std::vector<std::vector<double>>> boundingBoxTriangulation);
+    OpenGlWidget::Data convertBoundingBoxTriangulatonToGraphcsObject(double boundingBoxArray[24]);
     OpenGlWidget::Data convertTrianglulationToGraphicsObject(const ModifiedTriangulation& inTriangulation);
     ModifiedTriangulation readFile(const QString& filePath);
 	void Visualizer::fireFunction(int option);

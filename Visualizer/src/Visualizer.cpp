@@ -120,27 +120,27 @@ void Visualizer::fireFunction(int option)
     {
         BoundingBox boundingBox;
         boundingBox.createBoundingBoxTriangulation(triangulation);
-		OpenGlWidget::Data data = Visualizer::convertBoundingBoxTriangulatonToGraphcsObject(boundingBox.boundingBoxTriangulation);
+		OpenGlWidget::Data data = Visualizer::convertBoundingBoxTriangulatonToGraphcsObject(boundingBox.boundingBoxArray);
         openglWidgetInput->setData(data);
     }
     else if (option == 2)
     {
 		ModifiedTriangulation orthogonalityTriangulation;
 		QualityAnalysis::QualityAnalysis qualityAnalysis;
-        qualityAnalysis.createOrthogonalityTriangulation(triangulation);
+        orthogonalityTriangulation = qualityAnalysis.createOrthogonalityTriangulation(triangulation);
         OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(orthogonalityTriangulation);
         openglWidgetInput->setData(data);
     }
 	else if (option == 3)
 	{
-        ModifiedTriangulation orthogonalityTriangulation;
+        ModifiedTriangulation aspectRatioTriangulation;
         QualityAnalysis::QualityAnalysis qualityAnalysis;
-        qualityAnalysis.createOrthogonalityTriangulation(triangulation);
-        OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(orthogonalityTriangulation);
+        aspectRatioTriangulation = qualityAnalysis.createOrthogonalityTriangulation(triangulation);
+        OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(aspectRatioTriangulation);
         openglWidgetInput->setData(data);
 	}
 }
-
+ 
 void Visualizer::onLoadFileClick()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), "", tr("files (*.stl *.obj)"));
@@ -198,28 +198,18 @@ ModifiedTriangulation Visualizer::readFile(const QString& filePath)
     return tri;
 }
 
-OpenGlWidget::Data Visualizer::convertBoundingBoxTriangulatonToGraphcsObject(std::vector<std::vector<std::vector<double>>> boundingBoxTriangulation)
+OpenGlWidget::Data Visualizer::convertBoundingBoxTriangulatonToGraphcsObject(double boundingBoxArray[24])
 {
     OpenGlWidget::Data data;
     int Vcount = 0;
-    progressBar->setRange(0, boundingBoxTriangulation.size() - 1);
-
-    for (const auto& triangle : boundingBoxTriangulation)
-    {
-        for (int i = 0; i < 3; ++i)
-        {
-            data.vertices.push_back(triangle[i][0]);
-            data.vertices.push_back(triangle[i][1]);
-            data.vertices.push_back(triangle[i][2]);
-        }
-        Vcount++;
-        progressBar->setValue(Vcount);
-    }
-    qDebug() << "Vertices:";
-    for (int i = 0; i < data.vertices.size(); i += 3)
-    {
-        qDebug() << data.vertices[i] << data.vertices[i + 1] << data.vertices[i + 2];
-    }
+    progressBar->setRange(0, 23);
+    
+	for (int i = 0; i < 24; i++)
+	{
+		data.vertices.push_back(boundingBoxArray[i]);
+		progressBar->setValue(Vcount);
+		Vcount++;
+	}
 
     return data;
 }

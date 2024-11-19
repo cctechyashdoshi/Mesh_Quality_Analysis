@@ -189,44 +189,6 @@ ModifiedTriangulation Visualizer::readFile(const QString& filePath)
     return tri;
 }
 
-void Visualizer::createOrthgonilityTriangulation(ModifiedTriangulation& inTriangulation)
-{
-    int Vcount = 0;
-	for each (ModifiedTriangle triangle in inTriangulation.mTriangles)
-	{
-		Point normal = triangle.Normal();
-		Point p1 = triangle.P1();
-		Point p2 = triangle.P2();
-		Point p3 = triangle.P3();
-        double color[3] = { 0, 0, 0 };
-        ModifiedTriangle t(normal, p1, p2, p3, color);
-		orthogonalityTriangulation.mTriangles.push_back(t);
-
-        progressBar->setValue(Vcount);
-        progressBar->setRange(0, inTriangulation.mTriangles.size() - 1);
-        Vcount++;
-	}
-}
-
-void Visualizer::createAspectRatioTriangulation(ModifiedTriangulation& inTriangulation)
-{
-    int Vcount = 0;
-	for each (ModifiedTriangle triangle in inTriangulation.mTriangles)
-	{
-		Point normal = triangle.Normal();
-		Point p1 = triangle.P1();
-		Point p2 = triangle.P2();
-		Point p3 = triangle.P3();
-        double color[3] = { 0, 0, 0 };
-        ModifiedTriangle t(normal, p1, p2, p3, color);
-		aspectRatioTriangulation.mTriangles.push_back(t);
-
-		progressBar->setValue(Vcount);
-		progressBar->setRange(0, inTriangulation.mTriangles.size() - 1);
-		Vcount++;
-	}
-}
-
 OpenGlWidget::Data Visualizer::convertBoundingBoxTriangulatonToGraphcsObject(std::vector<std::vector<std::vector<double>>> boundingBoxTriangulation)
 {
     OpenGlWidget::Data data;

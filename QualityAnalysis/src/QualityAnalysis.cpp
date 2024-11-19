@@ -1,4 +1,5 @@
 #include "QualityAnalysis.h"
+#include "BoundingBox.h"
 #include <cmath>
 #include <algorithm>
 #include <vector>
@@ -176,17 +177,20 @@ size_t QualityAnalysis::QualityAnalysis::numberOfVertices(ModifiedTriangulation 
 
 double QualityAnalysis::QualityAnalysis::objectLength(ModifiedTriangulation triangulation)
 {
-    return maxX(triangulation) - minX(triangulation);
+    BoundingBox boundingBox;
+    return boundingBox.maxX(triangulation) - boundingBox.minX(triangulation);
 }
 
 double QualityAnalysis::QualityAnalysis::objectBreadth(ModifiedTriangulation triangulation)
 {
-    return maxY(triangulation) - minY(triangulation);
+    BoundingBox boundingBox;
+    return boundingBox.maxY(triangulation) - boundingBox.minY(triangulation);
 }
 
 double QualityAnalysis::QualityAnalysis::objectHeight(ModifiedTriangulation triangulation)
 {
-    return maxZ(triangulation) - minZ(triangulation);
+    BoundingBox boundingBox;
+    return boundingBox.maxZ(triangulation) - boundingBox.minZ(triangulation);
 }
 
 ModifiedTriangulation QualityAnalysis::QualityAnalysis::createOrthogonalityTriangulation(ModifiedTriangulation triangulation)

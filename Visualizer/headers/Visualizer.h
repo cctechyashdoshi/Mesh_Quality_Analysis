@@ -27,8 +27,6 @@ private slots:
 
 private:
     void setupUi();
-    void createOrthgonilityTriangulation(ModifiedTriangulation& inTriangulation);
-    void createAspectRatioTriangulation(ModifiedTriangulation& inTriangulation);
     OpenGlWidget::Data convertBoundingBoxTriangulatonToGraphcsObject(std::vector<std::vector<std::vector<double>>> boundingBoxTriangulation);
     OpenGlWidget::Data convertTrianglulationToGraphicsObject(const ModifiedTriangulation& inTriangulation);
     ModifiedTriangulation readFile(const QString& filePath);
@@ -36,8 +34,6 @@ private:
 
 private:
 	ModifiedTriangulation triangulation;
-    ModifiedTriangulation orthogonalityTriangulation;
-	ModifiedTriangulation aspectRatioTriangulation;
 
     QPushButton* loadFile;
     QPushButton* translate;
@@ -81,6 +77,5 @@ private:
 
     QWidget* containerWidget;
 
-    // translation data
     QString inputFilePath;
 };

@@ -168,6 +168,15 @@ void Visualizer::onLoadFileClick()
         param5textbox->setText(QString::number(param5Value));
         param6textbox->setText(QString::number(param6Value));
         param7textbox->setText(QString::number(param7Value));
+
+        ModifiedTriangulation modifiedTriagulation;
+        BoundingBox boundingBox;
+        modifiedTriagulation._minX = boundingBox.minX(triangulation);
+		modifiedTriagulation._maxX = boundingBox.maxX(triangulation);   
+		modifiedTriagulation._minY = boundingBox.minY(triangulation);
+		modifiedTriagulation._maxY = boundingBox.maxY(triangulation);
+		modifiedTriagulation._minZ = boundingBox.minZ(triangulation);
+		modifiedTriagulation._maxZ = boundingBox.maxZ(triangulation);
     }
 }
 

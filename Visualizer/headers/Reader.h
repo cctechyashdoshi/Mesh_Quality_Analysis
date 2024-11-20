@@ -3,6 +3,7 @@
 #include "ModifiedTriangulation.h"
 
 using namespace Geometry;
+using namespace MeshOperations;
 
 class Reader
 {

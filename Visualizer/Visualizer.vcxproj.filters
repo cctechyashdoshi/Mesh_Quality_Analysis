@@ -49,9 +49,6 @@
     <ClCompile Include="src\OBJReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\BoundingBox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="headers\Visualizer.h">
@@ -71,15 +68,18 @@
     <ClInclude Include="headers\OBJReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="headers\BoundingBox.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\fragment.glsl">
+    <None Include="shaders\shadedFrag.glsl">
       <Filter>shaders</Filter>
     </None>
-    <None Include="shaders\vertex.glsl">
+    <None Include="shaders\shadedVert.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\wireFrag.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\wireVert.glsl">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>

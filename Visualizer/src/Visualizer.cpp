@@ -7,6 +7,7 @@
 #include "QualityAnalysis.h"
 #include "ModifiedTriangulation.h"
 #include "BoundingBox.h"
+#include "MeshInformation.h"
 
 Visualizer::Visualizer(QWidget* parent) : QMainWindow(parent)
 {
@@ -120,33 +121,33 @@ void Visualizer::fireFunction(int option)
     {
         BoundingBox boundingBox;
         boundingBox.createBoundingBoxTriangulation(triangulation);
-		OpenGlWidget::Data data = Visualizer::convertBoundingBoxTriangulatonToGraphcsObject(boundingBox.boundingBoxArray);
-        QVector<OpenGlWidget::Data> dataVector;
-        dataVector.append(data);
-        openglWidgetInput->setData(dataVector);
+        OpenGlWidget::Data data;
+        data = Visualizer::convertBoundingBoxArrayToGraphcsObject(boundingBox.boundingBoxArray);
+        QVector<OpenGlWidget::Data> dataList = { data };
+        openglWidgetInput->setData(dataList);
     }
     else if (option == 2)
     {
 		ModifiedTriangulation orthogonalityTriangulation;
-		QualityAnalysis::QualityAnalysis qualityAnalysis;
-        orthogonalityTriangulation = qualityAnalysis.createOrthogonalityTriangulation(triangulation);
-        OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(orthogonalityTriangulation);
-        QVector<OpenGlWidget::Data> dataVector;
-        dataVector.append(data);
-        openglWidgetInput->setData(dataVector);
+		MeshOperations::QualityAnalysis qualityAnalysis;
+        orthogonalityTriangulation = qualityAnalysis.createAspectRatioTriangulation(triangulation);
+        OpenGlWidget::Data data;
+        data= Visualizer::convertTrianglulationToGraphicsObject(orthogonalityTriangulation);
+        QVector<OpenGlWidget::Data> dataList = {data};
+        openglWidgetInput->setData(dataList);
     }
 	else if (option == 3)
 	{
         ModifiedTriangulation aspectRatioTriangulation;
-        QualityAnalysis::QualityAnalysis qualityAnalysis;
+        MeshOperations::QualityAnalysis qualityAnalysis;
         aspectRatioTriangulation = qualityAnalysis.createOrthogonalityTriangulation(triangulation);
-        OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(aspectRatioTriangulation);
-        QVector<OpenGlWidget::Data> dataVector;
-        dataVector.append(data);
-        openglWidgetInput->setData(dataVector);
+        OpenGlWidget::Data data;
+		data = Visualizer::convertTrianglulationToGraphicsObject(aspectRatioTriangulation);
+        QVector<OpenGlWidget::Data> dataList = { data };
+        openglWidgetInput->setData(dataList);
 	}
 }
- 
+
 void Visualizer::onLoadFileClick()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), "", tr("files (*.stl *.obj)"));
@@ -159,15 +160,16 @@ void Visualizer::onLoadFileClick()
         dataVector.append(data);
         openglWidgetInput->setData(dataVector);
 
-        QualityAnalysis::QualityAnalysis qualityAnalysis;
+        MeshOperations::QualityAnalysis qualityAnalysis;
+		MeshOperations::MeshInformation meshInformation;
 
         param1Value = triangulation.mTriangles.size();  // No. of Triangles
         param2Value = qualityAnalysis.caculateTotalsurfaceArea(triangulation);  // Surface Area calculation method
-        param3Value = qualityAnalysis.triangleDensity(triangulation);  // Triangle Density calculation method
-        param4Value = qualityAnalysis.objectLength(triangulation);  // Object Length 
-        param5Value = qualityAnalysis.numberOfVertices(triangulation);  // No. of Vertices
-        param6Value = qualityAnalysis.objectHeight(triangulation);  // Object Height 
-        param7Value = qualityAnalysis.objectBreadth(triangulation);  // Object Breadth
+        param3Value = meshInformation.triangleDensity(triangulation);  // Triangle Density calculation method
+        param4Value = meshInformation.objectLength(triangulation);  // Object Length 
+        param5Value = meshInformation.numberOfVertices(triangulation);  // No. of Vertices
+        param6Value = meshInformation.objectHeight(triangulation);  // Object Height 
+        param7Value = meshInformation.objectBreadth(triangulation);  // Object Breadth
 
         param1textbox->setText(QString::number(param1Value));
         param2textbox->setText(QString::number(param2Value));
@@ -206,7 +208,7 @@ ModifiedTriangulation Visualizer::readFile(const QString& filePath)
     return tri;
 }
 
-OpenGlWidget::Data Visualizer::convertBoundingBoxTriangulatonToGraphcsObject(double boundingBoxArray[24])
+OpenGlWidget::Data Visualizer::convertBoundingBoxArrayToGraphcsObject(double boundingBoxArray[24])
 {
     OpenGlWidget::Data data;
     int Vcount = 0;
@@ -218,7 +220,7 @@ OpenGlWidget::Data Visualizer::convertBoundingBoxTriangulatonToGraphcsObject(dou
 		progressBar->setValue(Vcount);
 		Vcount++;
 	}
-
+	data.drawStyle = OpenGlWidget::DrawStyle::LINES;
     return data;
 }
 
@@ -228,20 +230,28 @@ OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Modif
     OpenGlWidget::Data data;
     for each (ModifiedTriangle triangle in inTriangulation.mTriangles)
     {
+        std::vector<double> color = triangle.Color();
         for each (Point point in triangle.Points())
         {
             data.vertices.push_back(inTriangulation.UniqueNumbers[point.X()]);
             data.vertices.push_back(inTriangulation.UniqueNumbers[point.Y()]);
             data.vertices.push_back(inTriangulation.UniqueNumbers[point.Z()]);
+
+            data.colors.push_back(color[0]);
+            data.colors.push_back(color[1]);
+            data.colors.push_back(color[2]);
         }
 
         Point normal = triangle.Normal();
-        for (size_t i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++)
         {
             data.normals.push_back(inTriangulation.UniqueNumbers[normal.X()]);
             data.normals.push_back(inTriangulation.UniqueNumbers[normal.Y()]);
             data.normals.push_back(inTriangulation.UniqueNumbers[normal.Z()]);
         }
+
+        data.drawStyle = OpenGlWidget::DrawStyle::TRIANGLES;
+
         progressBar->setValue(Vcount);
         progressBar->setRange(0, inTriangulation.mTriangles.size() - 1);
         Vcount++;
@@ -254,7 +264,7 @@ void Visualizer::onFirstCheckBoxChanged(int state)
     if (state == Qt::Checked) {
         secondCheckBox->setChecked(false);
         thirdCheckBox->setChecked(false);
-        fireFunction(1);
+        Visualizer::fireFunction(1); 
     }
 }
 

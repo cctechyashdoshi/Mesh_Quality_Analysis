@@ -10,6 +10,7 @@
 #include "ModifiedTriangulation.h"
 
 using namespace Geometry;
+using namespace MeshOperations;
 
 class Visualizer : public QMainWindow
 {
@@ -27,7 +28,7 @@ private slots:
 
 private:
     void setupUi();
-    OpenGlWidget::Data convertBoundingBoxTriangulatonToGraphcsObject(double boundingBoxArray[24]);
+    OpenGlWidget::Data convertBoundingBoxArrayToGraphcsObject(double boundingBoxArray[24]);
     OpenGlWidget::Data convertTrianglulationToGraphicsObject(const ModifiedTriangulation& inTriangulation);
     ModifiedTriangulation readFile(const QString& filePath);
 	void Visualizer::fireFunction(int option);

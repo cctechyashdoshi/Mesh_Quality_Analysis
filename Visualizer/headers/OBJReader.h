@@ -3,6 +3,8 @@
 #include "ModifiedTriangulation.h"
 #include "Reader.h"
 
+using namespace MeshOperations;
+
 class OBJReader : public Reader
 {
 public:

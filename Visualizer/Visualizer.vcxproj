@@ -60,10 +60,10 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir)\headers;$(SolutionDir)Geometry\headers;$(SolutionDir)QualityAnalysis\headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\headers;$(SolutionDir)Geometry\headers;$(SolutionDir)MeshOperations\headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>Geometry.lib;QualityAnalysis.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Geometry.lib;MeshOperations.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutputPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -92,7 +92,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\BoundingBox.cpp" />
     <ClCompile Include="src\OBJReader.cpp" />
     <ClCompile Include="src\OpenglWidget.cpp" />
     <ClCompile Include="src\Reader.cpp" />
@@ -105,15 +104,16 @@
     <QtMoc Include="headers\Visualizer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="headers\BoundingBox.h" />
     <ClInclude Include="headers\OBJReader.h" />
     <QtMoc Include="headers\OpenglWidget.h" />
     <ClInclude Include="headers\Reader.h" />
     <ClInclude Include="headers\STLReader.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\fragment.glsl" />
-    <None Include="shaders\vertex.glsl" />
+    <None Include="shaders\shadedFrag.glsl" />
+    <None Include="shaders\shadedVert.glsl" />
+    <None Include="shaders\wireFrag.glsl" />
+    <None Include="shaders\wireVert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

@@ -4,6 +4,7 @@
 #include "Reader.h"
 
 using namespace Geometry;
+using namespace MeshOperations;
 
 class STLReader : public Reader
 {

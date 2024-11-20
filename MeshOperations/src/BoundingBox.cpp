@@ -1,14 +1,8 @@
 #include "BoundingBox.h"
 
-BoundingBox::BoundingBox()
-{
-}
+using namespace MeshOperations;
 
-BoundingBox::~BoundingBox()
-{
-}
-
-double BoundingBox::minX(ModifiedTriangulation triangulation)
+double MeshOperations::BoundingBox::minX(ModifiedTriangulation triangulation)
 {
     double minX = std::numeric_limits<double>::infinity();
 
@@ -128,27 +122,27 @@ void BoundingBox::createBoundingBoxTriangulation(ModifiedTriangulation triangula
     modifiedTriangulation._maxZ = maxZ(triangulation);
 
     boundingBoxArray[0] = modifiedTriangulation._minX;
-	boundingBoxArray[1] = modifiedTriangulation._minY;
-	boundingBoxArray[2] = modifiedTriangulation._minZ;
-	boundingBoxArray[3] = modifiedTriangulation._maxX;
-	boundingBoxArray[4] = modifiedTriangulation._minY;
-	boundingBoxArray[5] = modifiedTriangulation._minZ;
-	boundingBoxArray[6] = modifiedTriangulation._maxX;
-	boundingBoxArray[7] = modifiedTriangulation._maxY;
-	boundingBoxArray[8] = modifiedTriangulation._minZ;
-	boundingBoxArray[9] = modifiedTriangulation._minX;
-	boundingBoxArray[10] = modifiedTriangulation._maxY;
-	boundingBoxArray[11] = modifiedTriangulation._minZ;
-	boundingBoxArray[12] = modifiedTriangulation._minX;
-	boundingBoxArray[13] = modifiedTriangulation._minY;
-	boundingBoxArray[14] = modifiedTriangulation._maxZ;
-	boundingBoxArray[15] = modifiedTriangulation._maxX;
-	boundingBoxArray[16] = modifiedTriangulation._minY;
-	boundingBoxArray[17] = modifiedTriangulation._maxZ;
-	boundingBoxArray[18] = modifiedTriangulation._maxX;
-	boundingBoxArray[19] = modifiedTriangulation._maxY;
-	boundingBoxArray[20] = modifiedTriangulation._maxZ;
-	boundingBoxArray[21] = modifiedTriangulation._minX;
-	boundingBoxArray[22] = modifiedTriangulation._maxY;
-	boundingBoxArray[23] = modifiedTriangulation._maxZ;
+    boundingBoxArray[1] = modifiedTriangulation._minY;
+    boundingBoxArray[2] = modifiedTriangulation._minZ;
+    boundingBoxArray[3] = modifiedTriangulation._maxX;
+    boundingBoxArray[4] = modifiedTriangulation._minY;
+    boundingBoxArray[5] = modifiedTriangulation._minZ;
+    boundingBoxArray[6] = modifiedTriangulation._maxX;
+    boundingBoxArray[7] = modifiedTriangulation._maxY;
+    boundingBoxArray[8] = modifiedTriangulation._minZ;
+    boundingBoxArray[9] = modifiedTriangulation._minX;
+    boundingBoxArray[10] = modifiedTriangulation._maxY;
+    boundingBoxArray[11] = modifiedTriangulation._minZ;
+    boundingBoxArray[12] = modifiedTriangulation._minX;
+    boundingBoxArray[13] = modifiedTriangulation._minY;
+    boundingBoxArray[14] = modifiedTriangulation._maxZ;
+    boundingBoxArray[15] = modifiedTriangulation._maxX;
+    boundingBoxArray[16] = modifiedTriangulation._minY;
+    boundingBoxArray[17] = modifiedTriangulation._maxZ;
+    boundingBoxArray[18] = modifiedTriangulation._maxX;
+    boundingBoxArray[19] = modifiedTriangulation._maxY;
+    boundingBoxArray[20] = modifiedTriangulation._maxZ;
+    boundingBoxArray[21] = modifiedTriangulation._minX;
+    boundingBoxArray[22] = modifiedTriangulation._maxY;
+    boundingBoxArray[23] = modifiedTriangulation._maxZ;
 }

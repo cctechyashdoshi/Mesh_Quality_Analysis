@@ -103,7 +103,6 @@ void OBJReader::helper(double xyz[3], std::vector<Point>& vertices, std::map<dou
             pt[i] = pair->second;
 
         }
-
     }
     vertices.push_back(Point(pt[0], pt[1], pt[2]));
 }

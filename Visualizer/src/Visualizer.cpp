@@ -121,7 +121,9 @@ void Visualizer::fireFunction(int option)
         BoundingBox boundingBox;
         boundingBox.createBoundingBoxTriangulation(triangulation);
 		OpenGlWidget::Data data = Visualizer::convertBoundingBoxTriangulatonToGraphcsObject(boundingBox.boundingBoxArray);
-        openglWidgetInput->setData(data);
+        QVector<OpenGlWidget::Data> dataVector;
+        dataVector.append(data);
+        openglWidgetInput->setData(dataVector);
     }
     else if (option == 2)
     {
@@ -129,7 +131,9 @@ void Visualizer::fireFunction(int option)
 		QualityAnalysis::QualityAnalysis qualityAnalysis;
         orthogonalityTriangulation = qualityAnalysis.createOrthogonalityTriangulation(triangulation);
         OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(orthogonalityTriangulation);
-        openglWidgetInput->setData(data);
+        QVector<OpenGlWidget::Data> dataVector;
+        dataVector.append(data);
+        openglWidgetInput->setData(dataVector);
     }
 	else if (option == 3)
 	{
@@ -137,7 +141,9 @@ void Visualizer::fireFunction(int option)
         QualityAnalysis::QualityAnalysis qualityAnalysis;
         aspectRatioTriangulation = qualityAnalysis.createOrthogonalityTriangulation(triangulation);
         OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(aspectRatioTriangulation);
-        openglWidgetInput->setData(data);
+        QVector<OpenGlWidget::Data> dataVector;
+        dataVector.append(data);
+        openglWidgetInput->setData(dataVector);
 	}
 }
  
@@ -149,7 +155,9 @@ void Visualizer::onLoadFileClick()
         inputFilePath = fileName;
         triangulation = readFile(inputFilePath);
         OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(triangulation);
-        openglWidgetInput->setData(data);
+        QVector<OpenGlWidget::Data> dataVector;
+        dataVector.append(data);
+        openglWidgetInput->setData(dataVector);
 
         QualityAnalysis::QualityAnalysis qualityAnalysis;
 

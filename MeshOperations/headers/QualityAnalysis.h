@@ -1,19 +1,13 @@
 #pragma once
 
-#include "ModifiedTriangulation.h"
+#include "Triangulation.h"
 
-namespace MeshOperations
+using namespace Geometry;	
+namespace QualityAnalysis
 {
 	class QualityAnalysis
 	{
-		double clamp(double value, double min, double max);
-		double calculateDistanceBetweenPoints(std::vector<double> firstPoint, std::vector<double> secondPoint);
-		double calculateAngleBetweenVectors(std::vector<double> v1, std::vector<double> v2);
-		double calculateSingleTriangleAspectRatio(Geometry::Point p1, Geometry::Point p2, Geometry::Point p3);
-		double calculateSingleTriangleInteriorAngle(Geometry::Point p1, Geometry::Point p2, Geometry::Point p3);
-	public:
-		double caculateTotalsurfaceArea(ModifiedTriangulation triangulation);
-		ModifiedTriangulation createOrthogonalityTriangulation(ModifiedTriangulation triangulation);
-		ModifiedTriangulation createAspectRatioTriangulation(ModifiedTriangulation triangulation);
+		std::vector<std::vector<Triangle, int>> angleInformation(Triangulation& triangulation, std::vector<int> angleAnalysis);
+		std::vector<std::vector<Triangle, int>> lengthInformation(Triangulation& triangulation, std::vector<int> lengthAnalysis);
 	};
 }

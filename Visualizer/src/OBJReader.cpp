@@ -54,7 +54,7 @@ Point OBJReader::vectorReader(const QStringList& lineList, std::map<double, int,
     return Point(pt[0], pt[1], pt[2]);
 }
 
-void OBJReader::read(const std::string& fileName, ModifiedTriangulation& triangulation)
+void OBJReader::read(const std::string& fileName, Triangulation& triangulation)
 {
     std::map<double, int, OBJReader> uniqueMap;
     double xyz[3];
@@ -67,7 +67,6 @@ void OBJReader::read(const std::string& fileName, ModifiedTriangulation& triangu
     std::vector<Point> normals;
     std::ifstream infile(fileName);
 
-    MeshOperations::BoundingBox box;
 
     if (infile.is_open())
     {
@@ -88,7 +87,7 @@ void OBJReader::read(const std::string& fileName, ModifiedTriangulation& triangu
                 double y = triangulation.UniqueNumbers[vertices[size].Y()];
                 double z = triangulation.UniqueNumbers[vertices[size].Z()];
 
-                box.findMinMax(x, y, z);
+                //box.findMinMax(x, y, z);
             }
 
             if (linelist.value(0) == "vn")
@@ -108,7 +107,7 @@ void OBJReader::read(const std::string& fileName, ModifiedTriangulation& triangu
                 int firstVertexId = splitList.value(0).toInt() - 1;
                 int secondVertexId = splitList.value(3).toInt() - 1;
                 int thirdVertexId = splitList.value(6).toInt() - 1;
-                triangulation.mTriangles.push_back(ModifiedTriangle(normals[normalId], vertices[firstVertexId], vertices[secondVertexId], vertices[thirdVertexId]));
+                triangulation.Triangles.push_back(Triangle(normals[normalId], vertices[firstVertexId], vertices[secondVertexId], vertices[thirdVertexId]));
             }
         }
     }

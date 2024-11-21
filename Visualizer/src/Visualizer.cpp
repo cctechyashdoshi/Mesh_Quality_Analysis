@@ -4,10 +4,8 @@
 #include "Visualizer.h"
 #include "STLReader.h"
 #include "OBJReader.h"
-#include "QualityAnalysis.h"
-#include "ModifiedTriangulation.h"
-#include "BoundingBox.h"
-#include "MeshInformation.h"
+#include "Anaylzer.h"
+
 
 Visualizer::Visualizer(QWidget* parent) : QMainWindow(parent)
 {
@@ -117,34 +115,39 @@ void Visualizer::setupUi()
 
 void Visualizer::fireFunction(int option)
 {
+    QualityAnalysis::Anaylzer analyzer;
     if (option == 1) 
     {
-        BoundingBox boundingBox;
-        boundingBox.createBoundingBoxTriangulation();
-        OpenGlWidget::Data data;
-        data = Visualizer::convertBoundingBoxArrayToGraphcsObject(boundingBox.boundingBoxArray);
-        QVector<OpenGlWidget::Data> dataList = { data };
-        openglWidgetInput->setData(dataList);
+        auto angleAnalysis = analyzer.AngleAnalyzer(triangulation);
+        int i = 0;
+        //BoundingBox boundingBox;
+        //boundingBox.createBoundingBoxTriangulation();
+        //OpenGlWidget::Data data;
+        //data = Visualizer::convertBoundingBoxArrayToGraphcsObject(boundingBox.boundingBoxArray);
+        //QVector<OpenGlWidget::Data> dataList = { data };
+        //openglWidgetInput->setData(dataList);
     }
     else if (option == 2)
     {
-		ModifiedTriangulation orthogonalityTriangulation;
-		MeshOperations::QualityAnalysis qualityAnalysis;
-        orthogonalityTriangulation = qualityAnalysis.createAspectRatioTriangulation(triangulation);
-        OpenGlWidget::Data data;
+		auto lengthAnalysis = analyzer.LengthAnalyzer(triangulation);
+        int j = 0;
+		/*MeshOperations::QualityAnalysis qualityAnalysis;
+        orthogonalityTriangulation = qualityAnalysis.createAspectRatioTriangulation(triangulation);*/
+        /*OpenGlWidget::Data data;
         data= Visualizer::convertTrianglulationToGraphicsObject(orthogonalityTriangulation);
         QVector<OpenGlWidget::Data> dataList = {data};
-        openglWidgetInput->setData(dataList);
+        openglWidgetInput->setData(dataList);*/
     }
 	else if (option == 3)
 	{
-        ModifiedTriangulation aspectRatioTriangulation;
-        MeshOperations::QualityAnalysis qualityAnalysis;
-        aspectRatioTriangulation = qualityAnalysis.createOrthogonalityTriangulation(triangulation);
-        OpenGlWidget::Data data;
+
+        Triangulation aspectRatioTriangulation;
+        /*MeshOperations::QualityAnalysis qualityAnalysis;
+        aspectRatioTriangulation = qualityAnalysis.createOrthogonalityTriangulation(triangulation);*/
+        /*OpenGlWidget::Data data;
 		data = Visualizer::convertTrianglulationToGraphicsObject(aspectRatioTriangulation);
         QVector<OpenGlWidget::Data> dataList = { data };
-        openglWidgetInput->setData(dataList);
+        openglWidgetInput->setData(dataList);*/
 	}
 }
 
@@ -160,16 +163,16 @@ void Visualizer::onLoadFileClick()
         dataVector.append(data);
         openglWidgetInput->setData(dataVector);
 
-        MeshOperations::QualityAnalysis qualityAnalysis;
-		MeshOperations::MeshInformation meshInformation;
+  //      MeshOperations::QualityAnalysis qualityAnalysis(triangulation);
+		//MeshOperations::MeshInformation meshInformation;
 
-        param1Value = triangulation.mTriangles.size();  // No. of Triangles
-        param2Value = qualityAnalysis.caculateTotalsurfaceArea(triangulation);  // Surface Area calculation method
-        param3Value = meshInformation.triangleDensity(triangulation);  // Triangle Density calculation method
-        param4Value = meshInformation.objectLength();  // Object Length 
-        param5Value = meshInformation.numberOfVertices(triangulation);  // No. of Vertices
-        param6Value = meshInformation.objectHeight();  // Object Height 
-        param7Value = meshInformation.objectBreadth();  // Object Breadth
+  //      param1Value = triangulation.mTriangles.size();  // No. of Triangles
+  //      param2Value = qualityAnalysis.caculateTotalsurfaceArea(triangulation);  // Surface Area calculation method
+  //      param3Value = meshInformation.triangleDensity(triangulation);  // Triangle Density calculation method
+  //      param4Value = meshInformation.objectLength();  // Object Length 
+  //      param5Value = meshInformation.numberOfVertices(triangulation);  // No. of Vertices
+  //      param6Value = meshInformation.objectHeight();  // Object Height 
+  //      param7Value = meshInformation.objectBreadth();  // Object Breadth
 
         param1textbox->setText(QString::number(param1Value));
         param2textbox->setText(QString::number(param2Value));
@@ -181,9 +184,9 @@ void Visualizer::onLoadFileClick()
     }
 }
 
-ModifiedTriangulation Visualizer::readFile(const QString& filePath)
+Triangulation Visualizer::readFile(const QString& filePath)
 {
-    ModifiedTriangulation tri;
+    Triangulation tri;
 
     if (filePath.endsWith(".stl", Qt::CaseInsensitive))
     {
@@ -199,38 +202,33 @@ ModifiedTriangulation Visualizer::readFile(const QString& filePath)
     return tri;
 }
 
-OpenGlWidget::Data Visualizer::convertBoundingBoxArrayToGraphcsObject(double boundingBoxArray[24])
-{
-    OpenGlWidget::Data data;
-    int Vcount = 0;
-    progressBar->setRange(0, 23);
-    
-	for (int i = 0; i < 24; i++)
-	{
-		data.vertices.push_back(boundingBoxArray[i]);
-		progressBar->setValue(Vcount);
-		Vcount++;
-	}
-	data.drawStyle = OpenGlWidget::DrawStyle::LINES;
-    return data;
-}
+//OpenGlWidget::Data Visualizer::convertBoundingBoxArrayToGraphcsObject(double boundingBoxArray[24])
+//{
+//    OpenGlWidget::Data data;
+//    int Vcount = 0;
+//    progressBar->setRange(0, 23);
+//    
+//	for (int i = 0; i < 24; i++)
+//	{
+//		data.vertices.push_back(boundingBoxArray[i]);
+//		progressBar->setValue(Vcount);
+//		Vcount++;
+//	}
+//	data.drawStyle = OpenGlWidget::DrawStyle::LINES;
+//    return data;
+//}
 
-OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const ModifiedTriangulation& inTriangulation)
+OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(Triangulation& inTriangulation)
 {
     int Vcount = 0;
     OpenGlWidget::Data data;
-    for each (ModifiedTriangle triangle in inTriangulation.mTriangles)
+    for each (Triangle triangle in inTriangulation.Triangles)
     {
-        std::vector<double> color = triangle.Color();
         for each (Point point in triangle.Points())
         {
             data.vertices.push_back(inTriangulation.UniqueNumbers[point.X()]);
             data.vertices.push_back(inTriangulation.UniqueNumbers[point.Y()]);
             data.vertices.push_back(inTriangulation.UniqueNumbers[point.Z()]);
-
-            data.colors.push_back(color[0]);
-            data.colors.push_back(color[1]);
-            data.colors.push_back(color[2]);
         }
 
         Point normal = triangle.Normal();
@@ -244,7 +242,7 @@ OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Modif
         data.drawStyle = OpenGlWidget::DrawStyle::TRIANGLES;
 
         progressBar->setValue(Vcount);
-        progressBar->setRange(0, inTriangulation.mTriangles.size() - 1);
+        progressBar->setRange(0, inTriangulation.Triangles.size() - 1);
         Vcount++;
     }
     return data;

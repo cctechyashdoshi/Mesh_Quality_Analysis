@@ -7,10 +7,9 @@
 #include <QWidget>
 #include <QCheckBox>
 #include "OpenGlWidget.h"
-#include "ModifiedTriangulation.h"
+#include "Triangulation.h"
 
 using namespace Geometry;
-using namespace MeshOperations;
 
 class Visualizer : public QMainWindow
 {
@@ -28,13 +27,13 @@ private slots:
 
 private:
     void setupUi();
-    OpenGlWidget::Data convertBoundingBoxArrayToGraphcsObject(double boundingBoxArray[24]);
-    OpenGlWidget::Data convertTrianglulationToGraphicsObject(const ModifiedTriangulation& inTriangulation);
-    ModifiedTriangulation readFile(const QString& filePath);
+    OpenGlWidget::Data convertTrianglulationToGraphicsObject(Triangulation& inTriangulation);
+    //OpenGlWidget::Data convertBoundingBoxArrayToGraphcsObject(Triangulation& inTriangulation); 
+    Triangulation readFile(const QString& filePath);
 	void Visualizer::fireFunction(int option);
 
 private:
-	ModifiedTriangulation triangulation;
+	Triangulation triangulation;
 
     QPushButton* loadFile;
     QPushButton* translate;

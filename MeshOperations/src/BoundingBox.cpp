@@ -21,7 +21,6 @@ void MeshOperations::BoundingBox::findMinMax(double x, double y, double z)
 
 void MeshOperations::BoundingBox::createBoundingBoxTriangulation()
 {
-
     boundingBoxArray[0] = xMin;
     boundingBoxArray[1] = yMin;
     boundingBoxArray[2] = zMin;

@@ -11,7 +11,6 @@ namespace MeshOperations
 		double calculateAngleBetweenVectors(std::vector<double> v1, std::vector<double> v2);
 		double calculateSingleTriangleAspectRatio(Geometry::Point p1, Geometry::Point p2, Geometry::Point p3);
 		double calculateSingleTriangleInteriorAngle(Geometry::Point p1, Geometry::Point p2, Geometry::Point p3);
-		//std::vector<double> calcuateSingleTriangleNormal(Geometry::Point p1, Geometry::Point p2, Geometry::Point p3);
 	public:
 		double caculateTotalsurfaceArea(ModifiedTriangulation triangulation);
 		ModifiedTriangulation createOrthogonalityTriangulation(ModifiedTriangulation triangulation);

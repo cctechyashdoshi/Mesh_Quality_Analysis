@@ -1,4 +1,5 @@
 #include "ModifiedTriangulation.h"
+#include "Triangulation.h"
 
 using namespace MeshOperations;
 
@@ -13,10 +14,11 @@ ModifiedTriangulation::~ModifiedTriangulation()
 std::vector<double> ModifiedTriangulation::convertIndicesToDoublePoints(Geometry::Point p)
 {
     std::vector<double> doubledPoint;
-
-    doubledPoint[0] = UniqueNumbers[p.X()];
-    doubledPoint[0] = UniqueNumbers[p.Y()];
-    doubledPoint[0] = UniqueNumbers[p.Z()];
-
+    double x = UniqueNumbers[p.X()];
+    double y = UniqueNumbers[p.Y()];
+    double z = UniqueNumbers[p.Z()];
+    doubledPoint.push_back(x);
+    doubledPoint.push_back(y);
+    doubledPoint.push_back(z);
     return doubledPoint;
 }

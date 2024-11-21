@@ -1,19 +1,23 @@
 #pragma once
-
-#include "ModifiedTriangulation.h"
-
 namespace MeshOperations
 {
-	class BoundingBox
-	{
-	public:
-		double minX(MeshOperations::ModifiedTriangulation triangulation);
-		double minY(MeshOperations::ModifiedTriangulation triangulation);
-		double minZ(MeshOperations::ModifiedTriangulation triangulation);
-		double maxX(MeshOperations::ModifiedTriangulation triangulation);
-		double maxY(MeshOperations::ModifiedTriangulation triangulation);
-		double maxZ(MeshOperations::ModifiedTriangulation triangulation);
-		void createBoundingBoxTriangulation(ModifiedTriangulation triangulation);
-		double boundingBoxArray[24];
-	};
+    class BoundingBox {
+
+    public:
+
+        double  xMin;
+        double  yMin;
+        double  zMin;
+        double  xMax;
+        double  yMax;
+        double  zMax;
+
+        double boundingBoxArray[24];
+
+        BoundingBox();
+        ~BoundingBox();
+
+        void findMinMax(double x, double y, double z);
+        void createBoundingBoxTriangulation();
+    };
 }

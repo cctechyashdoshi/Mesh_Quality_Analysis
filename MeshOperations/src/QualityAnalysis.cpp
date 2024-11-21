@@ -78,12 +78,13 @@ double QualityAnalysis::QualityAnalysis::calculateSingleTriangleInteriorAngle(Ge
 double QualityAnalysis::QualityAnalysis::caculateTotalsurfaceArea(ModifiedTriangulation triangulation)
 {
     double totalSurfaceArea = 0;
+    ModifiedTriangulation mt;
 
     for (ModifiedTriangle triangle : triangulation.mTriangles)
     {
-        std::vector<double> vertex1 = triangulation.convertIndicesToDoublePoints(triangle.P1());
-        std::vector<double> vertex2 = triangulation.convertIndicesToDoublePoints(triangle.P2());
-        std::vector<double> vertex3 = triangulation.convertIndicesToDoublePoints(triangle.P3());
+        std::vector<double> vertex1 = mt.convertIndicesToDoublePoints(triangle.P1());
+        std::vector<double> vertex2 = mt.convertIndicesToDoublePoints(triangle.P2());
+        std::vector<double> vertex3 = mt.convertIndicesToDoublePoints(triangle.P3());
 
         double side1 = QualityAnalysis::QualityAnalysis::calculateDistanceBetweenPoints(vertex1, vertex2);
         double side2 = QualityAnalysis::QualityAnalysis::calculateDistanceBetweenPoints(vertex2, vertex3);

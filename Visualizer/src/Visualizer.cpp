@@ -120,7 +120,7 @@ void Visualizer::fireFunction(int option)
     if (option == 1) 
     {
         BoundingBox boundingBox;
-        boundingBox.createBoundingBoxTriangulation(triangulation);
+        boundingBox.createBoundingBoxTriangulation();
         OpenGlWidget::Data data;
         data = Visualizer::convertBoundingBoxArrayToGraphcsObject(boundingBox.boundingBoxArray);
         QVector<OpenGlWidget::Data> dataList = { data };
@@ -166,10 +166,10 @@ void Visualizer::onLoadFileClick()
         param1Value = triangulation.mTriangles.size();  // No. of Triangles
         param2Value = qualityAnalysis.caculateTotalsurfaceArea(triangulation);  // Surface Area calculation method
         param3Value = meshInformation.triangleDensity(triangulation);  // Triangle Density calculation method
-        param4Value = meshInformation.objectLength(triangulation);  // Object Length 
+        param4Value = meshInformation.objectLength();  // Object Length 
         param5Value = meshInformation.numberOfVertices(triangulation);  // No. of Vertices
-        param6Value = meshInformation.objectHeight(triangulation);  // Object Height 
-        param7Value = meshInformation.objectBreadth(triangulation);  // Object Breadth
+        param6Value = meshInformation.objectHeight();  // Object Height 
+        param7Value = meshInformation.objectBreadth();  // Object Breadth
 
         param1textbox->setText(QString::number(param1Value));
         param2textbox->setText(QString::number(param2Value));
@@ -178,15 +178,6 @@ void Visualizer::onLoadFileClick()
         param5textbox->setText(QString::number(param5Value));
         param6textbox->setText(QString::number(param6Value));
         param7textbox->setText(QString::number(param7Value));
-
-        ModifiedTriangulation modifiedTriagulation;
-        BoundingBox boundingBox;
-        modifiedTriagulation._minX = boundingBox.minX(triangulation);
-		modifiedTriagulation._maxX = boundingBox.maxX(triangulation);   
-		modifiedTriagulation._minY = boundingBox.minY(triangulation);
-		modifiedTriagulation._maxY = boundingBox.maxY(triangulation);
-		modifiedTriagulation._minZ = boundingBox.minZ(triangulation);
-		modifiedTriagulation._maxZ = boundingBox.maxZ(triangulation);
     }
 }
 

@@ -20,22 +20,22 @@ double MeshInformation::triangleDensity(ModifiedTriangulation triangulation)
     return meshDensity;
 }
 
-double MeshInformation::objectLength(ModifiedTriangulation triangulation)
+double MeshInformation::objectLength()
 {
     BoundingBox boundingBox;
-    return boundingBox.maxX(triangulation) - boundingBox.minX(triangulation);
+    return boundingBox.xMax - boundingBox.xMin;
 }
 
-double MeshInformation::objectBreadth(ModifiedTriangulation triangulation)
+double MeshInformation::objectBreadth()
 {
     BoundingBox boundingBox;
-    return boundingBox.maxY(triangulation) - boundingBox.minY(triangulation);
+    return boundingBox.yMax - boundingBox.yMin;
 }
 
-double MeshInformation::objectHeight(ModifiedTriangulation triangulation)
+double MeshInformation::objectHeight()
 {
     BoundingBox boundingBox;
-    return boundingBox.maxZ(triangulation) - boundingBox.minZ(triangulation);
+    return boundingBox.zMax - boundingBox.zMin;
 }
 
 size_t MeshInformation::numberOfTriangles(ModifiedTriangulation triangulation)

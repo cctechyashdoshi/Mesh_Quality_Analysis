@@ -11,5 +11,6 @@ namespace Geometry{
 
         std::vector<double> UniqueNumbers;
         std::vector<Triangle> Triangles;
+        
     };
 }

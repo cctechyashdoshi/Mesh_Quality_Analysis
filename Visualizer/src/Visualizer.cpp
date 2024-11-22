@@ -4,8 +4,7 @@
 #include "Visualizer.h"
 #include "STLReader.h"
 #include "OBJReader.h"
-#include "Anaylzer.h"
-
+#include "QualityAnalysis.h"
 
 Visualizer::Visualizer(QWidget* parent) : QMainWindow(parent)
 {
@@ -115,11 +114,9 @@ void Visualizer::setupUi()
 
 void Visualizer::fireFunction(int option)
 {
-    QualityAnalysis::Anaylzer analyzer;
+	QualityAnalysis::QualityAnalysis analyzer;
     if (option == 1) 
     {
-        auto angleAnalysis = analyzer.AngleAnalyzer(triangulation);
-        int i = 0;
         //BoundingBox boundingBox;
         //boundingBox.createBoundingBoxTriangulation();
         //OpenGlWidget::Data data;
@@ -129,25 +126,17 @@ void Visualizer::fireFunction(int option)
     }
     else if (option == 2)
     {
-		auto lengthAnalysis = analyzer.LengthAnalyzer(triangulation);
-        int j = 0;
-		/*MeshOperations::QualityAnalysis qualityAnalysis;
-        orthogonalityTriangulation = qualityAnalysis.createAspectRatioTriangulation(triangulation);*/
-        /*OpenGlWidget::Data data;
-        data= Visualizer::convertTrianglulationToGraphicsObject(orthogonalityTriangulation);
-        QVector<OpenGlWidget::Data> dataList = {data};
-        openglWidgetInput->setData(dataList);*/
+        std::vector<std::vector<QualityAnalysis::QualityAnalysis::TriangleAnalysisResult>> orthogonalityAnalysis = analyzer.calculateOrthogonality(triangulation);
+        OpenGlWidget::Data data;
+        data= Visualizer::convertMeshQualityStructToGraphicsObject(orthogonalityAnalysis);
+        openglWidgetInput->addObject(data);
     }
 	else if (option == 3)
 	{
-
-        Triangulation aspectRatioTriangulation;
-        /*MeshOperations::QualityAnalysis qualityAnalysis;
-        aspectRatioTriangulation = qualityAnalysis.createOrthogonalityTriangulation(triangulation);*/
-        /*OpenGlWidget::Data data;
-		data = Visualizer::convertTrianglulationToGraphicsObject(aspectRatioTriangulation);
-        QVector<OpenGlWidget::Data> dataList = { data };
-        openglWidgetInput->setData(dataList);*/
+        std::vector<std::vector<QualityAnalysis::QualityAnalysis::TriangleAnalysisResult>> aspectRatioAnalysis = analyzer.calculateAspectRatio(triangulation);
+        OpenGlWidget::Data data;
+        data = Visualizer::convertMeshQualityStructToGraphicsObject(aspectRatioAnalysis);
+        openglWidgetInput->addObject(data); 
 	}
 }
 
@@ -158,10 +147,8 @@ void Visualizer::onLoadFileClick()
     {
         inputFilePath = fileName;
         triangulation = readFile(inputFilePath);
-        OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(triangulation);
-        QVector<OpenGlWidget::Data> dataVector;
-        dataVector.append(data);
-        openglWidgetInput->setData(dataVector);
+        OpenGlWidget::Data data = convertTriangulationToGraphicsObject(triangulation);
+        openglWidgetInput->addObject(data);
 
   //      MeshOperations::QualityAnalysis qualityAnalysis(triangulation);
 		//MeshOperations::MeshInformation meshInformation;
@@ -218,35 +205,88 @@ Triangulation Visualizer::readFile(const QString& filePath)
 //    return data;
 //}
 
-OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(Triangulation& inTriangulation)
+OpenGlWidget::Data Visualizer::convertTriangulationToGraphicsObject(Geometry::Triangulation triangulation)
 {
     int Vcount = 0;
     OpenGlWidget::Data data;
-    for each (Triangle triangle in inTriangulation.Triangles)
+    for each (Triangle triangle in triangulation.Triangles)
     {
         for each (Point point in triangle.Points())
         {
-            data.vertices.push_back(inTriangulation.UniqueNumbers[point.X()]);
-            data.vertices.push_back(inTriangulation.UniqueNumbers[point.Y()]);
-            data.vertices.push_back(inTriangulation.UniqueNumbers[point.Z()]);
+            data.vertices.push_back(triangulation.UniqueNumbers[point.X()]);
+            data.vertices.push_back(triangulation.UniqueNumbers[point.Y()]);
+            data.vertices.push_back(triangulation.UniqueNumbers[point.Z()]);
         }
 
         Point normal = triangle.Normal();
-        for (int i = 0; i < 3; i++)
+        for (size_t i = 0; i < 3; i++)
         {
-            data.normals.push_back(inTriangulation.UniqueNumbers[normal.X()]);
-            data.normals.push_back(inTriangulation.UniqueNumbers[normal.Y()]);
-            data.normals.push_back(inTriangulation.UniqueNumbers[normal.Z()]);
+            data.normals.push_back(triangulation.UniqueNumbers[normal.X()]);
+            data.normals.push_back(triangulation.UniqueNumbers[normal.Y()]);
+            data.normals.push_back(triangulation.UniqueNumbers[normal.Z()]);
         }
-
-        data.drawStyle = OpenGlWidget::DrawStyle::TRIANGLES;
-
         progressBar->setValue(Vcount);
-        progressBar->setRange(0, inTriangulation.Triangles.size() - 1);
+        progressBar->setRange(0, triangulation.Triangles.size() - 1);
         Vcount++;
     }
     return data;
 }
+
+OpenGlWidget::Data Visualizer::convertMeshQualityStructToGraphicsObject(std::vector<std::vector<QualityAnalysis::QualityAnalysis::TriangleAnalysisResult>> qualityStruct)
+{
+    int Vcount = 0;
+    OpenGlWidget::Data data;
+
+    for (const auto& triangleGroup : qualityStruct) {
+        for (const auto& result : triangleGroup) {
+            const Geometry::Triangle& triangle = result.triangle;
+            int value = result.value;
+
+            // Extract points and push them into the vertices vector
+            for (const auto& point : triangle.Points()) {
+                data.vertices.push_back(point.X());
+                data.vertices.push_back(point.Y());
+                data.vertices.push_back(point.Z());
+            }
+
+            // Extract normal and push it into the normals vector
+            const Point& normal = triangle.Normal();
+            for (int i = 0; i < 3; i++) {
+                data.normals.push_back(normal.X());
+                data.normals.push_back(normal.Y());
+                data.normals.push_back(normal.Z());
+            }
+
+            if (value == 0) 
+            {
+                for (int i = 0; i < 3; ++i) 
+                {
+                    data.colors.push_back(1.0f);
+                    data.colors.push_back(0.0f);
+                    data.colors.push_back(0.0f);
+                }
+            }
+            else 
+            {
+                for (int i = 0; i < 3; ++i) 
+                {
+                    data.colors.push_back(0.0f);
+                    data.colors.push_back(1.0f);
+                    data.colors.push_back(0.0f);
+                }
+            }
+
+            data.drawStyle = OpenGlWidget::DrawStyle::TRIANGLES;
+
+            progressBar->setValue(Vcount);
+            progressBar->setRange(0, qualityStruct.size() * triangleGroup.size() - 1);
+            Vcount++;
+        }
+    }
+
+    return data;
+}
+
 
 void Visualizer::onFirstCheckBoxChanged(int state)
 {

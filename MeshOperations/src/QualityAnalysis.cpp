@@ -1,34 +1,36 @@
 #include "QualityAnalysis.h"
-#include "Triangulation.h"
-#include "BoundingBox.h"
-#include <cmath>
-#include <algorithm>
-#include <vector>
-#include <set>
-#include <iostream>
-#include <limits>
+#include "Anaylzer.h"
 
-#define PI 3.14159265358979323846
-
-using namespace Geometry;
-
-std::vector<std::vector<Triangle, int>> QualityAnalysis::QualityAnalysis::angleInformation(Triangulation& triangulation,std::vector<int> angleAnalysis)
+namespace QualityAnalysis
 {
-	std::vector<std::vector<Triangle, int>> angleList;
-	for (int i = 0; i < triangulation.Triangles.size(); i++)
+	std::vector<std::vector<QualityAnalysis::QualityAnalysis::TriangleAnalysisResult>> QualityAnalysis::calculateOrthogonality( Geometry::Triangulation& triangulation)
 	{
-		std::vector<Triangle, int> triangleint((triangulation.Triangles[i], angleAnalysis[i]));
-		angleList.push_back(triangleint);
-	}
-}
+		Anaylzer anaylzer;
+		std::vector<std::vector<TriangleAnalysisResult>> angleList;
+		std::vector<int> angleAnalysis = anaylzer.AngleAnalyzer(triangulation);
 
-std::vector<std::vector<Triangle, int>> QualityAnalysis::QualityAnalysis::lengthInformation(Triangulation& triangulation, std::vector<int> lengthAnalysis)
-{
-	std::vector<std::vector<Triangle, int>> angleList;
-	for (int i = 0; i < triangulation.Triangles.size(); i++)
-	{
-		std::vector<Triangle, int> triangleint((triangulation.Triangles[i], lengthAnalysis[i]));
-		angleList.push_back(triangleint);
+		for (size_t i = 0; i < triangulation.Triangles.size(); ++i)
+		{
+			std::vector<TriangleAnalysisResult> triangleAnalysis;
+			TriangleAnalysisResult result = { triangulation.Triangles[i], angleAnalysis[i] };
+			triangleAnalysis.push_back(result);
+			angleList.push_back(triangleAnalysis);
+		}
+		return angleList;
 	}
-	return angleList
+
+	std::vector<std::vector<QualityAnalysis::QualityAnalysis::TriangleAnalysisResult>> QualityAnalysis::calculateAspectRatio( Geometry::Triangulation& triangulation)
+	{
+		Anaylzer anaylzer;
+		std::vector<std::vector<TriangleAnalysisResult>> aspectRatioList;
+		std::vector<int> lengthAnalysis = anaylzer.LengthAnalyzer(triangulation);
+		for (size_t i = 0; i < triangulation.Triangles.size(); ++i)
+		{
+			std::vector<TriangleAnalysisResult> triangleAnalysis;
+			TriangleAnalysisResult result = { triangulation.Triangles[i], lengthAnalysis[i] };
+			triangleAnalysis.push_back(result);
+			aspectRatioList.push_back(triangleAnalysis);
+		}
+		return aspectRatioList;
+	}
 }

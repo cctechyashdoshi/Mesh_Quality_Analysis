@@ -1,8 +1,11 @@
 #pragma once
 
+#include <string> 
 #include "Triangulation.h"
+#include <vector>
 #include "Reader.h"
-#include "Point.h"
+
+using namespace Geometry;
 
 class OBJReader : public Reader
 {
@@ -11,6 +14,6 @@ public:
 	~OBJReader();
 
 	void read(const std::string& fileName, Triangulation& tri);
+	void helper(double xyz[3], std::vector<Point>&, std::map<double, int, OBJReader>&, Triangulation& triangulation);
 	bool operator()(double a, double b) const;
-	Geometry::Point vectorReader(const QStringList& lineList, std::map<double, int, OBJReader>& uniqueMap, Triangulation& tri);
 };

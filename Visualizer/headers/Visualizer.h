@@ -8,6 +8,7 @@
 #include <QCheckBox>
 #include "OpenGlWidget.h"
 #include "Triangulation.h"
+#include "QualityAnalysis.h"
 
 using namespace Geometry;
 
@@ -27,7 +28,6 @@ private slots:
 
 private:
     void setupUi();
-    OpenGlWidget::Data convertTrianglulationToGraphicsObject(Triangulation& inTriangulation);
     //OpenGlWidget::Data convertBoundingBoxArrayToGraphcsObject(Triangulation& inTriangulation); 
     Triangulation readFile(const QString& filePath);
 	void Visualizer::fireFunction(int option);
@@ -78,4 +78,6 @@ private:
     QWidget* containerWidget;
 
     QString inputFilePath;
+    OpenGlWidget::Data convertTriangulationToGraphicsObject(Geometry::Triangulation triangulation);
+    OpenGlWidget::Data convertMeshQualityStructToGraphicsObject(std::vector<std::vector<QualityAnalysis::QualityAnalysis::TriangleAnalysisResult>> Qualitystruct);
 };

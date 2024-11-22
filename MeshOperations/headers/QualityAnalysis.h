@@ -1,13 +1,20 @@
 #pragma once
 
 #include "Triangulation.h"
+#include <vector>
 
-using namespace Geometry;	
 namespace QualityAnalysis
 {
 	class QualityAnalysis
 	{
-		std::vector<std::vector<Triangle, int>> angleInformation(Triangulation& triangulation, std::vector<int> angleAnalysis);
-		std::vector<std::vector<Triangle, int>> lengthInformation(Triangulation& triangulation, std::vector<int> lengthAnalysis);
+	public:
+		struct TriangleAnalysisResult {
+			Geometry::Triangle triangle;
+			int value;
+		};
+
+		std::vector<std::vector<TriangleAnalysisResult>> calculateOrthogonality(Geometry::Triangulation& triangulation);
+
+		std::vector<std::vector<TriangleAnalysisResult>> calculateAspectRatio(Geometry::Triangulation& triangulation);
 	};
 }

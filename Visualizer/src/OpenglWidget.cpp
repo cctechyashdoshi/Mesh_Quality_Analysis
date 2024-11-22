@@ -30,35 +30,14 @@ int OpenGlWidget::addObject(Data inData)
 void OpenGlWidget::removeObject(int id)
 {
     makeCurrent();
-    
-    // Find the index of the drawing object with the given id
-    int index = idToIndex.value(id, -1);
-    
-    if (index != -1)
-    {
-        // Remove the drawing object from the vector
-        DrawingObject drawingObject = drawingObjects.at(index);
-        drawingObjects.erase(drawingObjects.begin() + index);
-        
-        // Update the idToIndex map
-        idToIndex.remove(id);
-        for (int i = index; i <= drawingObjects.size(); i++)
-        {
-            if(idToIndex.contains(i + 1))
-            {
-                int objectId = idToIndex.key(i);
-                idToIndex[i] = objectId;
-            }
-        }
-        
-        // Destroy the VAO and VBO of the removed drawing object
-        drawingObject.vao->destroy();
-        drawingObject.vbo.destroy();
-        
-        // Update the OpenGL context
-        update();
+
+    if (id > 0 && id < drawingObjects.size()) {
+        drawingObjects[id].vao->destroy();
+        drawingObjects[id].vbo.destroy();
     }
-    
+
+    update();
+
     doneCurrent();
 }
 

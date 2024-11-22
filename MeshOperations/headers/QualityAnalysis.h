@@ -13,8 +13,8 @@ namespace QualityAnalysis
 			int value;
 		};
 
-		std::vector<std::vector<TriangleAnalysisResult>> calculateOrthogonality(Geometry::Triangulation& triangulation);
+		std::vector<std::vector<TriangleAnalysisResult>> calculateOrthogonality(Geometry::Triangulation triangulation);
 
-		std::vector<std::vector<TriangleAnalysisResult>> calculateAspectRatio(Geometry::Triangulation& triangulation);
+		std::vector<std::vector<TriangleAnalysisResult>> calculateAspectRatio(Geometry::Triangulation triangulation);
 	};
 }

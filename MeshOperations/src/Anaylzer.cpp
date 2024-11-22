@@ -24,7 +24,7 @@ double Anaylzer::calculateLength(std::vector<double> p1, std::vector<double> p2)
     return std::sqrt(dx * dx + dy * dy + dz * dz);
 }
 
-double calculateAngle(std::vector<double> p1, std::vector<double> p2, std::vector<double> p3)
+double Anaylzer::calculateAngle(std::vector<double> p1, std::vector<double> p2, std::vector<double> p3)
 {
     std::vector<double> v1 = { p1[0] - p2[0], p1[1] - p2[1], p1[2] - p2[2] };
     std::vector<double> v2 = { p3[0] - p2[0], p3[1] - p2[1], p3[2] - p2[2] };
@@ -49,7 +49,7 @@ std::vector<double> Anaylzer::calculateTriangleAngles(std::vector<double> A,std:
     return std::vector<double> {angleA,angleB,angleC};
 }
 
-std::vector<int> Anaylzer::AngleAnalyzer(Geometry::Triangulation tri)
+std::vector<int> Anaylzer::angleAnalyzer(Geometry::Triangulation tri)
 {
 	std::vector<int> angleAnalysis;
     for (Geometry::Triangle triangle : tri.Triangles)
@@ -59,7 +59,7 @@ std::vector<int> Anaylzer::AngleAnalyzer(Geometry::Triangulation tri)
         std::vector<double> p3 = { tri.UniqueNumbers[triangle.P3().X()],tri.UniqueNumbers[triangle.P3().Y()] ,tri.UniqueNumbers[triangle.P3().Z()] };
         std::vector<double> angles = calculateTriangleAngles(p1, p2, p3);
 		double avgAngle = (angles[0] + angles[1] + angles[2]) / 3;
-        if (avgAngle >= 50 && avgAngle <= 70)
+        if (avgAngle >= 55 && avgAngle <= 65)
         {
 			angleAnalysis.push_back(1);
         }
@@ -69,7 +69,7 @@ std::vector<int> Anaylzer::AngleAnalyzer(Geometry::Triangulation tri)
 	return angleAnalysis;   
 }
 
-std::vector<int> Anaylzer::LengthAnalyzer(Geometry::Triangulation tri)
+std::vector<int> Anaylzer::lengthAnalyzer(Geometry::Triangulation tri)
 {
     std::vector<int> lengthAnalysis;
     for (Geometry::Triangle triangle : tri.Triangles)
@@ -82,7 +82,7 @@ std::vector<int> Anaylzer::LengthAnalyzer(Geometry::Triangulation tri)
         double l2 = calculateLength(p2, p3);
         double l3 = calculateLength(p3, p1);
         double avgaspectratio = std::max({ l1, l2, l3 }) / std::min({ l1, l2, l3 }); 
-        if (avgaspectratio >= 0.8 && avgaspectratio <= 1.2)
+        if (avgaspectratio >= 0.9 && avgaspectratio <= 1.1)
         {
             lengthAnalysis.push_back(1);
         }

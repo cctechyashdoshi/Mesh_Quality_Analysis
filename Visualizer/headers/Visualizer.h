@@ -35,6 +35,9 @@ private:
 private:
 	Triangulation triangulation;
 
+	std::vector<std::vector<QualityAnalysis::QualityAnalysis::TriangleAnalysisResult>> orthogonalityAnalysis;
+	std::vector<std::vector<QualityAnalysis::QualityAnalysis::TriangleAnalysisResult>> aspectRatioAnalysis;
+
     QPushButton* loadFile;
     QPushButton* translate;
     QPushButton* exportFile;

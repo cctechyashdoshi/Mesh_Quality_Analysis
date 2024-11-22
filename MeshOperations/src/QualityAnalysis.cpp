@@ -3,7 +3,7 @@
 
 namespace QualityAnalysis
 {
-	std::vector<std::vector<QualityAnalysis::QualityAnalysis::TriangleAnalysisResult>> QualityAnalysis::calculateOrthogonality( Geometry::Triangulation& triangulation)
+	std::vector<std::vector<QualityAnalysis::QualityAnalysis::TriangleAnalysisResult>> QualityAnalysis::calculateOrthogonality( Geometry::Triangulation triangulation)
 	{
 		Anaylzer anaylzer;
 		std::vector<std::vector<TriangleAnalysisResult>> angleList;
@@ -19,7 +19,7 @@ namespace QualityAnalysis
 		return angleList;
 	}
 
-	std::vector<std::vector<QualityAnalysis::QualityAnalysis::TriangleAnalysisResult>> QualityAnalysis::calculateAspectRatio( Geometry::Triangulation& triangulation)
+	std::vector<std::vector<QualityAnalysis::QualityAnalysis::TriangleAnalysisResult>> QualityAnalysis::calculateAspectRatio( Geometry::Triangulation triangulation)
 	{
 		Anaylzer anaylzer;
 		std::vector<std::vector<TriangleAnalysisResult>> aspectRatioList;

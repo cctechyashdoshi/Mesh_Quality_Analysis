@@ -29,29 +29,29 @@ void Visualizer::setupUi()
     secondCheckBox = new QCheckBox("Aspect Ratio", containerWidget);
     thirdCheckBox = new QCheckBox("Orthogonality", containerWidget);
 
-    param1textbox = new QTextEdit("", containerWidget);
-    param2textbox = new QTextEdit("", containerWidget);
-    param3textbox = new QTextEdit("", containerWidget);
-    param4textbox = new QTextEdit("", containerWidget);
-    param5textbox = new QTextEdit("", containerWidget);
-    param6textbox = new QTextEdit("", containerWidget);
-    param7textbox = new QTextEdit("", containerWidget);
+    //param1textbox = new QTextEdit("", containerWidget);
+    //param2textbox = new QTextEdit("", containerWidget);
+    //param3textbox = new QTextEdit("", containerWidget);
+    //param4textbox = new QTextEdit("", containerWidget);
+    //param5textbox = new QTextEdit("", containerWidget);
+    //param6textbox = new QTextEdit("", containerWidget);
+    //param7textbox = new QTextEdit("", containerWidget);
 
-    param1textbox->setReadOnly(true);
-    param2textbox->setReadOnly(true);
-    param3textbox->setReadOnly(true);
-    param4textbox->setReadOnly(true);
-    param5textbox->setReadOnly(true);
-    param6textbox->setReadOnly(true);
-    param7textbox->setReadOnly(true);
+    //param1textbox->setReadOnly(true);
+    //param2textbox->setReadOnly(true);
+    //param3textbox->setReadOnly(true);
+    //param4textbox->setReadOnly(true);
+    //param5textbox->setReadOnly(true);
+    //param6textbox->setReadOnly(true);
+    //param7textbox->setReadOnly(true);
 
-    Parameter1 = createReadOnlyTextEdit("No. of Triangles", containerWidget);
-    Parameter2 = createReadOnlyTextEdit("Surface Area (sq.unit)", containerWidget);
-    Parameter3 = createReadOnlyTextEdit("Triangle Density", containerWidget);
-    Parameter4 = createReadOnlyTextEdit("Object Length (unit)", containerWidget);
-    Parameter5 = createReadOnlyTextEdit("No. of Vertices", containerWidget);
-    Parameter6 = createReadOnlyTextEdit("Object Height (unit)", containerWidget);
-    Parameter7 = createReadOnlyTextEdit("Object Breadth (unit)", containerWidget);
+    //Parameter1 = createReadOnlyTextEdit("No. of Triangles", containerWidget);
+    //Parameter2 = createReadOnlyTextEdit("Surface Area (sq.unit)", containerWidget);
+    //Parameter3 = createReadOnlyTextEdit("Triangle Density", containerWidget);
+    //Parameter4 = createReadOnlyTextEdit("Object Length (unit)", containerWidget);
+    //Parameter5 = createReadOnlyTextEdit("No. of Vertices", containerWidget);
+    //Parameter6 = createReadOnlyTextEdit("Object Height (unit)", containerWidget);
+    //Parameter7 = createReadOnlyTextEdit("Object Breadth (unit)", containerWidget);
 
     QString buttonStyle = "QPushButton {"
         "    background-color: #4CAF50;"
@@ -84,20 +84,20 @@ void Visualizer::setupUi()
     containerLayout->addWidget(firstCheckBox);
     containerLayout->addWidget(secondCheckBox);
     containerLayout->addWidget(thirdCheckBox);
-    containerLayout->addWidget(Parameter1);
-    containerLayout->addWidget(param1textbox);
-    containerLayout->addWidget(Parameter2);
-    containerLayout->addWidget(param2textbox);
-    containerLayout->addWidget(Parameter3);
-    containerLayout->addWidget(param3textbox);
-    containerLayout->addWidget(Parameter4);
-    containerLayout->addWidget(param4textbox);
-    containerLayout->addWidget(Parameter5);
-    containerLayout->addWidget(param5textbox);
-    containerLayout->addWidget(Parameter6);
-    containerLayout->addWidget(param6textbox);
-    containerLayout->addWidget(Parameter7);
-    containerLayout->addWidget(param7textbox);
+    //containerLayout->addWidget(Parameter1);
+    //containerLayout->addWidget(param1textbox);
+    //containerLayout->addWidget(Parameter2);
+    //containerLayout->addWidget(param2textbox);
+    //containerLayout->addWidget(Parameter3);
+    //containerLayout->addWidget(param3textbox);
+    //containerLayout->addWidget(Parameter4);
+    //containerLayout->addWidget(param4textbox);
+    //containerLayout->addWidget(Parameter5);
+    //containerLayout->addWidget(param5textbox);
+    //containerLayout->addWidget(Parameter6);
+    //containerLayout->addWidget(param6textbox);
+    //containerLayout->addWidget(Parameter7);
+    //containerLayout->addWidget(param7textbox);
 
     QGridLayout* layout = new QGridLayout();
     QWidget* centralWidget = new QWidget(this);
@@ -126,14 +126,15 @@ void Visualizer::fireFunction(int option)
     }
     else if (option == 2)
     {
-        std::vector<std::vector<QualityAnalysis::QualityAnalysis::TriangleAnalysisResult>> orthogonalityAnalysis = analyzer.calculateOrthogonality(triangulation);
+        
         OpenGlWidget::Data data;
         data= Visualizer::convertMeshQualityStructToGraphicsObject(orthogonalityAnalysis);
         openglWidgetInput->addObject(data);
+        
     }
 	else if (option == 3)
 	{
-        std::vector<std::vector<QualityAnalysis::QualityAnalysis::TriangleAnalysisResult>> aspectRatioAnalysis = analyzer.calculateAspectRatio(triangulation);
+        
         OpenGlWidget::Data data;
         data = Visualizer::convertMeshQualityStructToGraphicsObject(aspectRatioAnalysis);
         openglWidgetInput->addObject(data); 
@@ -150,6 +151,10 @@ void Visualizer::onLoadFileClick()
         OpenGlWidget::Data data = convertTriangulationToGraphicsObject(triangulation);
         openglWidgetInput->addObject(data);
 
+        QualityAnalysis::QualityAnalysis analyzer;
+        orthogonalityAnalysis = analyzer.calculateOrthogonality(triangulation);
+        aspectRatioAnalysis = analyzer.calculateAspectRatio(triangulation);
+
   //      MeshOperations::QualityAnalysis qualityAnalysis(triangulation);
 		//MeshOperations::MeshInformation meshInformation;
 
@@ -161,13 +166,13 @@ void Visualizer::onLoadFileClick()
   //      param6Value = meshInformation.objectHeight();  // Object Height 
   //      param7Value = meshInformation.objectBreadth();  // Object Breadth
 
-        param1textbox->setText(QString::number(param1Value));
+       /* param1textbox->setText(QString::number(param1Value));
         param2textbox->setText(QString::number(param2Value));
         param3textbox->setText(QString::number(param3Value));
         param4textbox->setText(QString::number(param4Value));
         param5textbox->setText(QString::number(param5Value));
         param6textbox->setText(QString::number(param6Value));
-        param7textbox->setText(QString::number(param7Value));
+        param7textbox->setText(QString::number(param7Value));*/
     }
 }
 
@@ -244,17 +249,17 @@ OpenGlWidget::Data Visualizer::convertMeshQualityStructToGraphicsObject(std::vec
 
             // Extract points and push them into the vertices vector
             for (const auto& point : triangle.Points()) {
-                data.vertices.push_back(point.X());
-                data.vertices.push_back(point.Y());
-                data.vertices.push_back(point.Z());
+                data.vertices.push_back(triangulation.UniqueNumbers[point.X()]);
+                data.vertices.push_back(triangulation.UniqueNumbers[point.Y()]);
+                data.vertices.push_back(triangulation.UniqueNumbers[point.Z()]);
             }
 
             // Extract normal and push it into the normals vector
             const Point& normal = triangle.Normal();
             for (int i = 0; i < 3; i++) {
-                data.normals.push_back(normal.X());
-                data.normals.push_back(normal.Y());
-                data.normals.push_back(normal.Z());
+                data.normals.push_back(triangulation.UniqueNumbers[normal.Z()]);
+                data.normals.push_back(triangulation.UniqueNumbers[normal.Z()]);
+                data.normals.push_back(triangulation.UniqueNumbers[normal.Z()]);
             }
 
             if (value == 0) 

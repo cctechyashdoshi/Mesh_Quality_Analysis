@@ -35,8 +35,8 @@ private:
 private:
 	Triangulation triangulation;
 
-	std::vector<std::vector<QualityAnalysis::QualityAnalysis::TriangleAnalysisResult>> orthogonalityAnalysis;
-	std::vector<std::vector<QualityAnalysis::QualityAnalysis::TriangleAnalysisResult>> aspectRatioAnalysis;
+	std::vector<QualityAnalysis::MeshAnalysis::TriangleAnalysisResult> orthogonalityAnalysis;
+	std::vector<QualityAnalysis::MeshAnalysis::TriangleAnalysisResult> aspectRatioAnalysis;
 
     QPushButton* loadFile;
     QPushButton* translate;
@@ -82,5 +82,5 @@ private:
 
     QString inputFilePath;
     OpenGlWidget::Data convertTriangulationToGraphicsObject(Geometry::Triangulation triangulation);
-    OpenGlWidget::Data convertMeshQualityStructToGraphicsObject(std::vector<std::vector<QualityAnalysis::QualityAnalysis::TriangleAnalysisResult>> Qualitystruct);
+    OpenGlWidget::Data convertMeshQualityStructToGraphicsObject(std::vector<QualityAnalysis::MeshAnalysis::TriangleAnalysisResult> Qualitystruct);
 };

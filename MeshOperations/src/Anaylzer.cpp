@@ -41,35 +41,53 @@ double Anaylzer::calculateAngle(std::vector<double> p1, std::vector<double> p2, 
     return angleDegrees;
 }
 
-std::vector<double> Anaylzer::calculateTriangleAngles(std::vector<double> A,std::vector<double> B,std::vector<double> C)
+std::vector<double> Anaylzer::calculateTriangleAngles(std::vector<double> a,std::vector<double> b,std::vector<double> c)
 {
-    double angleA = calculateAngle(B, A, C);
-    double angleB = calculateAngle(A, B, C);
-    double angleC = calculateAngle(A, C, B);
+    double angleA = calculateAngle(b, a, c);
+    double angleB = calculateAngle(a, b, c);
+    double angleC = calculateAngle(a, c, b);
     return std::vector<double> {angleA,angleB,angleC};
 }
 
-std::vector<int> Anaylzer::angleAnalyzer(Geometry::Triangulation tri)
+std::vector<int> Anaylzer::identifyGoodAndBadAngles(Geometry::Triangulation& tri)
 {
-	std::vector<int> angleAnalysis;
+    std::vector<int> angleAnalysis;
+
     for (Geometry::Triangle triangle : tri.Triangles)
     {
-        std::vector<double> p1 = { tri.UniqueNumbers[triangle.P1().X()],tri.UniqueNumbers[triangle.P1().Y()] ,tri.UniqueNumbers[triangle.P1().Z()] };
-        std::vector<double> p2 = { tri.UniqueNumbers[triangle.P2().X()],tri.UniqueNumbers[triangle.P2().Y()] ,tri.UniqueNumbers[triangle.P2().Z()] };
-        std::vector<double> p3 = { tri.UniqueNumbers[triangle.P3().X()],tri.UniqueNumbers[triangle.P3().Y()] ,tri.UniqueNumbers[triangle.P3().Z()] };
+        std::vector<double> p1 = { tri.UniqueNumbers[triangle.P1().X()], tri.UniqueNumbers[triangle.P1().Y()], tri.UniqueNumbers[triangle.P1().Z()] };
+        std::vector<double> p2 = { tri.UniqueNumbers[triangle.P2().X()], tri.UniqueNumbers[triangle.P2().Y()], tri.UniqueNumbers[triangle.P2().Z()] };
+        std::vector<double> p3 = { tri.UniqueNumbers[triangle.P3().X()], tri.UniqueNumbers[triangle.P3().Y()], tri.UniqueNumbers[triangle.P3().Z()] };
+
         std::vector<double> angles = calculateTriangleAngles(p1, p2, p3);
-		double avgAngle = (angles[0] + angles[1] + angles[2]) / 3;
-        if (avgAngle >= 55 && avgAngle <= 65)
+
+        double minAngle = 40.0;
+        double maxAngle = 120.0;
+
+        bool anyOutOfRange = false;
+        for (double angle : angles)
         {
-			angleAnalysis.push_back(1);
+            if (angle < minAngle || angle > maxAngle)
+            {
+                anyOutOfRange = true;
+                break; 
+            }
+        }
+
+        if (anyOutOfRange)
+        {
+            angleAnalysis.push_back(0);
         }
         else
-			angleAnalysis.push_back(0);
-	}
-	return angleAnalysis;   
+        {
+            angleAnalysis.push_back(1);
+        }
+    }
+
+    return angleAnalysis;
 }
 
-std::vector<int> Anaylzer::lengthAnalyzer(Geometry::Triangulation tri)
+std::vector<int> Anaylzer::identifyGoodAndBadAspectRatio(Geometry::Triangulation& tri)
 {
     std::vector<int> lengthAnalysis;
     for (Geometry::Triangle triangle : tri.Triangles)
@@ -82,12 +100,16 @@ std::vector<int> Anaylzer::lengthAnalyzer(Geometry::Triangulation tri)
         double l2 = calculateLength(p2, p3);
         double l3 = calculateLength(p3, p1);
         double avgaspectratio = std::max({ l1, l2, l3 }) / std::min({ l1, l2, l3 }); 
-        if (avgaspectratio >= 0.9 && avgaspectratio <= 1.1)
+		double minAspectRatio = 0.95;
+		double maxAspectRatio = 1.05;
+        if (avgaspectratio >= minAspectRatio && avgaspectratio <= maxAspectRatio)
         {
             lengthAnalysis.push_back(1);
         }
         else
+        {
             lengthAnalysis.push_back(0);
+        }
     }
     return lengthAnalysis;
 }

@@ -114,7 +114,7 @@ void Visualizer::setupUi()
 
 void Visualizer::fireFunction(int option)
 {
-	QualityAnalysis::QualityAnalysis analyzer;
+    QualityAnalysis::MeshAnalysis analyzer;
     if (option == 1) 
     {
         //BoundingBox boundingBox;
@@ -128,7 +128,7 @@ void Visualizer::fireFunction(int option)
     {
         
         OpenGlWidget::Data data;
-        data= Visualizer::convertMeshQualityStructToGraphicsObject(orthogonalityAnalysis);
+        data= Visualizer::convertMeshQualityStructToGraphicsObject(aspectRatioAnalysis);
         openglWidgetInput->addObject(data);
         
     }
@@ -136,7 +136,7 @@ void Visualizer::fireFunction(int option)
 	{
         
         OpenGlWidget::Data data;
-        data = Visualizer::convertMeshQualityStructToGraphicsObject(aspectRatioAnalysis);
+        data = Visualizer::convertMeshQualityStructToGraphicsObject(orthogonalityAnalysis);
         openglWidgetInput->addObject(data); 
 	}
 }
@@ -151,7 +151,7 @@ void Visualizer::onLoadFileClick()
         OpenGlWidget::Data data = convertTriangulationToGraphicsObject(triangulation);
         openglWidgetInput->addObject(data);
 
-        QualityAnalysis::QualityAnalysis analyzer;
+        QualityAnalysis::MeshAnalysis analyzer;
         orthogonalityAnalysis = analyzer.calculateOrthogonality(triangulation);
         aspectRatioAnalysis = analyzer.calculateAspectRatio(triangulation);
 
@@ -237,61 +237,52 @@ OpenGlWidget::Data Visualizer::convertTriangulationToGraphicsObject(Geometry::Tr
     return data;
 }
 
-OpenGlWidget::Data Visualizer::convertMeshQualityStructToGraphicsObject(std::vector<std::vector<QualityAnalysis::QualityAnalysis::TriangleAnalysisResult>> qualityStruct)
+OpenGlWidget::Data Visualizer::convertMeshQualityStructToGraphicsObject(std::vector<QualityAnalysis::MeshAnalysis::TriangleAnalysisResult> qualityStruct)
 {
     int Vcount = 0;
     OpenGlWidget::Data data;
 
-    for (const auto& triangleGroup : qualityStruct) {
-        for (const auto& result : triangleGroup) {
-            const Geometry::Triangle& triangle = result.triangle;
-            int value = result.value;
+    for (const auto& result : qualityStruct) {
+        const Geometry::Triangle& triangle = result.triangle;
+        int value = result.value;
 
-            // Extract points and push them into the vertices vector
-            for (const auto& point : triangle.Points()) {
-                data.vertices.push_back(triangulation.UniqueNumbers[point.X()]);
-                data.vertices.push_back(triangulation.UniqueNumbers[point.Y()]);
-                data.vertices.push_back(triangulation.UniqueNumbers[point.Z()]);
-            }
-
-            // Extract normal and push it into the normals vector
-            const Point& normal = triangle.Normal();
-            for (int i = 0; i < 3; i++) {
-                data.normals.push_back(triangulation.UniqueNumbers[normal.Z()]);
-                data.normals.push_back(triangulation.UniqueNumbers[normal.Z()]);
-                data.normals.push_back(triangulation.UniqueNumbers[normal.Z()]);
-            }
-
-            if (value == 0) 
-            {
-                for (int i = 0; i < 3; ++i) 
-                {
-                    data.colors.push_back(1.0f);
-                    data.colors.push_back(0.0f);
-                    data.colors.push_back(0.0f);
-                }
-            }
-            else 
-            {
-                for (int i = 0; i < 3; ++i) 
-                {
-                    data.colors.push_back(0.0f);
-                    data.colors.push_back(1.0f);
-                    data.colors.push_back(0.0f);
-                }
-            }
-
-            data.drawStyle = OpenGlWidget::DrawStyle::TRIANGLES;
-
-            progressBar->setValue(Vcount);
-            progressBar->setRange(0, qualityStruct.size() * triangleGroup.size() - 1);
-            Vcount++;
+        for (const auto& point : triangle.Points()) {
+            data.vertices.push_back(triangulation.UniqueNumbers[point.X()]);
+            data.vertices.push_back(triangulation.UniqueNumbers[point.Y()]);
+            data.vertices.push_back(triangulation.UniqueNumbers[point.Z()]);
         }
+
+        const Point& normal = triangle.Normal();
+        for (int i = 0; i < 3; i++) {
+            data.normals.push_back(triangulation.UniqueNumbers[normal.X()]);
+            data.normals.push_back(triangulation.UniqueNumbers[normal.Y()]);
+            data.normals.push_back(triangulation.UniqueNumbers[normal.Z()]);
+        }
+
+        if (value == 0) {
+            for (int i = 0; i < 3; ++i) {
+                data.colors.push_back(1.0f);
+                data.colors.push_back(0.0f);
+                data.colors.push_back(0.0f);
+            }
+        }
+        else {
+            for (int i = 0; i < 3; ++i) {
+                data.colors.push_back(0.0f);
+                data.colors.push_back(1.0f);
+                data.colors.push_back(0.0f);
+            }
+        }
+
+        data.drawStyle = OpenGlWidget::DrawStyle::TRIANGLES;
+
+        progressBar->setValue(Vcount);
+        progressBar->setRange(0, qualityStruct.size() - 1);
+        Vcount++;
     }
 
     return data;
 }
-
 
 void Visualizer::onFirstCheckBoxChanged(int state)
 {

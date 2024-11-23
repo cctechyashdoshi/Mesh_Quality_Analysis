@@ -5,16 +5,14 @@
 
 namespace QualityAnalysis
 {
-	class QualityAnalysis
+	class MeshAnalysis
 	{
 	public:
 		struct TriangleAnalysisResult {
 			Geometry::Triangle triangle;
 			int value;
 		};
-
-		std::vector<std::vector<TriangleAnalysisResult>> calculateOrthogonality(Geometry::Triangulation triangulation);
-
-		std::vector<std::vector<TriangleAnalysisResult>> calculateAspectRatio(Geometry::Triangulation triangulation);
+		std::vector<TriangleAnalysisResult> calculateOrthogonality(Geometry::Triangulation& triangulation);
+		std::vector<TriangleAnalysisResult> calculateAspectRatio(Geometry::Triangulation& triangulation);
 	};
 }

@@ -7,6 +7,7 @@ std::vector<QualityAnalysis::MeshAnalysis::TriangleAnalysisResult> QualityAnalys
 {
 	std::vector<TriangleAnalysisResult> angleList;
 	std::vector<int> angleAnalysis = anaylzer.identifyGoodAndBadAngles(triangulation);
+	//std::vector<int> angleAnalysis = {1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0};
 	std::vector<TriangleAnalysisResult> triangleAnalysis; 
 
 	for (size_t i = 0; i < triangulation.Triangles.size(); ++i)

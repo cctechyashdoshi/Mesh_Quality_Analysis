@@ -114,7 +114,7 @@ void Visualizer::setupUi()
 
 void Visualizer::fireFunction(int option)
 {
-    QualityAnalysis::MeshAnalysis analyzer;
+    OpenGlWidget::Data data;
     if (option == 1) 
     {
         //BoundingBox boundingBox;
@@ -126,24 +126,22 @@ void Visualizer::fireFunction(int option)
     }
     else if (option == 2)
     {
-        
         OpenGlWidget::Data data;
-        data= Visualizer::convertMeshQualityStructToGraphicsObject(aspectRatioAnalysis);
+        data = Visualizer::convertMeshQualityStructToGraphicsObject(aspectRatioAnalysis);
         openglWidgetInput->addObject(data);
-        
     }
-	else if (option == 3)
-	{
-        
+    else if (option == 3)
+    {
         OpenGlWidget::Data data;
         data = Visualizer::convertMeshQualityStructToGraphicsObject(orthogonalityAnalysis);
-        openglWidgetInput->addObject(data); 
-	}
+        openglWidgetInput->addObject(data);
+    }
 }
 
 void Visualizer::onLoadFileClick()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), "", tr("files (*.stl *.obj)"));
+
     if (!fileName.isEmpty())
     {
         inputFilePath = fileName;
@@ -221,6 +219,9 @@ OpenGlWidget::Data Visualizer::convertTriangulationToGraphicsObject(Geometry::Tr
             data.vertices.push_back(triangulation.UniqueNumbers[point.X()]);
             data.vertices.push_back(triangulation.UniqueNumbers[point.Y()]);
             data.vertices.push_back(triangulation.UniqueNumbers[point.Z()]);
+            data.colors.push_back(0.0f);
+            data.colors.push_back(1.0f);
+            data.colors.push_back(0.0f);
         }
 
         Point normal = triangle.Normal();
@@ -230,6 +231,9 @@ OpenGlWidget::Data Visualizer::convertTriangulationToGraphicsObject(Geometry::Tr
             data.normals.push_back(triangulation.UniqueNumbers[normal.Y()]);
             data.normals.push_back(triangulation.UniqueNumbers[normal.Z()]);
         }
+		
+        data.drawStyle = OpenGlWidget::DrawStyle::TRIANGLES;
+
         progressBar->setValue(Vcount);
         progressBar->setRange(0, triangulation.Triangles.size() - 1);
         Vcount++;

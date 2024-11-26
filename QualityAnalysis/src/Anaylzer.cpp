@@ -6,6 +6,11 @@
 #include <memory>
 
 #define M_PI 3.14159265358979323846
+#define MIN_ANGLE_LIMIT 44
+#define MAX_ANGLE_LIMIT 91
+#define MIN_ASPECT_RATIO_LIMIT 0.3
+#define MAX_ASPECT_RATIO_LIMIT 1.8
+
 
 using namespace QualityAnalysis;
 using namespace Geometry;
@@ -53,8 +58,6 @@ std::vector<double> Anaylzer::calculateTriangleInteriorAngles( RealPoint firstVe
 
 void Anaylzer::computeOrthogonality( Triangulation& tri,  Triangulation& orthogonalityTri)
 {
-	std::vector<int> angleAnalysis;
-
 	// create copy of original to modify orthogonality data
 
 	orthogonalityTri.UniqueNumbers = tri.UniqueNumbers;
@@ -68,11 +71,9 @@ void Anaylzer::computeOrthogonality( Triangulation& tri,  Triangulation& orthogo
 
 		std::vector<double> angles = calculateTriangleInteriorAngles(p1, p2, p3);
 
-		double minAngleLimit = 44;
-		double maxAngleLimit = 91;
 		for (double angle : angles)
 		{
-			if (angle >= minAngleLimit && angle <= maxAngleLimit)
+			if (angle >= MIN_ANGLE_LIMIT && angle <= MAX_ANGLE_LIMIT)
 			{
 				triangle.setColor(0.0, 1.0, 0.0, 1.0);
 			}
@@ -87,24 +88,23 @@ void Anaylzer::computeOrthogonality( Triangulation& tri,  Triangulation& orthogo
 
 void Anaylzer::computeAspectRatio(Triangulation& tri, Triangulation& aspectRatioTri)
 {
-	// create copy of original to modify orthogonality data
+	// create copy of original to modify aspect ratio data
 
 	aspectRatioTri.UniqueNumbers = tri.UniqueNumbers;
 	aspectRatioTri.Triangles = tri.Triangles;
 
-	for ( Triangle triangle : tri.Triangles)
+	for ( Triangle& triangle : aspectRatioTri.Triangles)
 	{
-		 RealPoint p1 = { tri.UniqueNumbers[triangle.P1().X()],tri.UniqueNumbers[triangle.P1().Y()] ,tri.UniqueNumbers[triangle.P1().Z()] };
-		 RealPoint p2 = { tri.UniqueNumbers[triangle.P2().X()],tri.UniqueNumbers[triangle.P2().Y()] ,tri.UniqueNumbers[triangle.P2().Z()] };
-		 RealPoint p3 = { tri.UniqueNumbers[triangle.P3().X()],tri.UniqueNumbers[triangle.P3().Y()] ,tri.UniqueNumbers[triangle.P3().Z()] };
+		RealPoint p1 = { aspectRatioTri.UniqueNumbers[triangle.P1().X()],aspectRatioTri.UniqueNumbers[triangle.P1().Y()] ,aspectRatioTri.UniqueNumbers[triangle.P1().Z()] };
+		RealPoint p2 = { aspectRatioTri.UniqueNumbers[triangle.P2().X()],aspectRatioTri.UniqueNumbers[triangle.P2().Y()] ,aspectRatioTri.UniqueNumbers[triangle.P2().Z()] };
+		RealPoint p3 = { aspectRatioTri.UniqueNumbers[triangle.P3().X()],aspectRatioTri.UniqueNumbers[triangle.P3().Y()] ,aspectRatioTri.UniqueNumbers[triangle.P3().Z()] };
 
 		double l1 = calculateLength(p1, p2);
 		double l2 = calculateLength(p2, p3);
 		double l3 = calculateLength(p3, p1);
 		double avgaspectratio = std::max({ l1, l2, l3 }) / std::min({ l1, l2, l3 });
-		double minAspectRatioLimit = 0.5;
-		double maxAspectRatioLimit = 1.5;
-		if (avgaspectratio >= minAspectRatioLimit && avgaspectratio <= maxAspectRatioLimit)
+
+		if (avgaspectratio >= MIN_ASPECT_RATIO_LIMIT && avgaspectratio <= MAX_ASPECT_RATIO_LIMIT)
 		{
 			triangle.setColor(0.0, 1.0, 0.0, 1.0);
 		}

@@ -17,7 +17,6 @@ Visualizer::Visualizer(QWidget* parent) : QMainWindow(parent)
     connect(loadFile, &QPushButton::clicked, this, &Visualizer::onLoadFileClick);
     connect(firstCheckBox, &QCheckBox::stateChanged, this, &Visualizer::onFirstCheckBoxChanged);
     connect(secondCheckBox, &QCheckBox::stateChanged, this, &Visualizer::onSecondCheckBoxChanged);
-    connect(thirdCheckBox, &QCheckBox::stateChanged, this, &Visualizer::onThirdCheckBoxChanged);
 }
 
 Visualizer::~Visualizer()
@@ -30,33 +29,8 @@ void Visualizer::setupUi()
     openglWidgetInput = new OpenGlWidget(this);
     progressBar = new QProgressBar(this);
     containerWidget = new QWidget(this);
-    firstCheckBox = new QCheckBox("Bounding Box", containerWidget);
+    firstCheckBox = new QCheckBox("Orthogonality", containerWidget);
     secondCheckBox = new QCheckBox("Aspect Ratio", containerWidget);
-    thirdCheckBox = new QCheckBox("Orthogonality", containerWidget);
-
-    //param1textbox = new QTextEdit("", containerWidget);
-    //param2textbox = new QTextEdit("", containerWidget);
-    //param3textbox = new QTextEdit("", containerWidget);
-    //param4textbox = new QTextEdit("", containerWidget);
-    //param5textbox = new QTextEdit("", containerWidget);
-    //param6textbox = new QTextEdit("", containerWidget);
-    //param7textbox = new QTextEdit("", containerWidget);
-
-    //param1textbox->setReadOnly(true);
-    //param2textbox->setReadOnly(true);
-    //param3textbox->setReadOnly(true);
-    //param4textbox->setReadOnly(true);
-    //param5textbox->setReadOnly(true);
-    //param6textbox->setReadOnly(true);
-    //param7textbox->setReadOnly(true);
-
-    //Parameter1 = createReadOnlyTextEdit("No. of Triangles", containerWidget);
-    //Parameter2 = createReadOnlyTextEdit("Surface Area (sq.unit)", containerWidget);
-    //Parameter3 = createReadOnlyTextEdit("Triangle Density", containerWidget);
-    //Parameter4 = createReadOnlyTextEdit("Object Length (unit)", containerWidget);
-    //Parameter5 = createReadOnlyTextEdit("No. of Vertices", containerWidget);
-    //Parameter6 = createReadOnlyTextEdit("Object Height (unit)", containerWidget);
-    //Parameter7 = createReadOnlyTextEdit("Object Breadth (unit)", containerWidget);
 
     QString buttonStyle = "QPushButton {"
         "    background-color: #4CAF50;"
@@ -88,21 +62,6 @@ void Visualizer::setupUi()
     QVBoxLayout* containerLayout = new QVBoxLayout(containerWidget);
     containerLayout->addWidget(firstCheckBox);
     containerLayout->addWidget(secondCheckBox);
-    containerLayout->addWidget(thirdCheckBox);
-    //containerLayout->addWidget(Parameter1);
-    //containerLayout->addWidget(param1textbox);
-    //containerLayout->addWidget(Parameter2);
-    //containerLayout->addWidget(param2textbox);
-    //containerLayout->addWidget(Parameter3);
-    //containerLayout->addWidget(param3textbox);
-    //containerLayout->addWidget(Parameter4);
-    //containerLayout->addWidget(param4textbox);
-    //containerLayout->addWidget(Parameter5);
-    //containerLayout->addWidget(param5textbox);
-    //containerLayout->addWidget(Parameter6);
-    //containerLayout->addWidget(param6textbox);
-    //containerLayout->addWidget(Parameter7);
-    //containerLayout->addWidget(param7textbox);
 
     QGridLayout* layout = new QGridLayout();
     QWidget* centralWidget = new QWidget(this);
@@ -119,36 +78,30 @@ void Visualizer::setupUi()
 
 void Visualizer::fireFunction(int option)
 {
-    OpenGlWidget::Data data;
     if (option == 1) 
     {
-        //BoundingBox boundingBox;
-        //boundingBox.createBoundingBoxTriangulation();
-        //OpenGlWidget::Data data;
-        //data = Visualizer::convertBoundingBoxArrayToGraphcsObject(boundingBox.boundingBoxArray);
-        //QVector<OpenGlWidget::Data> dataList = { data };
-        //openglWidgetInput->setData(dataList);
-    }
-    else if (option == 2)
-    {
+        // Orthagonality
+
         if (origObjId != -1)
         {
             openglWidgetInput->removeObject(origObjId);
         }
 
-        if (aspectObjId != -1)
+        if (orthoObjectId != -1)
         {
             openglWidgetInput->removeObject(orthoObjectId);
         }
 
         if (aspectObjId == -1)
         {
-            OpenGlWidget::Data data = convertTriangulationToGraphicsObject(aspectRatioData.aspectRatio.triangulation);
-            aspectObjId = openglWidgetInput->addObject(data);
+            OpenGlWidget::Data orthogonalityOpenGlData = convertTriangulationToGraphicsObject(orthogonalityData.orthogonality.triangulation);
+            aspectObjId = openglWidgetInput->addObject(orthogonalityOpenGlData);
         }
     }
-    else if (option == 3)
+    else if (option == 2)
     {
+        //Aspect Ratio
+
         if (origObjId != -1)
         {
             openglWidgetInput->removeObject(origObjId);
@@ -159,10 +112,10 @@ void Visualizer::fireFunction(int option)
             openglWidgetInput->removeObject(aspectObjId);
         }
 
-        if (orthoObjectId == -1) 
+        if (orthoObjectId == -1)
         {
-            OpenGlWidget::Data data = convertTriangulationToGraphicsObject(orthogonalityData.orthogonality.triangulation);
-            orthoObjectId = openglWidgetInput->addObject(data);
+            OpenGlWidget::Data aspectRatioOpenGlData = convertTriangulationToGraphicsObject(aspectRatioData.aspectRatio.triangulation);
+            orthoObjectId = openglWidgetInput->addObject(aspectRatioOpenGlData);
         }
     }
 }
@@ -178,9 +131,10 @@ void Visualizer::onLoadFileClick()
         OpenGlWidget::Data data = convertTriangulationToGraphicsObject(triangulation);
         origObjId = openglWidgetInput->addObject(data);
 
-        MeshAnalysis analyzer;
-        analyzer.GetMeshOrthogonalityData(triangulation, orthogonalityData);
-		analyzer.GetMeshAspectRatioData(triangulation, aspectRatioData);
+        MeshAnalysis analyzer1;
+        MeshAnalysis analyzer2;
+        analyzer1.GetMeshOrthogonalityData(triangulation, orthogonalityData);
+        analyzer2.GetMeshAspectRatioData(triangulation, aspectRatioData);
     }
 }
 
@@ -239,7 +193,6 @@ void Visualizer::onFirstCheckBoxChanged(int state)
 {
     if (state == Qt::Checked) {
         secondCheckBox->setChecked(false);
-        thirdCheckBox->setChecked(false);
         Visualizer::fireFunction(1); 
     }
 }
@@ -248,41 +201,6 @@ void Visualizer::onSecondCheckBoxChanged(int state)
 {
     if (state == Qt::Checked) {
         firstCheckBox->setChecked(false);
-        thirdCheckBox->setChecked(false);
         Visualizer::fireFunction(2);
     }
-}
-
-void Visualizer::onThirdCheckBoxChanged(int state)
-{
-    if (state == Qt::Checked) {
-        firstCheckBox->setChecked(false);
-        secondCheckBox->setChecked(false);
-        Visualizer::fireFunction(3);
-    }
-}
-
-QTextEdit* Visualizer::createReadOnlyTextEdit(const QString& text, QWidget* parent)
-{
-    QTextEdit* textEdit = new QTextEdit(text, parent);
-    textEdit->setReadOnly(true);
-
-    // Center-align the text
-    QTextCursor cursor = textEdit->textCursor();
-    QTextBlockFormat format;
-    format.setAlignment(Qt::AlignCenter);
-    cursor.select(QTextCursor::Document);
-    cursor.mergeBlockFormat(format);
-    textEdit->setTextCursor(cursor);
-
-    // Apply a light background color to both the widget and text area
-    QPalette palette = textEdit->palette();
-    palette.setColor(QPalette::Base, QColor("#f8f9fa"));  // Light grey background for the text area
-    palette.setColor(QPalette::Text, QColor("#333333"));  // Darker text color for readability
-    textEdit->setPalette(palette);
-
-    // Apply a basic style
-    textEdit->setStyleSheet("QTextEdit {size: 5px; color: #333333; background-color: #f0f0f0; font-size: 14px;}");
-
-    return textEdit;
 }

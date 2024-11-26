@@ -23,10 +23,12 @@ OBJReader::OBJReader()
 OBJReader::~OBJReader()
 {
 }
+
 bool OBJReader::operator()(double a, double b) const
 {
     return fabs(a - b) > TOLERANCE ? a < b : false;
 }
+
 void OBJReader::read(const std::string& fileName, Triangulation& triangulation)
 {
     std::map<double, int, OBJReader> uniqueMap;

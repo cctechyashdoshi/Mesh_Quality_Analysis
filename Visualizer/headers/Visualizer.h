@@ -25,11 +25,9 @@ private slots:
     void onLoadFileClick();
     void onFirstCheckBoxChanged(int state);
     void onSecondCheckBoxChanged(int state);
-	void onThirdCheckBoxChanged(int state);
 
 private:
     void setupUi();
-    //OpenGlWidget::Data convertBoundingBoxArrayToGraphcsObject(Triangulation& inTriangulation); 
     Triangulation readFile(const QString& filePath);
 	void Visualizer::fireFunction(int option);
 
@@ -46,9 +44,6 @@ private:
 
     QCheckBox* firstCheckBox;
     QCheckBox* secondCheckBox;
-    QCheckBox* thirdCheckBox;
-
-    QTextEdit* createReadOnlyTextEdit(const QString& text, QWidget* parent);
 
     QVector<GLfloat> vertices;
 

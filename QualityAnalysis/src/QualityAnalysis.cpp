@@ -4,7 +4,6 @@
 #include "MeshQualityData.h"
 
 using namespace Geometry;
-
 using namespace QualityAnalysis;
 
 void MeshAnalysis::GetMeshOrthogonalityData(Triangulation& tri,  MeshQualityData& meshData)
@@ -16,5 +15,5 @@ void MeshAnalysis::GetMeshOrthogonalityData(Triangulation& tri,  MeshQualityData
 void MeshAnalysis::GetMeshAspectRatioData(Triangulation& tri, MeshQualityData& meshData)
 {
 	Anaylzer analyzedata;
-	analyzedata.computeAspectRatio(tri, meshData.orthogonality.triangulation);
+	analyzedata.computeAspectRatio(tri, meshData.aspectRatio.triangulation);
 }

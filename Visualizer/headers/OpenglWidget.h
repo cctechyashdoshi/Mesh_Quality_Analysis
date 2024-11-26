@@ -80,4 +80,6 @@ private:
     QMap<int, int> idToIndex;
     bool isInitialized;
 
+    QVector<int> drawingObjs;
+    int maxId;
 };

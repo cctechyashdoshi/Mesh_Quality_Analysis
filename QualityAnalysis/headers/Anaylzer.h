@@ -2,18 +2,21 @@
 #include "Triangulation.h"
 #include "RealPoint.h"
 
+using namespace Geometry;
+
 namespace QualityAnalysis
 { 
 	class Anaylzer
 	{
 	private:
-		double calculateLength(Geometry::RealPoint p1, Geometry::RealPoint p2);
-		std::vector<double> calculateTriangleInteriorAngles(Geometry::RealPoint firstVertex, Geometry::RealPoint secondVertex, Geometry::RealPoint thirdVertex);
-		double calculateAngle(Geometry::RealPoint p1, Geometry::RealPoint p2, Geometry::RealPoint p3);
+		double calculateLength( RealPoint p1,  RealPoint p2);
+		std::vector<double> calculateTriangleInteriorAngles( RealPoint firstVertex,  RealPoint secondVertex,  RealPoint thirdVertex);
+		double calculateAngle( RealPoint p1,  RealPoint p2,  RealPoint p3);
+
 	public:
 		Anaylzer();
 		~Anaylzer();
-		std::vector<int> identifyGoodAndBadAngles(Geometry::Triangulation& tri);
-		std::vector<int> identifyGoodAndBadAspectRatio(Geometry::Triangulation& tri);
+		void computeOrthogonality( Triangulation& tri,  Triangulation& orthogonalityTri);
+		void computeAspectRatio( Triangulation& tri,  Triangulation& aspectRatioTri);
 	};
 }

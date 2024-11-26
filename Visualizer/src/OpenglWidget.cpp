@@ -7,7 +7,8 @@ using namespace std;
 
 OpenGlWidget::OpenGlWidget(QWidget* parent)
     : QOpenGLWidget(parent),
-    isInitialized(false)
+    isInitialized(false),
+    maxId(0)
 {
 }
 
@@ -24,20 +25,27 @@ OpenGlWidget::~OpenGlWidget() {
 int OpenGlWidget::addObject(Data inData)
 {
     int doId = buildDrawingObjects(inData);
+    drawingObjs.append(maxId);
     return doId;
 }
 
 void OpenGlWidget::removeObject(int id)
 {
     makeCurrent();
-
-    if (id > 0 && id < drawingObjects.size()) {
-        drawingObjects[id].vao->destroy();
-        drawingObjects[id].vbo.destroy();
+    // Find the index of the drawing object with the given id
+    for (int i = 0; i < drawingObjs.size(); i++)
+    {
+        if (drawingObjs[i] == id)
+        {
+            DrawingObject drawingObject = drawingObjects.at(i);
+            drawingObjects.erase(drawingObjects.begin() + i);
+            drawingObjs.remove(i);
+            drawingObject.vao->destroy();
+            drawingObject.vbo.destroy();
+            update();
+            break;
+        }
     }
-
-    update();
-
     doneCurrent();
 }
 
@@ -181,6 +189,7 @@ int OpenGlWidget::buildDrawingObjects(Data data)
     doneCurrent();
     isInitialized = true;
 
+    maxId++;
     return drawingObjects.size(); // Return the index of the drawing object
 }
 

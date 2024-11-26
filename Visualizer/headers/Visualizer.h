@@ -11,6 +11,7 @@
 #include "QualityAnalysis.h"
 
 using namespace Geometry;
+using namespace QualityAnalysis;
 
 class Visualizer : public QMainWindow
 {
@@ -35,9 +36,6 @@ private:
 private:
 	Triangulation triangulation;
 
-	std::vector<QualityAnalysis::MeshAnalysis::TriangleAnalysisResult> orthogonalityAnalysis;
-	std::vector<QualityAnalysis::MeshAnalysis::TriangleAnalysisResult> aspectRatioAnalysis;
-
     QPushButton* loadFile;
     QPushButton* translate;
     QPushButton* exportFile;
@@ -50,30 +48,6 @@ private:
     QCheckBox* secondCheckBox;
     QCheckBox* thirdCheckBox;
 
-    QTextEdit* param1textbox;
-    QTextEdit* param2textbox;
-    QTextEdit* param3textbox;
-    QTextEdit* param4textbox;
-    QTextEdit* param5textbox;
-    QTextEdit* param6textbox;
-    QTextEdit* param7textbox;
-
-    double param1Value;  // No. of Triangles
-    double param2Value;  // Surface Area
-    double param3Value;  // Triangle Density
-    double param4Value;  // Object Length
-    double param5Value;  // No. of Vertices
-    double param6Value;  // Object Height
-    double param7Value;  // Object Breadth
-
-    QTextEdit* Parameter1;
-    QTextEdit* Parameter2;
-    QTextEdit* Parameter3;
-    QTextEdit* Parameter4;
-    QTextEdit* Parameter5;
-    QTextEdit* Parameter6;
-    QTextEdit* Parameter7;
-
     QTextEdit* createReadOnlyTextEdit(const QString& text, QWidget* parent);
 
     QVector<GLfloat> vertices;
@@ -81,6 +55,13 @@ private:
     QWidget* containerWidget;
 
     QString inputFilePath;
+
+    MeshQualityData orthogonalityData;
+	MeshQualityData aspectRatioData;
+
+    int origObjId;
+    int orthoObjectId;
+    int aspectObjId;
+
     OpenGlWidget::Data convertTriangulationToGraphicsObject(Geometry::Triangulation triangulation);
-    OpenGlWidget::Data convertMeshQualityStructToGraphicsObject(std::vector<QualityAnalysis::MeshAnalysis::TriangleAnalysisResult> Qualitystruct);
 };

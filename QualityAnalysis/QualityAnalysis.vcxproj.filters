@@ -7,12 +7,18 @@
     <ClCompile Include="src\QualityAnalysis.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\MeshQualityData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\Anaylzer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="headers\QualityAnalysis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\MeshQualityData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

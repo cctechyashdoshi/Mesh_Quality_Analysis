@@ -143,10 +143,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Anaylzer.cpp" />
+    <ClCompile Include="src\MeshQualityData.cpp" />
     <ClCompile Include="src\QualityAnalysis.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\Anaylzer.h" />
+    <ClInclude Include="headers\MeshQualityData.h" />
     <ClInclude Include="headers\QualityAnalysis.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

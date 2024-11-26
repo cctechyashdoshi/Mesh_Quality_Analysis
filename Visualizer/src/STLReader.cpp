@@ -68,7 +68,9 @@ void STLReader::read(const std::string& fileName, Triangulation& triangulation)
                     Point p2 = Point(pointIndices[6], pointIndices[7], pointIndices[8]);
                     Point p3 = Point(pointIndices[9], pointIndices[10], pointIndices[11]);
                     Triangle t(normal, p1, p2, p3);
+                    t.setColor(1.0, 0.0, 0.0, 1.0);
                     triangulation.Triangles.push_back(t);
+
                     pointIndices.clear();
                 }
             }

@@ -1,18 +1,19 @@
 #pragma once
 
 #include "Triangulation.h"
+#include "MeshQualityData.h"
+
 #include <vector>
+
+using namespace Geometry;
 
 namespace QualityAnalysis
 {
 	class MeshAnalysis
 	{
+
 	public:
-		struct TriangleAnalysisResult {
-			Geometry::Triangle triangle;
-			int value;
-		};
-		std::vector<TriangleAnalysisResult> calculateOrthogonality(Geometry::Triangulation& triangulation);
-		std::vector<TriangleAnalysisResult> calculateAspectRatio(Geometry::Triangulation& triangulation);
+		void GetMeshAspectRatioData(Triangulation& tri, MeshQualityData& meshData);
+		void GetMeshOrthogonalityData(Triangulation& tri, MeshQualityData& meshData);
 	};
 }

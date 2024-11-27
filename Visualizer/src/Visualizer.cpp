@@ -76,43 +76,6 @@ void Visualizer::setupUi()
     setCentralWidget(centralWidget);
 }
 
-void Visualizer::resetObjectIds()
-{
-    if (origObjId != -1) {
-        openglWidgetInput->removeObject(origObjId);
-        origObjId = -1;
-    }
-
-    if (orthoObjectId != -1) {
-        openglWidgetInput->removeObject(orthoObjectId);
-        orthoObjectId = -1;
-    }
-
-    if (aspectObjId != -1) {
-        openglWidgetInput->removeObject(aspectObjId);
-        aspectObjId = -1;
-    }
-}
-
-
-void Visualizer::fireFunction(int option)
-{
-    if (option == 1)
-    {
-        // Orthogonality
-        Visualizer::resetObjectIds();
-        OpenGlWidget::Data orthogonalityOpenGlData = convertTriangulationToGraphicsObject(orthogonalityData.orthogonality.triangulation);
-        orthoObjectId = openglWidgetInput->addObject(orthogonalityOpenGlData);
-    }
-    else if (option == 2)
-    {
-        // Aspect Ratio
-        Visualizer::resetObjectIds();
-        OpenGlWidget::Data aspectRatioOpenGlData = convertTriangulationToGraphicsObject(aspectRatioData.aspectRatio.triangulation);
-        aspectObjId = openglWidgetInput->addObject(aspectRatioOpenGlData);
-    }
-}
-
 void Visualizer::onLoadFileClick()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), "", tr("files (*.stl *.obj)"));
@@ -216,5 +179,23 @@ void Visualizer::onSecondCheckBoxChanged(int state)
         // Display original object
         OpenGlWidget::Data originalData = convertTriangulationToGraphicsObject(triangulation);
         origObjId = openglWidgetInput->addObject(originalData);
+    }
+}
+
+void Visualizer::resetObjectIds()
+{
+    if (origObjId != -1) {
+        openglWidgetInput->removeObject(origObjId);
+        origObjId = 0;
+    }
+
+    if (orthoObjectId != -1) {
+        openglWidgetInput->removeObject(orthoObjectId);
+        orthoObjectId = 0;
+    }
+
+    if (aspectObjId != -1) {
+        openglWidgetInput->removeObject(aspectObjId);
+        aspectObjId = 0;
     }
 }

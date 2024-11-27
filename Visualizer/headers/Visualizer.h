@@ -29,7 +29,6 @@ private slots:
 private:
     void setupUi();
     Triangulation readFile(const QString& filePath);
-	void Visualizer::fireFunction(int option);
     OpenGlWidget::Data convertTriangulationToGraphicsObject(Triangulation triangulation);
     void resetObjectIds();
 

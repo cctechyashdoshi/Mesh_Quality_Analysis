@@ -76,47 +76,38 @@ void Visualizer::setupUi()
     setCentralWidget(centralWidget);
 }
 
+void Visualizer::resetObjectIds() {
+    if (origObjId != -1) {
+        openglWidgetInput->removeObject(origObjId);
+        origObjId = -1;
+    }
+
+    if (orthoObjectId != -1) {
+        openglWidgetInput->removeObject(orthoObjectId);
+        orthoObjectId = -1;
+    }
+
+    if (aspectObjId != -1) {
+        openglWidgetInput->removeObject(aspectObjId);
+        aspectObjId = -1;
+    }
+}
+
 void Visualizer::fireFunction(int option)
 {
-    if (option == 1) 
+    if (option == 1)
     {
-        // Orthagonality
-
-        if (origObjId != -1)
-        {
-            openglWidgetInput->removeObject(origObjId);
-        }
-
-        if (orthoObjectId != -1)
-        {
-            openglWidgetInput->removeObject(orthoObjectId);
-        }
-
-        if (aspectObjId == -1)
-        {
-            OpenGlWidget::Data orthogonalityOpenGlData = convertTriangulationToGraphicsObject(orthogonalityData.orthogonality.triangulation);
-            aspectObjId = openglWidgetInput->addObject(orthogonalityOpenGlData);
-        }
+        // Orthogonality
+        Visualizer::resetObjectIds();
+        OpenGlWidget::Data orthogonalityOpenGlData = convertTriangulationToGraphicsObject(orthogonalityData.orthogonality.triangulation);
+        orthoObjectId = openglWidgetInput->addObject(orthogonalityOpenGlData);
     }
     else if (option == 2)
     {
-        //Aspect Ratio
-
-        if (origObjId != -1)
-        {
-            openglWidgetInput->removeObject(origObjId);
-        }
-
-        if (aspectObjId != -1)
-        {
-            openglWidgetInput->removeObject(aspectObjId);
-        }
-
-        if (orthoObjectId == -1)
-        {
-            OpenGlWidget::Data aspectRatioOpenGlData = convertTriangulationToGraphicsObject(aspectRatioData.aspectRatio.triangulation);
-            orthoObjectId = openglWidgetInput->addObject(aspectRatioOpenGlData);
-        }
+        // Aspect Ratio
+        Visualizer::resetObjectIds();
+        OpenGlWidget::Data aspectRatioOpenGlData = convertTriangulationToGraphicsObject(aspectRatioData.aspectRatio.triangulation);
+        aspectObjId = openglWidgetInput->addObject(aspectRatioOpenGlData);
     }
 }
 
@@ -131,10 +122,9 @@ void Visualizer::onLoadFileClick()
         OpenGlWidget::Data data = convertTriangulationToGraphicsObject(triangulation);
         origObjId = openglWidgetInput->addObject(data);
 
-        MeshAnalysis analyzer1;
-        MeshAnalysis analyzer2;
-        analyzer1.GetMeshOrthogonalityData(triangulation, orthogonalityData);
-        analyzer2.GetMeshAspectRatioData(triangulation, aspectRatioData);
+        MeshAnalysis analyzer;
+        analyzer.GetMeshOrthogonalityData(triangulation, orthogonalityData);
+        analyzer.GetMeshAspectRatioData(triangulation, aspectRatioData);
     }
 }
 

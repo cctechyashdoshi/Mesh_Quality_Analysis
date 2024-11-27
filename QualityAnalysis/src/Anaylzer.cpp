@@ -8,9 +8,8 @@
 #define M_PI 3.14159265358979323846
 #define MIN_ANGLE_LIMIT 44
 #define MAX_ANGLE_LIMIT 91
-#define MIN_ASPECT_RATIO_LIMIT 0.3
-#define MAX_ASPECT_RATIO_LIMIT 1.8
-
+#define MIN_ASPECT_RATIO_LIMIT 0.5
+#define MAX_ASPECT_RATIO_LIMIT 1.5
 
 using namespace QualityAnalysis;
 using namespace Geometry;

@@ -2,6 +2,7 @@
 #include "Triangulation.h"
 #include "RealPoint.h"
 
+using namespace std;
 using namespace Geometry;
 
 namespace QualityAnalysis
@@ -10,7 +11,7 @@ namespace QualityAnalysis
 	{
 	private:
 		double calculateLength( RealPoint p1,  RealPoint p2);
-		std::vector<double> calculateTriangleInteriorAngles( RealPoint firstVertex,  RealPoint secondVertex,  RealPoint thirdVertex);
+		vector<double> calculateTriangleInteriorAngles( RealPoint firstVertex,  RealPoint secondVertex,  RealPoint thirdVertex);
 		double calculateAngle( RealPoint p1,  RealPoint p2,  RealPoint p3);
 
 	public:

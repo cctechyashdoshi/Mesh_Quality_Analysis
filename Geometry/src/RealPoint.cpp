@@ -1,11 +1,16 @@
 #include "RealPoint.h"
 
-Geometry::RealPoint::RealPoint() : mX(0), mY(0), mZ(0)
+Geometry::RealPoint::RealPoint(): 
+	mX(0), 
+	mY(0), 
+	mZ(0)
 {
 }
 
-Geometry::RealPoint::RealPoint(double x, double y, double z)
-	: mX(x), mY(y), mZ(z)
+Geometry::RealPoint::RealPoint(double x, double y, double z): 
+	mX(x), 
+	mY(y), 
+	mZ(z)
 {
 }
 

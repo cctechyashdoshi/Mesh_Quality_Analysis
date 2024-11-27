@@ -30,6 +30,8 @@ private:
     void setupUi();
     Triangulation readFile(const QString& filePath);
 	void Visualizer::fireFunction(int option);
+    OpenGlWidget::Data convertTriangulationToGraphicsObject(Triangulation triangulation);
+    void resetObjectIds();
 
 private:
 	Triangulation triangulation;
@@ -57,6 +59,4 @@ private:
     int origObjId;
     int orthoObjectId;
     int aspectObjId;
-
-    OpenGlWidget::Data convertTriangulationToGraphicsObject(Geometry::Triangulation triangulation);
 };

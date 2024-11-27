@@ -1,24 +1,25 @@
 #include <vector>
 #include "Triangle.h"
 
+using namespace std;
 using namespace Geometry;
 
-Point Geometry::Triangle::P1() const
+Point Triangle::P1() const
 {
     return p1;
 }
 
-Point Geometry::Triangle::P2() const
+Point Triangle::P2() const
 { 
     return p2;
 }
 
-Point Geometry::Triangle::P3() const
+Point Triangle::P3() const
 {
     return p3;
 }
 
-Triangle::Triangle(Geometry::Point normal, Geometry::Point p1, Geometry::Point p2, Geometry::Point p3):
+Triangle::Triangle(Point normal, Point p1, Point p2, Point p3):
     normal(normal),
     p1(p1),
     p2(p2),
@@ -27,7 +28,7 @@ Triangle::Triangle(Geometry::Point normal, Geometry::Point p1, Geometry::Point p
 {
 }
 
-std::vector<Point> Triangle::Points() const
+vector<Point> Triangle::Points() const
 {
     std::vector<Point> points;
     points.push_back(p1);
@@ -36,12 +37,12 @@ std::vector<Point> Triangle::Points() const
     return points;
 }
     
-Point Geometry::Triangle::Normal() const
+Point Triangle::Normal() const
 {
     return normal;
 }
 
-std::vector<float> Triangle::Color() const
+vector<float> Triangle::Color() const
 {
     return color;
 }

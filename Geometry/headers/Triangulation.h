@@ -2,7 +2,8 @@
 #include "Triangle.h"
 #include<vector>
 
-namespace Geometry{
+namespace Geometry
+{
     class Triangulation
     {
     public:

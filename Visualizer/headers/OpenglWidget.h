@@ -8,6 +8,7 @@
 #include <QMouseEvent>
 #include <vector>
 #include <QOpenGLVertexArrayObject>
+
 using namespace std;
 
 class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions {

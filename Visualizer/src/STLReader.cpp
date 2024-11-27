@@ -9,6 +9,7 @@
 
 #define TOLERANCE 0.0000001
 
+using namespace std;
 using namespace Geometry;
 
 STLReader::STLReader()
@@ -24,20 +25,20 @@ bool STLReader::operator()(double a, double b) const
     return fabs(a - b) > TOLERANCE ? a < b : false;
 }
 
-void STLReader::read(const std::string& fileName, Triangulation& triangulation)
+void STLReader::read(const string& fileName, Triangulation& triangulation)
 {
-    std::map<double, int, STLReader> uniqueValueMap;
+    map<double, int, STLReader> uniqueValueMap;
     double xyz[3];
-    std::vector<int> pointIndices; 
+    vector<int> pointIndices; 
 
-    std::ifstream infile(fileName);
+    ifstream infile(fileName);
     if (infile.is_open())
     {
-        std::string line;
+        string line;
         while (getline(infile, line))
         {
-            std::stringstream ss(line);
-            std::string word;
+            stringstream ss(line);
+            string word;
 
             while (ss >> word)
             {

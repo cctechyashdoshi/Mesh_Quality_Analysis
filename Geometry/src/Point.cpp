@@ -1,11 +1,16 @@
 #include "Point.h"
 
-Geometry::Point::Point() : mX(0), mY(0), mZ(0)
+Geometry::Point::Point() : 
+	mX(0), 
+	mY(0), 
+	mZ(0)
 {
 }
 
-Geometry::Point::Point(int x, int y, int z)
-	: mX(x), mY(y), mZ(z)
+Geometry::Point::Point(int x, int y, int z): 
+	mX(x), 
+	mY(y), 
+	mZ(z)
 {
 }
 

@@ -1,11 +1,11 @@
-#include <QString>
-#include <QList>
-#include <fstream>
-#include <iostream>
 #include "OBJReader.h"
 #include "Triangulation.h"
 #include "Point.h"
 #include "Triangle.h"
+#include <QString>
+#include <QList>
+#include <fstream>
+#include <iostream>
 #include <vector>
 #include <sstream>
 #include <cassert>
@@ -14,6 +14,7 @@
 
 #define TOLERANCE 0.0000001
 
+using namespace std;
 using namespace Geometry;
 
 OBJReader::OBJReader()
@@ -29,27 +30,27 @@ bool OBJReader::operator()(double a, double b) const
     return fabs(a - b) > TOLERANCE ? a < b : false;
 }
 
-void OBJReader::read(const std::string& fileName, Triangulation& triangulation)
+void OBJReader::read(const string& fileName, Triangulation& triangulation)
 {
-    std::map<double, int, OBJReader> uniqueMap;
+    map<double, int, OBJReader> uniqueMap;
     double xyz[3];
     double normalXYZ[3];
-    std::string fLetter;
-    std::string str1;
-    std::string str2;
-    std::string str3;
-    std::vector<Point> vertices;
-    std::vector<Point> normals;
+    string fLetter;
+    string str1;
+    string str2;
+    string str3;
+    vector<Point> vertices;
+    vector<Point> normals;
 
 
-    std::ifstream infile(fileName);
+    ifstream infile(fileName);
     if (infile.is_open())
     {
-        std::string line;
+        string line;
 
         while (getline(infile, line))
         {
-            std::stringstream ss(line);
+            stringstream ss(line);
             QString _line = QString::fromStdString(line);
             QStringList linelist = _line.split(" ");
             if (linelist.value(0) == "v")
@@ -87,7 +88,7 @@ void OBJReader::read(const std::string& fileName, Triangulation& triangulation)
     }
 }
 
-void OBJReader::helper(double xyz[3], std::vector<Point>& vertices, std::map<double, int, OBJReader>& uniqueMap, Triangulation& triangulation)
+void OBJReader::helper(double xyz[3], vector<Point>& vertices, map<double, int, OBJReader>& uniqueMap, Triangulation& triangulation)
 {
     int pt[3];
     for (int i = 0; i < 3; i++)
@@ -105,7 +106,6 @@ void OBJReader::helper(double xyz[3], std::vector<Point>& vertices, std::map<dou
             pt[i] = pair->second;
 
         }
-
     }
     vertices.push_back(Point(pt[0], pt[1], pt[2]));
 }

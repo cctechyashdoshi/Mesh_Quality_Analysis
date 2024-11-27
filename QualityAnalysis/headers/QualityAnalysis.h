@@ -2,7 +2,6 @@
 
 #include "Triangulation.h"
 #include "MeshQualityData.h"
-
 #include <vector>
 
 using namespace Geometry;

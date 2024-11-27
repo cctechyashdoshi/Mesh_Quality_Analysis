@@ -12,6 +12,7 @@ namespace QualityAnalysis
 	{
 
 	public:
+		std::vector<double> getAngleValues(Triangulation& triangulation);
 		void GetMeshAspectRatioData(Triangulation& tri, MeshQualityData& meshData);
 		void GetMeshOrthogonalityData(Triangulation& tri, MeshQualityData& meshData);
 	};

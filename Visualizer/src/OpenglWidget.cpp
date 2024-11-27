@@ -172,10 +172,10 @@ int OpenGlWidget::buildDrawingObjects(Data data)
         shader.setAttributeBuffer(1, GL_FLOAT, data.vertices.size() * sizeof(float), 3);
     }
 
-    if (data.colors.size() == data.vertices.size())
+    if (data.colors.size() == data.vertices.size()/3)
     {
         shader.enableAttributeArray(2); // color attribute
-        shader.setAttributeBuffer(2, GL_FLOAT, ((data.vertices.size() * sizeof(float)) + (data.normals.size() * sizeof(float))), 3);
+        shader.setAttributeBuffer(2, GL_FLOAT, ((data.vertices.size() * sizeof(float)) + (data.normals.size() * sizeof(float))),1);
     }
 
     shader.release();

@@ -146,28 +146,26 @@ Triangulation Visualizer::readFile(const QString& filePath)
     return tri;
 }
 
-OpenGlWidget::Data Visualizer::convertTriangulationToGraphicsObject(Geometry::Triangulation triangulation)
+OpenGlWidget::Data Visualizer::convertTriangulationToGraphicsObject(Geometry::Triangulation triangulation1)
 {
     int Vcount = 0;
     OpenGlWidget::Data data;
+    auto angles = analyzer.getAngleValues(triangulation1);
     for each (Triangle triangle in triangulation.Triangles)
     {
         for each (Point point in triangle.Points())
         {
-            data.vertices.push_back(triangulation.UniqueNumbers[point.X()]);
-            data.vertices.push_back(triangulation.UniqueNumbers[point.Y()]);
-            data.vertices.push_back(triangulation.UniqueNumbers[point.Z()]);
-            data.colors.push_back(triangle.Color()[0]);
-            data.colors.push_back(triangle.Color()[1]);
-            data.colors.push_back(triangle.Color()[2]);
+            data.vertices.push_back(triangulation1.UniqueNumbers[point.X()]);
+            data.vertices.push_back(triangulation1.UniqueNumbers[point.Y()]);
+            data.vertices.push_back(triangulation1.UniqueNumbers[point.Z()]);
         }
 
         Point normal = triangle.Normal();
         for (size_t i = 0; i < 3; i++)
         {
-            data.normals.push_back(triangulation.UniqueNumbers[normal.X()]);
-            data.normals.push_back(triangulation.UniqueNumbers[normal.Y()]);
-            data.normals.push_back(triangulation.UniqueNumbers[normal.Z()]);
+            data.normals.push_back(triangulation1.UniqueNumbers[normal.X()]);
+            data.normals.push_back(triangulation1.UniqueNumbers[normal.Y()]);
+            data.normals.push_back(triangulation1.UniqueNumbers[normal.Z()]);
         }
 		
         data.drawStyle = OpenGlWidget::DrawStyle::TRIANGLES;
@@ -175,6 +173,10 @@ OpenGlWidget::Data Visualizer::convertTriangulationToGraphicsObject(Geometry::Tr
         progressBar->setValue(Vcount);
         progressBar->setRange(0, triangulation.Triangles.size() - 1);
         Vcount++;
+    }
+    for (auto i : angles)
+    {
+        data.colors.push_back(i);
     }
     return data;
 }

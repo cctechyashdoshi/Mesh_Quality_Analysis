@@ -28,5 +28,5 @@ void main() {
     // Final color
     vec3 result = ambient + diffuse + specular;
     color = vec4(result, 1.0);
-
+    //color = vec4(fragColor,1.0);
 }

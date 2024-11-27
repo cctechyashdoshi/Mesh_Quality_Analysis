@@ -53,6 +53,7 @@ private:
 
     QString inputFilePath;
 
+    MeshAnalysis analyzer;
     MeshQualityData orthogonalityData;
 	MeshQualityData aspectRatioData;
 
